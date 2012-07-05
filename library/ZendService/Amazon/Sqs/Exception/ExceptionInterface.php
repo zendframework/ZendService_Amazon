@@ -13,19 +13,23 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Service
- * @subpackage Amazon
+ * @package    Zend_Service_Amazon
+ * @subpackage Sqs
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Service\Amazon;
+namespace Zend\Service\Amazon\Sqs\Exception;
+
+use Zend\Service\Amazon\Exception;
 
 /**
  * @category   Zend
- * @package    Zend_Service
+ * @package    Zend_Service_Amazon
+ * @subpackage Sqs
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Exception
-{}
+interface ExceptionInterface extends Exception\ExceptionInterface
+{
+}
