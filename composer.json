@@ -4,7 +4,11 @@
     "type": "library",
     "keywords": [
         "zf2",
-        "akismet"
+        "amazon",
+        "ec2",
+        "s3",
+        "simpledb",
+        "sqs"
     ],
     "homepage": "http://packages.zendframework.com/",
     "license": "BSD-3-Clause",
@@ -13,7 +17,6 @@
             "ZendService": "library/"
         }
     },
-    "target-dir": "ZendService/Amazon",
     "repositories": [
         {
             "type": "composer",
