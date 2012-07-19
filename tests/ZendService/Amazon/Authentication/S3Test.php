@@ -8,10 +8,10 @@
  * @package   Zend_Service
  */
 
-namespace ZendTest\Service\Amazon\Authentication;
+namespace ZendServiceTest\Amazon\Authentication;
 
-use Zend\Service\Amazon\Authentication;
-use Zend\Service\Amazon\Authentication\Exception;
+use ZendService\Amazon\Authentication;
+use ZendService\Amazon\Authentication\Exception;
 
 /**
  * S3 authentication test case
@@ -24,7 +24,7 @@ class S3Test extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var Zend\Service\Amazon\Authentication\S3
+     * @var ZendService\Amazon\Authentication\S3
      */
     private $_amazon;
 

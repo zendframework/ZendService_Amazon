@@ -8,9 +8,9 @@
  * @package   Zend_Service
  */
 
-namespace ZendTest\Service\Amazon\Ec2;
+namespace ZendServiceTest\Amazon\Ec2;
 
-use Zend\Service\Amazon\Ec2\WindowsInstance;
+use ZendService\Amazon\Ec2\WindowsInstance;
 use Zend\Http\Client as HttpClient;
 use Zend\Http\Client\Adapter\Test as HttpClientTestAdapter;
 

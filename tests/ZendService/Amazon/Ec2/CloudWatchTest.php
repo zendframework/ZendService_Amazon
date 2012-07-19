@@ -8,14 +8,14 @@
  * @package   Zend_Service
  */
 
-namespace ZendTest\Service\Amazon\Ec2;
+namespace ZendServiceTest\Amazon\Ec2;
 
-use Zend\Service\Amazon\Ec2;
+use ZendService\Amazon\Ec2;
 use Zend\Http\Client as HttpClient;
 use Zend\Http\Client\Adapter\Test as HttpClientTestAdapter;
 
 /**
- * Zend\Service\Amazon\Ec2\CloudWatch test case.
+ * ZendService\Amazon\Ec2\CloudWatch test case.
  *
  * @category   Zend
  * @package    Zend_Service_Amazon
@@ -28,7 +28,7 @@ class CloudWatchTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var Zend\Service\Amazon\Ec2\CloudWatch
+     * @var ZendService\Amazon\Ec2\CloudWatch
      */
     private $cloudWatchInstance;
 
@@ -53,7 +53,7 @@ class CloudWatchTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests Zend\Service\Amazon\Ec2\CloudWatch->getMetricStatistics()
+     * Tests ZendService\Amazon\Ec2\CloudWatch->getMetricStatistics()
      */
     public function testGetMetricStatistics()
     {
@@ -112,7 +112,7 @@ class CloudWatchTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests Zend\Service\Amazon\Ec2\CloudWatch->listMetrics()
+     * Tests ZendService\Amazon\Ec2\CloudWatch->listMetrics()
      */
     public function testListMetrics()
     {

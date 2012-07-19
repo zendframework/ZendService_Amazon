@@ -8,7 +8,7 @@
  * @package   Zend_Service
  */
 
-namespace Zend\Service\Amazon;
+namespace ZendService\Amazon;
 
 use Zend\Uri;
 

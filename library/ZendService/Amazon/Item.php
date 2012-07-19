@@ -8,10 +8,10 @@
  * @package   Zend_Service
  */
 
-namespace Zend\Service\Amazon;
+namespace ZendService\Amazon;
 
 use DOMElement;
-use Zend\Service\Amazon\Exception;
+use ZendService\Amazon\Exception;
 
 /**
  * @category   Zend

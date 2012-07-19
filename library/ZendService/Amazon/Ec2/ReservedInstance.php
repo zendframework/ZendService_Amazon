@@ -8,7 +8,7 @@
  * @package   Zend_Service
  */
 
-namespace Zend\Service\Amazon\Ec2;
+namespace ZendService\Amazon\Ec2;
 
 /**
  * Allows you to interface with the reserved instances on Amazon Ec2

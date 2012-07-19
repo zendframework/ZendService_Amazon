@@ -8,10 +8,10 @@
  * @package   Zend_Service
  */
 
-namespace Zend\Service\Amazon\Ec2;
+namespace ZendService\Amazon\Ec2;
 
-use Zend\Service\Amazon;
-use Zend\Service\Amazon\Ec2\Exception;
+use ZendService\Amazon;
+use ZendService\Amazon\Ec2\Exception;
 use Zend\Crypt\Hmac;
 use Zend\Http\Client as HttpClient;
 
@@ -119,7 +119,7 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
      *
      * @param array $params         List of parameters to send with the request
      * @return Zend_Service_Amazon_Ec2_Response
-     * @throws Zend\Service\Amazon\Ec2\Exception
+     * @throws ZendService\Amazon\Ec2\Exception
      */
     protected function sendRequest(array $params = array())
     {
@@ -233,7 +233,7 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
      *
      * @return void
      *
-     * @throws Zend\Service\Amazon\Ec2\Exception if one or more errors are
+     * @throws ZendService\Amazon\Ec2\Exception if one or more errors are
      *         returned from Amazon.
      */
     private function checkForErrors(Response $response)

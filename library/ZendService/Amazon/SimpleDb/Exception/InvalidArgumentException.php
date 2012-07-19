@@ -8,9 +8,9 @@
  * @package   Zend_Service
  */
 
-namespace Zend\Service\Amazon\SimpleDb\Exception;
+namespace ZendService\Amazon\SimpleDb\Exception;
 
-use Zend\Service\Amazon\Exception;
+use ZendService\Amazon\Exception;
 
 /**
  * @category   Zend

@@ -8,10 +8,10 @@
  * @package   Zend_Service
  */
 
-namespace Zend\Service\Amazon\Ec2;
+namespace ZendService\Amazon\Ec2;
 
-use Zend\Service\Amazon;
-use Zend\Service\Amazon\Ec2\Exception;
+use ZendService\Amazon;
+use ZendService\Amazon\Ec2\Exception;
 
 /**
  * An Amazon EC2 interface to create, delete and describe Ec2 KeyPairs.
@@ -27,7 +27,7 @@ class Keypair extends AbstractEc2
      * be used to reference this key pair when launching new instances.
      *
      * @param string $keyName           A unique name for the key pair.
-     * @throws Zend\Service\Amazon\Ec2\Exception
+     * @throws ZendService\Amazon\Ec2\Exception
      * @return array
      */
     public function create($keyName)
@@ -96,7 +96,7 @@ class Keypair extends AbstractEc2
      * Deletes a key pair
      *
      * @param string $keyName           Name of the key pair to delete.
-     * @throws Zend\Service\Amazon\Ec2\Exception
+     * @throws ZendService\Amazon\Ec2\Exception
      * @return boolean                  Return true or false from the deletion.
      */
     public function delete($keyName)

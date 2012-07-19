@@ -8,9 +8,9 @@
  * @package   Zend_Service
  */
 
-namespace ZendTest\Service\Amazon;
+namespace ZendServiceTest\Amazon;
 
-use Zend\Service\Amazon;
+use ZendService\Amazon;
 
 /**
  * Test helper
@@ -57,7 +57,7 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
     public function testConstructExceptionCountryCodeInvalid()
     {
         $this->setExpectedException(
-            'Zend\Service\Amazon\Exception\InvalidArgumentException',
+            'ZendService\Amazon\Exception\InvalidArgumentException',
             'Unknown country code: oops'
         );
         $amazon = new Amazon\Amazon(constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ACCESSKEYID'), 'oops');
@@ -306,7 +306,7 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
 
         $currentItem = $result->current();
 
-        $this->assertInstanceOf('Zend\Service\Amazon\Item', $currentItem);
+        $this->assertInstanceOf('ZendService\Amazon\Item', $currentItem);
         $this->assertEquals('0754512673', $currentItem->ASIN);
     }
 
@@ -324,7 +324,7 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
 
         $result = new Amazon\ResultSet($dom);
 
-        $this->setExpectedException('Zend\Service\Amazon\Exception\ExceptionInterface');
+        $this->setExpectedException('ZendService\Amazon\Exception\ExceptionInterface');
         $result->current();
     }
 }

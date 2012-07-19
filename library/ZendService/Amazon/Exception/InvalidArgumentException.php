@@ -8,7 +8,7 @@
  * @package   Zend_Service
  */
 
-namespace Zend\Service\Amazon\Exception;
+namespace ZendService\Amazon\Exception;
 
 /**
  * @category   Zend

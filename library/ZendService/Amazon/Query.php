@@ -8,9 +8,9 @@
  * @package   Zend_Service
  */
 
-namespace Zend\Service\Amazon;
+namespace ZendService\Amazon;
 
-use Zend\Service\Amazon\Exception;
+use ZendService\Amazon\Exception;
 
 /**
  * @category   Zend
@@ -38,7 +38,7 @@ class Query extends Amazon
      *
      * @param  string $method
      * @param  array  $args
-     * @throws \Zend\Service\Amazon\Exception
+     * @throws \ZendService\Amazon\Exception
      * @return Zend_Service_Amazon_Query Provides a fluent interface
      */
     public function __call($method, $args)

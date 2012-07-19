@@ -8,10 +8,10 @@
  * @package   Zend_Service
  */
 
-namespace ZendTest\Service\Amazon\S3;
+namespace ZendServiceTest\Amazon\S3;
 
 use DateTime;
-use Zend\Service\Amazon\S3\S3;
+use ZendService\Amazon\S3\S3;
 
 /**
  * @category   Zend
@@ -212,7 +212,7 @@ BODY;
      */
     public function testBucketNameShort()
     {
-        $this->setExpectedException('\Zend\Service\Amazon\S3\Exception\InvalidArgumentException');
+        $this->setExpectedException('\ZendService\Amazon\S3\Exception\InvalidArgumentException');
         $this->amazon->_validBucketName('ia');
     }
 
@@ -223,7 +223,7 @@ BODY;
      */
     public function testBucketNameLong()
     {
-        $this->setExpectedException('\Zend\Service\Amazon\S3\Exception\InvalidArgumentException');
+        $this->setExpectedException('\ZendService\Amazon\S3\Exception\InvalidArgumentException');
         $this->amazon->_validBucketName('iam.aninvalid.bucketname.because.iam.way.tooooooooooooooooo.long');
     }
 
@@ -234,7 +234,7 @@ BODY;
      */
     public function testBucketNameCapitalLetter()
     {
-        $this->setExpectedException('\Zend\Service\Amazon\S3\Exception\InvalidArgumentException');
+        $this->setExpectedException('\ZendService\Amazon\S3\Exception\InvalidArgumentException');
         $this->amazon->_validBucketName('iam.anInvalid.bucketname');
     }
 
@@ -245,7 +245,7 @@ BODY;
      */
     public function testBucketNameIpAddress()
     {
-        $this->setExpectedException('\Zend\Service\Amazon\S3\Exception\InvalidArgumentException');
+        $this->setExpectedException('\ZendService\Amazon\S3\Exception\InvalidArgumentException');
         $this->amazon->_validBucketName('1.0.255.90');
     }
 
@@ -256,7 +256,7 @@ BODY;
      */
     public function testBucketNameLabelEmtpy()
     {
-        $this->setExpectedException('\Zend\Service\Amazon\S3\Exception\InvalidArgumentException');
+        $this->setExpectedException('\ZendService\Amazon\S3\Exception\InvalidArgumentException');
         $this->amazon->_validBucketName('iam.aninvalid..empty.bucketname');
     }
 
@@ -267,7 +267,7 @@ BODY;
      */
     public function testBucketNameLabelDash()
     {
-        $this->setExpectedException('\Zend\Service\Amazon\S3\Exception\InvalidArgumentException');
+        $this->setExpectedException('\ZendService\Amazon\S3\Exception\InvalidArgumentException');
         $this->amazon->_validBucketName('iam.aninvalid.-bucketname');
     }
 }

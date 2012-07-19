@@ -8,7 +8,7 @@
  * @package   Zend_Service
  */
 
-namespace ZendTest\Service\Amazon\Sqs;
+namespace ZendServiceTest\Amazon\Sqs;
 
 /**
  * @category   Zend
@@ -44,7 +44,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
         if (!constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ENABLED')) {
             $this->markTestSkipped('Zend_Service_Amazon online tests are not enabled');
         }
-        $this->_amazon = new \Zend\Service\Amazon\Sqs\Sqs(
+        $this->_amazon = new \ZendService\Amazon\Sqs\Sqs(
             constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ACCESSKEYID'),
             constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_SECRETKEY')
         );

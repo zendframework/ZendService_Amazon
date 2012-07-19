@@ -8,16 +8,16 @@
  * @package   Zend_Service
  */
 
-namespace ZendTest\Service\Amazon\Ec2;
+namespace ZendServiceTest\Amazon\Ec2;
 
-use Zend\Service\Amazon\Ec2;
+use ZendService\Amazon\Ec2;
 
 use Zend\Http\Client as HttpClient;
 use Zend\Http\Client\Adapter\Test as HttpClientTestAdapter;
 
 
 /**
- * Zend\Service\Amazon\Ec2\Ebs test case.
+ * ZendService\Amazon\Ec2\Ebs test case.
  *
  * @category   Zend
  * @package    Zend_Service_Amazon
@@ -30,7 +30,7 @@ class EbsTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var \Zend\Service\Amazon\Ec2\Ebs
+     * @var \ZendService\Amazon\Ec2\Ebs
      */
     private $ebsInstance;
 
@@ -238,7 +238,7 @@ class EbsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests Zend\Service\Amazon\Ec2\Ebs->describeSnapshot()
+     * Tests ZendService\Amazon\Ec2\Ebs->describeSnapshot()
      */
     public function testDescribeSingleSnapshot()
     {
@@ -334,7 +334,7 @@ class EbsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests Zend\Service\Amazon\Ec2\Ebs->describeVolume()
+     * Tests ZendService\Amazon\Ec2\Ebs->describeVolume()
      */
     public function testDescribeSingleVolume()
     {
@@ -524,7 +524,7 @@ class EbsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests Zend\Service\Amazon\Ec2\Ebs->detachVolume()
+     * Tests ZendService\Amazon\Ec2\Ebs->detachVolume()
      */
     public function testDetachVolume()
     {

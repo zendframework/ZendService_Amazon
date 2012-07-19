@@ -8,7 +8,7 @@
  * @package   Zend_Service
  */
 
-namespace Zend\Service\Amazon\Ec2;
+namespace ZendService\Amazon\Ec2;
 
 /**
  * An Amazon EC2 interface to create, delete, describe, grand and revoke sercurity permissions.

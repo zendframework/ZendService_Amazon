@@ -8,7 +8,7 @@
  * @package   Zend_Service
  */
 
-namespace Zend\Service\Amazon\SimpleDb;
+namespace ZendService\Amazon\SimpleDb;
 
 /**
  * The Custom Exception class that allows you to have access to the AWS Error Code.

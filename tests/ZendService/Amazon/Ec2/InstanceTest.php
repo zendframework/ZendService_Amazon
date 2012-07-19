@@ -8,10 +8,10 @@
  * @package   Zend_Service
  */
 
-namespace ZendTest\Service\Amazon\Ec2;
+namespace ZendServiceTest\Amazon\Ec2;
 
-use Zend\Service\Amazon\Ec2\Instance;
-use Zend\Service\Amazon\Ec2\Exception;
+use ZendService\Amazon\Ec2\Instance;
+use ZendService\Amazon\Ec2\Exception;
 use Zend\Http\Client as HttpClient;
 use Zend\Http\Client\Adapter\Test as HttpClientTestAdapter;
 
@@ -285,7 +285,7 @@ class InstanceTest extends \PHPUnit_Framework_TestCase
     public function testRunThrowsExceptionWhenNoImageIdPassedIn()
     {
         $this->setExpectedException(
-            'Zend\Service\Amazon\Ec2\Exception\InvalidArgumentException',
+            'ZendService\Amazon\Ec2\Exception\InvalidArgumentException',
             'No Image Id Provided');
         $arrStart = array(
             'maxStart' => 3,

@@ -8,9 +8,9 @@
  * @package   Zend_Service
  */
 
-namespace Zend\Service\Amazon;
+namespace ZendService\Amazon;
 
-use Zend\Service\Amazon\Exception;
+use ZendService\Amazon\Exception;
 
 /**
  * @category   Zend
@@ -131,7 +131,7 @@ class ResultSet implements \SeekableIterator
      * Implement SeekableIterator::seek()
      *
      * @param  int $index
-     * @throws \Zend\Service\Amazon\OutOfBoundsException
+     * @throws \ZendService\Amazon\OutOfBoundsException
      * @return void
      */
     public function seek($index)

@@ -8,16 +8,16 @@
  * @package   Zend_Service
  */
 
-namespace ZendTest\Service\Amazon\Ec2;
+namespace ZendServiceTest\Amazon\Ec2;
 
-use Zend\Service\Amazon\Ec2;
-use Zend\Service\Amazon\Ec2\Exception;
+use ZendService\Amazon\Ec2;
+use ZendService\Amazon\Ec2\Exception;
 
 use Zend\Http\Client as HttpClient;
 use Zend\Http\Client\Adapter\Test as HttpClientTestAdapter;
 
 /**
- * Zend\Service\Amazon\Ec2\Image test case.
+ * ZendService\Amazon\Ec2\Image test case.
  *
  * @category   Zend
  * @package    Zend_Service_Amazon
@@ -30,7 +30,7 @@ class ImageTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var Zend\Service\Amazon\Ec2\Image
+     * @var ZendService\Amazon\Ec2\Image
      */
     private $ec2ImageInstance;
 
@@ -530,7 +530,7 @@ class ImageTest extends \PHPUnit_Framework_TestCase
     public function testModifyAttributeThrowsExceptionOnInvalidAttribute()
     {
         $this->setExpectedException(
-            'Zend\Service\Amazon\Ec2\Exception\InvalidArgumentException',
+            'ZendService\Amazon\Ec2\Exception\InvalidArgumentException',
             'Invalid attribute passed in.');
         $return = $this->ec2ImageInstance->modifyAttribute('ami-61a54008', 'invalidPermission', 'add', '495219933132', 'all');
     }

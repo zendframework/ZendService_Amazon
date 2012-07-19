@@ -8,10 +8,10 @@
  * @package   Zend_Service
  */
 
-namespace ZendTest\Service\Amazon\Ec2;
+namespace ZendServiceTest\Amazon\Ec2;
 
-use Zend\Service\Amazon;
-use Zend\Service\Amazon\Ec2\Exception;
+use ZendService\Amazon;
+use ZendService\Amazon\Ec2\Exception;
 
 /**
  * @category   Zend
@@ -34,7 +34,7 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
     public function testSetInvalidRegionThrowsException()
     {
         $this->setExpectedException(
-            'Zend\Service\Amazon\Ec2\Exception\InvalidArgumentException',
+            'ZendService\Amazon\Ec2\Exception\InvalidArgumentException',
             'Invalid Amazon Ec2 Region');
         TestAmazonAbstract::setRegion('eu-west-1a');
     }
@@ -51,7 +51,7 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
     }
 }
 
-class TestAmazonAbstract extends \Zend\Service\Amazon\Ec2\AbstractEc2
+class TestAmazonAbstract extends \ZendService\Amazon\Ec2\AbstractEc2
 {
 
     public function returnRegion()

@@ -8,10 +8,10 @@
  * @package   Zend_Service
  */
 
-namespace Zend\Service\Amazon\Ec2;
+namespace ZendService\Amazon\Ec2;
 
-use Zend\Service\Amazon;
-use Zend\Service\Amazon\Ec2\Exception;
+use ZendService\Amazon;
+use ZendService\Amazon\Ec2\Exception;
 
 /**
  * Amazon Ec2 Interface to allow easy creation of the Ec2 Components
@@ -28,40 +28,40 @@ class Ec2
      * @param string $section           Create the method that you want to work with
      * @param string $key               Override the default aws key
      * @param string $secret_key        Override the default aws secretkey
-     * @throws Zend\Service\Amazon\Ec2\Exception
+     * @throws ZendService\Amazon\Ec2\Exception
      * @return object
      */
     public static function factory($section, $key = null, $secret_key = null)
     {
         switch(strtolower($section)) {
             case 'keypair':
-                $class = '\Zend\Service\Amazon\Ec2\Keypair';
+                $class = '\ZendService\Amazon\Ec2\Keypair';
                 break;
             case 'eip':
                 // break left out
             case 'elasticip':
-                $class = '\Zend\Service\Amazon\Ec2\ElasticIp';
+                $class = '\ZendService\Amazon\Ec2\ElasticIp';
                 break;
             case 'ebs':
-                $class = '\Zend\Service\Amazon\Ec2\Ebs';
+                $class = '\ZendService\Amazon\Ec2\Ebs';
                 break;
             case 'availabilityzones':
                 // break left out
             case 'zones':
-                $class = '\Zend\Service\Amazon\Ec2\AvailabilityZones';
+                $class = '\ZendService\Amazon\Ec2\AvailabilityZones';
                 break;
             case 'ami':
                 // break left out
             case 'image':
-                $class = '\Zend\Service\Amazon\Ec2\Image';
+                $class = '\ZendService\Amazon\Ec2\Image';
                 break;
             case 'instance':
-                $class = '\Zend\Service\Amazon\Ec2\Instance';
+                $class = '\ZendService\Amazon\Ec2\Instance';
                 break;
             case 'security':
                 // break left out
             case 'securitygroups':
-                $class = '\Zend\Service\Amazon\Ec2\SecurityGroups';
+                $class = '\ZendService\Amazon\Ec2\SecurityGroups';
                 break;
             default:
                 throw new Exception\RuntimeException('Invalid Section: ' . $section);

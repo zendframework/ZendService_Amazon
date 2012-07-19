@@ -8,7 +8,7 @@
  * @package   Zend_Service
  */
 
-namespace Zend\Service\Amazon\Authentication;
+namespace ZendService\Amazon\Authentication;
 
 use Zend\Crypt\Hmac;
 

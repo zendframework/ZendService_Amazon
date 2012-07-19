@@ -8,10 +8,10 @@
  * @package   Zend_Service
  */
 
-namespace Zend\Service\Amazon\S3;
+namespace ZendService\Amazon\S3;
 
-use Zend\Service\Amazon;
-use Zend\Service\Amazon\S3\Exception;
+use ZendService\Amazon;
+use ZendService\Amazon\S3\Exception;
 
 /**
  * Amazon S3 PHP stream wrapper

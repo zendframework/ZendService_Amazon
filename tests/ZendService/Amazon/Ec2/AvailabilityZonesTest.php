@@ -8,15 +8,15 @@
  * @package   Zend_Service
  */
 
-namespace ZendTest\Service\Amazon\Ec2;
+namespace ZendServiceTest\Amazon\Ec2;
 
-use Zend\Service\Amazon\Ec2;
-use Zend\Service\Amazon\Ec2\Exception;
+use ZendService\Amazon\Ec2;
+use ZendService\Amazon\Ec2\Exception;
 use Zend\Http\Client as HttpClient;
 use Zend\Http\Client\Adapter\Test as HttpClientTestAdapter;
 
 /**
- * Zend\Service\Amazon\Ec2\Availabilityzones test case.
+ * ZendService\Amazon\Ec2\Availabilityzones test case.
  *
  * @category   Zend
  * @package    Zend_Service_Amazon
@@ -29,7 +29,7 @@ class AvailabilityZonesTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var \Zend\Service\Amazon\Ec2\AvailabilityZones
+     * @var \ZendService\Amazon\Ec2\AvailabilityZones
      */
     protected $availabilityZones;
 

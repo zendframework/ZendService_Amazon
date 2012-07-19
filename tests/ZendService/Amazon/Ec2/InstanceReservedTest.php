@@ -8,9 +8,9 @@
  * @package   Zend_Service
  */
 
-namespace ZendTest\Service\Amazon\Ec2;
+namespace ZendServiceTest\Amazon\Ec2;
 
-use Zend\Service\Amazon\Ec2\ReservedInstance;
+use ZendService\Amazon\Ec2\ReservedInstance;
 
 use Zend\Http\Client as HttpClient;
 use Zend\Http\Client\Adapter\Test as HttpClientTestAdapter;
@@ -30,7 +30,7 @@ class InstanceReservedTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var \Zend\Service\Amazon\Ec2\ReservedInstance
+     * @var \ZendService\Amazon\Ec2\ReservedInstance
      */
     private $instance;
 

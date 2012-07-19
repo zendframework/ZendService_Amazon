@@ -8,7 +8,7 @@
  * @package   Zend_Service
  */
 
-namespace ZendTest\Service\Amazon\S3;
+namespace ZendServiceTest\Amazon\S3;
 
 /**
  * @category   Zend
@@ -30,7 +30,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
         if (!constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ENABLED')) {
             $this->markTestSkipped('Zend_Service_Amazon_S3 online tests are not enabled');
         }
-        $this->_amazon = new \Zend\Service\Amazon\S3\S3(constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ACCESSKEYID'),
+        $this->_amazon = new \ZendService\Amazon\S3\S3(constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ACCESSKEYID'),
                                                     constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_SECRETKEY')
                                                     );
         $this->_nosuchbucket = "nonexistingbucketnamewhichnobodyshoulduse";

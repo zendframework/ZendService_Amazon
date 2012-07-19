@@ -8,10 +8,10 @@
  * @package   Zend_Service
  */
 
-namespace Zend\Service\Amazon\Ec2;
+namespace ZendService\Amazon\Ec2;
 
-use Zend\Service\Amazon;
-use Zend\Service\Amazon\Ec2\Exception;
+use ZendService\Amazon;
+use ZendService\Amazon\Ec2\Exception;
 
 /**
  * An Amazon EC2 interface to register, describe and deregister Amamzon Machine Instances (AMI)

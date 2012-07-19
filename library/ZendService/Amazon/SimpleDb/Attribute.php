@@ -8,7 +8,7 @@
  * @package   Zend_Service
  */
 
-namespace Zend\Service\Amazon\SimpleDb;
+namespace ZendService\Amazon\SimpleDb;
 
 /**
  * @category   Zend

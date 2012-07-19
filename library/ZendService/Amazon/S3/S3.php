@@ -8,13 +8,13 @@
  * @package   Zend_Service
  */
 
-namespace Zend\Service\Amazon\S3;
+namespace ZendService\Amazon\S3;
 
 use Zend\Crypt\Hmac;
 use Zend\Http\Header;
 use Zend\Http\Response\Stream as StreamResponse;
-use Zend\Service\Amazon;
-use Zend\Service\Amazon\S3\Exception;
+use ZendService\Amazon;
+use ZendService\Amazon\S3\Exception;
 use Zend\Uri;
 
 /**
@@ -25,7 +25,7 @@ use Zend\Uri;
  * @subpackage Amazon_S3
  * @see        http://docs.amazonwebservices.com/AmazonS3/2006-03-01/
  */
-class S3 extends \Zend\Service\Amazon\AbstractAmazon
+class S3 extends \ZendService\Amazon\AbstractAmazon
 {
     /**
      * Store for stream wrapper clients
@@ -983,7 +983,7 @@ class S3 extends \Zend\Service\Amazon\AbstractAmazon
      */
     public function registerStreamWrapper($name='s3')
     {
-        stream_register_wrapper($name, 'Zend\Service\Amazon\S3\Stream');
+        stream_register_wrapper($name, 'ZendService\Amazon\S3\Stream');
         $this->registerAsClient($name);
     }
 

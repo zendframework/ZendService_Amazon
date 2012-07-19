@@ -8,16 +8,16 @@
  * @package   Zend_Service
  */
 
-namespace ZendTest\Service\Amazon\SimpleDb;
+namespace ZendServiceTest\Amazon\SimpleDb;
 
-use Zend\Service\Amazon\SimpleDb;
-use Zend\Service\Amazon\SimpleDb\Exception;
+use ZendService\Amazon\SimpleDb;
+use ZendService\Amazon\SimpleDb\Exception;
 use Zend\Http\Client\Adapter\Socket;
 
 
 /**
  * @category   Zend
- * @package    Zend\Service\Amazon\SimpleDb
+ * @package    ZendService\Amazon\SimpleDb
  * @subpackage UnitTests
  */
 class OnlineTest extends \PHPUnit_Framework_TestCase
@@ -25,7 +25,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
     /**
      * Reference to Amazon service consumer object
      *
-     * @var Zend\Service\Amazon\SimpleDb
+     * @var ZendService\Amazon\SimpleDb
      */
     protected $_amazon;
 

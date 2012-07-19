@@ -8,10 +8,10 @@
  * @package   Zend_Service
  */
 
-namespace ZendTest\Service\Amazon\Authentication;
+namespace ZendServiceTest\Amazon\Authentication;
 
-use Zend\Service\Amazon\Authentication;
-use Zend\Service\Amazon\Authentication\Exception;
+use ZendService\Amazon\Authentication;
+use ZendService\Amazon\Authentication\Exception;
 
 /**
  * Amazon V2 authentication test case

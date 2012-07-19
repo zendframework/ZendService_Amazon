@@ -8,15 +8,15 @@
  * @package   Zend_Service
  */
 
-namespace ZendTest\Service\Amazon\Ec2;
+namespace ZendServiceTest\Amazon\Ec2;
 
-use Zend\Service\Amazon\Ec2;
+use ZendService\Amazon\Ec2;
 use Zend\Http\Client as HttpClient;
 use Zend\Http\Client\Adapter\Test as HttpClientTestAdapter;
 
 
 /**
- * Zend\Service\Amazon\Ec2\Securitygroups test case.
+ * ZendService\Amazon\Ec2\Securitygroups test case.
  *
  * @category   Zend
  * @package    Zend_Service_Amazon
@@ -29,7 +29,7 @@ class SecurityGroupsTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var Zend\Service\Amazon\Ec2\Securitygroups
+     * @var ZendService\Amazon\Ec2\Securitygroups
      */
     private $securitygroupsInstance;
 
@@ -54,7 +54,7 @@ class SecurityGroupsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests Zend\Service\Amazon\Ec2\Securitygroups->authorize()
+     * Tests ZendService\Amazon\Ec2\Securitygroups->authorize()
      */
     public function testAuthorizeSinglePort()
     {
@@ -123,7 +123,7 @@ class SecurityGroupsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests Zend\Service\Amazon\Ec2\Securitygroups->create()
+     * Tests ZendService\Amazon\Ec2\Securitygroups->create()
      */
     public function testCreate()
     {
@@ -150,7 +150,7 @@ class SecurityGroupsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests Zend\Service\Amazon\Ec2\Securitygroups->delete()
+     * Tests ZendService\Amazon\Ec2\Securitygroups->delete()
      */
     public function testDelete()
     {
@@ -176,7 +176,7 @@ class SecurityGroupsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests Zend\Service\Amazon\Ec2\Securitygroups->describe()
+     * Tests ZendService\Amazon\Ec2\Securitygroups->describe()
      */
     public function testDescribeMultipleSecruityGroups()
     {
@@ -385,7 +385,7 @@ class SecurityGroupsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests Zend\Service\Amazon\Ec2\Securitygroups->revoke()
+     * Tests ZendService\Amazon\Ec2\Securitygroups->revoke()
      */
     public function testRevokeSinglePort()
     {
