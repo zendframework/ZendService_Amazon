@@ -25,9 +25,9 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zend-http": "self.version",
-        "zendframework/zend-rest": "self.version",
-        "zendframework/zend-crypt": "self.version"
+        "zendframework/zend-http": ">=2.0.0beta5",
+        "zendframework/zend-rest": ">=2.0.0beta5",
+        "zendframework/zend-crypt": ">=2.0.0beta5"
     },
     "suggest": {
         "zendframework/zend-uri": "Zend\\Uri component"
