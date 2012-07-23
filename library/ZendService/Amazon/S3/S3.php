@@ -772,7 +772,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
             $sig_str .= '?torrent';
         }
 
-        $signature = base64_encode(Hmac::compute($this->_getSecretKey(), 'sha1', utf8_encode($sig_str), true));
+        $signature = base64_encode(Hmac::compute($this->_getSecretKey(), 'sha1', utf8_encode($sig_str), Hmac::OUTPUT_BINARY));
         $headers['Authorization'] = 'AWS ' . $this->_getAccessKey() . ':' . $signature;
 
         return $headers;
