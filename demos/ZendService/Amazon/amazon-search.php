@@ -8,7 +8,6 @@
  * @package   Zend_Service
  */
 
-use Zend\Loader\StandardAutoloader;
 use ZendService\Amazon\Exception\ExceptionInterface as AmazonException;
 use ZendService\Amazon\Query;
 
