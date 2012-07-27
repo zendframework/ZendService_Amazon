@@ -58,7 +58,7 @@ class V2Test extends \PHPUnit_Framework_TestCase
         $ret = $this->_amazon->generateSignature($url, $params);
 
         $this->assertEquals('8B2cxwK/dfezT49KEzD+wjo1ZbJCddyFOLA0RNZobbc=', $params['Signature']);
-        $this->assertEquals(file_get_contents(dirname(__FILE__) . '/_files/ec2_v2_return.txt'), $ret);
+        $this->assertEquals(str_replace("\r\n", "\n", file_get_contents(dirname(__FILE__) . '/_files/ec2_v2_return.txt')), $ret);
     }
 
     public function testGenerateSqsGetSignature()
@@ -74,7 +74,7 @@ class V2Test extends \PHPUnit_Framework_TestCase
         $ret = $this->_amazon->generateSignature($url, $params);
 
         $this->assertEquals('YSw7HXDqokM/A6DhLz8kG+sd+oD5eMjqx3a02A0+GkE=', $params['Signature']);
-        $this->assertEquals(file_get_contents(dirname(__FILE__) . '/_files/sqs_v2_get_return.txt'), $ret);
+        $this->assertEquals(str_replace("\r\n", "\n", file_get_contents(dirname(__FILE__) . '/_files/sqs_v2_get_return.txt')), $ret);
     }
 
 }
