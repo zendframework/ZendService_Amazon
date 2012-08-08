@@ -54,11 +54,10 @@ class S3Test extends \PHPUnit_Framework_TestCase
         $ret = $this->_amazon->generateSignature('GET', 'http://s3.amazonaws.com/johnsmith/photos/puppy.jpg', $headers);
 
         $this->assertEquals('AWS 0PN5J17HBGZHT7JJ3X82:soqB4L9flQ6AHG4d5FVnKj26D2s=', $headers['Authorization']);
-        $this->assertEquals($ret, "GET
-
-
-Tue, 27 Mar 2007 19:36:42 +0000
-//johnsmith/photos/puppy.jpg");
+        $rawHttpResponse = "GET\n\n\n"
+                    . "Tue, 27 Mar 2007 19:36:42 +0000\n"
+                    . "//johnsmith/photos/puppy.jpg";
+        $this->assertEquals($ret, $rawHttpResponse);
     }
 
     public function testPutGeneratesCorrectSignature()
@@ -71,11 +70,11 @@ Tue, 27 Mar 2007 19:36:42 +0000
         $ret = $this->_amazon->generateSignature('PUT', 'http://s3.amazonaws.com/johnsmith/photos/puppy.jpg', $headers);
 
         $this->assertEquals('AWS 0PN5J17HBGZHT7JJ3X82:88cf7BdpjrBlCsIiWWLn8wLpWzI=', $headers['Authorization']);
-        $this->assertEquals($ret, "PUT
-
-image/jpeg
-Tue, 27 Mar 2007 21:15:45 +0000
-//johnsmith/photos/puppy.jpg");
+        $rawHttpResponse = "PUT\n\n"
+                    . "image/jpeg\n"
+                    . "Tue, 27 Mar 2007 21:15:45 +0000\n"
+                    . "//johnsmith/photos/puppy.jpg";
+        $this->assertEquals($ret, $rawHttpResponse);
     }
 
     public function testListGeneratesCorrectSignature()
@@ -86,11 +85,10 @@ Tue, 27 Mar 2007 21:15:45 +0000
         $ret = $this->_amazon->generateSignature('GET', 'http://s3.amazonaws.com/johnsmith/?prefix=photos&max-keys=50&marker=puppy', $headers);
 
         $this->assertEquals('AWS 0PN5J17HBGZHT7JJ3X82:pm3Adv2BIFCCJiUSikcLcGYFtiA=', $headers['Authorization']);
-        $this->assertEquals($ret, "GET
-
-
-Tue, 27 Mar 2007 19:42:41 +0000
-//johnsmith/");
+        $rawHttpResponse = "GET\n\n\n"
+                    . "Tue, 27 Mar 2007 19:42:41 +0000\n"
+                    . "//johnsmith/";
+        $this->assertEquals($ret, $rawHttpResponse);
     }
 
     public function testFetchGeneratesCorrectSignature()
@@ -101,11 +99,10 @@ Tue, 27 Mar 2007 19:42:41 +0000
         $ret = $this->_amazon->generateSignature('GET', 'http://s3.amazonaws.com/johnsmith/?acl', $headers);
 
         $this->assertEquals('AWS 0PN5J17HBGZHT7JJ3X82:TCNlZPuxY41veihZbxjnjw8P93w=', $headers['Authorization']);
-        $this->assertEquals($ret, "GET
-
-
-Tue, 27 Mar 2007 19:44:46 +0000
-//johnsmith/?acl");
+        $rawHttpResponse = "GET\n\n\n"
+                    . "Tue, 27 Mar 2007 19:44:46 +0000\n"
+                    . "//johnsmith/?acl";
+        $this->assertEquals($ret, $rawHttpResponse);
     }
 
     public function testDeleteGeneratesCorrectSignature()
@@ -117,12 +114,10 @@ Tue, 27 Mar 2007 19:44:46 +0000
         $ret = $this->_amazon->generateSignature('DELETE', 'http://s3.amazonaws.com/johnsmith/photos/puppy.jpg', $headers);
 
         $this->assertEquals('AWS 0PN5J17HBGZHT7JJ3X82:O9AsSXUIowhjTiJC5escAqjsAyk=', $headers['Authorization']);
-        $this->assertEquals($ret, "DELETE
-
-
-
-x-amz-date:Tue, 27 Mar 2007 21:20:26 +0000
-//johnsmith/photos/puppy.jpg");
+        $rawHttpResponse = "DELETE\n\n\n\n"
+                    . "x-amz-date:Tue, 27 Mar 2007 21:20:26 +0000\n"
+                    . "//johnsmith/photos/puppy.jpg";
+        $this->assertEquals($ret, $rawHttpResponse);
     }
 
     public function testUploadGeneratesCorrectSignature()
@@ -144,15 +139,16 @@ x-amz-date:Tue, 27 Mar 2007 21:20:26 +0000
         $ret = $this->_amazon->generateSignature('PUT', 'http://s3.amazonaws.com/static.johnsmith.net/db-backup.dat.gz', $headers);
 
         $this->assertEquals('AWS 0PN5J17HBGZHT7JJ3X82:IQh2zwCpX2xqRgP2rbIkXL/GVbA=', $headers['Authorization']);
-        $this->assertEquals($ret, "PUT
-4gJE4saaMU4BqNR0kLY+lw==
-application/x-download
-Tue, 27 Mar 2007 21:06:08 +0000
-x-amz-acl:public-read
-x-amz-meta-checksumalgorithm:crc32
-x-amz-meta-filechecksum:0x02661779
-x-amz-meta-reviewedby:joe@johnsmith.net,jane@johnsmith.net
-//static.johnsmith.net/db-backup.dat.gz");
+        $rawHttpResponse = "PUT\n"
+                    . "4gJE4saaMU4BqNR0kLY+lw==\n"
+                    . "application/x-download\n"
+                    . "Tue, 27 Mar 2007 21:06:08 +0000\n"
+                    . "x-amz-acl:public-read\n"
+                    . "x-amz-meta-checksumalgorithm:crc32\n"
+                    . "x-amz-meta-filechecksum:0x02661779\n"
+                    . "x-amz-meta-reviewedby:joe@johnsmith.net,jane@johnsmith.net\n"
+                    . "//static.johnsmith.net/db-backup.dat.gz";
+        $this->assertEquals($ret, $rawHttpResponse);
     }
 
 }
