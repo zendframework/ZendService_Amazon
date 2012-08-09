@@ -26,8 +26,14 @@
     "require": {
         "php": ">=5.3.3",
         "zendframework/zend-http": ">=2.0.0beta5",
-        "zendframework/zend-uri": ">=2.0.0beta5",
-        "zendframework/zend-version": ">=2.0.0beta5"
+        "zendframework/zendrest": ">=2.0.0beta5",
+        "zendframework/zend-crypt": ">=2.0.0beta5"
+    },
+    "require-dev": {
+        "zendframework/zend-i18n": ">=2.0.0beta5"
+    },
+    "suggest": {
+        "zendframework/zend-uri": "Zend\\Uri component"
     },
     "extra": {
         "branch-alias": {
