@@ -94,6 +94,7 @@ class Instance extends AbstractEc2
      *                                                blockDeviceName string            Specifies the device to which you are mapping a virtual name. For example: sdb
      *                                                monitor boolean               Turn on CloudWatch Monitoring for an instance.
      * @return array
+     * @throws Exception\InvalidArgumentException
      */
     public function run(array $options)
     {
@@ -211,8 +212,8 @@ class Instance extends AbstractEc2
      * Recently terminated instances might appear in the returned results.
      * This interval is usually less than one hour.
      *
-     * @param string|array $instaceId       Set of instances IDs of which to get the status.
-     * @param boolean                       Ture to ignore Terminated Instances.
+     * @param string|array $instanceId  Set of instances IDs of which to get the status.
+     * @param boolean $ignoreTerminated True to ignore Terminated Instances.
      * @return array
      */
     public function describe($instanceId = null, $ignoreTerminated = false)
@@ -288,8 +289,8 @@ class Instance extends AbstractEc2
      * Recently terminated instances might appear in the returned results.
      * This interval is usually less than one hour.
      *
-     * @param string $imageId               The imageId used to start the Instance.
-     * @param boolean                       Ture to ignore Terminated Instances.
+     * @param string $imageId           The imageId used to start the Instance.
+     * @param boolean $ignoreTerminated True to ignore Terminated Instances.
      * @return array
      */
     public function describeByImageId($imageId, $ignoreTerminated = false)
@@ -312,7 +313,7 @@ class Instance extends AbstractEc2
      *
      * Terminated instances will remain visible after termination (approximately one hour).
      *
-     * @param string|array $instanceId      One or more instance IDs returned.
+     * @param string|array $instanceId One or more instance IDs returned.
      * @return array
      */
     public function terminate($instanceId)
@@ -355,7 +356,7 @@ class Instance extends AbstractEc2
      * This operation is asynchronous; it only queues a request to reboot the specified instance(s). The operation
      * will succeed if the instances are valid and belong to the user. Requests to reboot terminated instances are ignored.
      *
-     * @param string|array $instanceId  One or more instance IDs.
+     * @param string|array $instanceId One or more instance IDs.
      * @return boolean
      */
     public function reboot($instanceId)
@@ -385,7 +386,7 @@ class Instance extends AbstractEc2
      * Instance console output is buffered and posted shortly after instance boot, reboot, and termination.
      * Amazon EC2 preserves the most recent 64 KB output which will be available for at least one hour after the most recent post.
      *
-     * @param string $instanceId       An instance ID
+     * @param string $instanceId An instance ID
      * @return array
      */
     public function consoleOutput($instanceId)
@@ -414,9 +415,9 @@ class Instance extends AbstractEc2
      * This feature is useful when an AMI owner is providing support and wants to
      * verify whether a user's instance is eligible.
      *
-     * @param string $productCode           The product code to confirm.
-     * @param string $instanceId            The instance for which to confirm the product code.
-     * @return array|boolean                An array if the product code is attached to the instance, false if it is not.
+     * @param string $productCode The product code to confirm.
+     * @param string $instanceId  The instance for which to confirm the product code.
+     * @return array|boolean An array if the product code is attached to the instance, false if it is not.
      */
     public function confirmProduct($productCode, $instanceId)
     {
@@ -443,7 +444,7 @@ class Instance extends AbstractEc2
     /**
     * Turn on Amazon CloudWatch Monitoring for an instance or a list of instances
     *
-    * @param array|string $instanceId           The instance or list of instances you want to enable monitoring for
+    * @param array|string $instanceId The instance or list of instances you want to enable monitoring for
     * @return array
     */
     public function monitor($instanceId)
@@ -479,7 +480,7 @@ class Instance extends AbstractEc2
     /**
     * Turn off Amazon CloudWatch Monitoring for an instance or a list of instances
     *
-    * @param array|string $instanceId           The instance or list of instances you want to disable monitoring for
+    * @param array|string $instanceId The instance or list of instances you want to disable monitoring for
     * @return array
     */
     public function unmonitor($instanceId)

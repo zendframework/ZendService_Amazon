@@ -52,10 +52,8 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
     /**
      * Create Amazon SimpleDB client.
      *
-     * @param  string $access_key       Override the default Access Key
-     * @param  string $secret_key       Override the default Secret Key
-     * @param  string $region           Sets the AWS Region
-     * @return void
+     * @param  string $accessKey Override the default Access Key
+     * @param  string $secretKey Override the default Secret Key
      */
     public function __construct($accessKey, $secretKey)
     {
@@ -67,7 +65,8 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      * Set SimpleDB endpoint to use
      *
      * @param string|Uri\Uri $endpoint
-     * @return ZendService\Amazon\SimpleDb\SimpleDb
+     * @return SimpleDb
+     * @throws Exception\InvalidArgumentException
      */
     public function setEndpoint($endpoint)
     {
@@ -95,7 +94,9 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      * Get attributes API method
      *
      * @param string $domainName Domain name within database
-     * @param string
+     * @param string $itemName
+     * @param string $attributeName
+     * @return array
      */
     public function getAttributes(
         $domainName, $itemName, $attributeName = null
@@ -142,7 +143,7 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      *
      * @param  string $domainName
      * @param  string $itemName
-     * @param  array|\Traverable $attributes
+     * @param  array|\Traversable $attributes
      * @param  array $replace
      * @return void
      */
@@ -219,7 +220,7 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      * @param  string $domainName
      * @param  string $itemName
      * @param  array $attributes
-     * @return void
+     * @return bool
      */
     public function deleteAttributes($domainName, $itemName, array $attributes = array())
     {
@@ -317,8 +318,8 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
     /**
      * Delete a domain
      *
-     * @param 	$domainName string  Valid domain name of the domain to delete
-     * @return 				boolean True if successful, false if not
+     * @param $domainName string Valid domain name of the domain to delete
+     * @return boolean True if successful, false if not
      */
     public function deleteDomain($domainName)
     {
@@ -334,7 +335,7 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      *
      * @param  string $selectExpression
      * @param  null|string $nextToken
-     * @return ZendService\Amazon\SimpleDb\Page
+     * @return Page
      */
     public function select($selectExpression, $nextToken = null)
     {
@@ -389,6 +390,7 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      * Wraps it in ``
      * @param string $name
      * @return string
+     * @throws Exception\InvalidArgumentException
      */
     public function quoteName($name)
     {
@@ -398,12 +400,12 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
         return "`$name`";
     }
 
-   /**
+    /**
      * Sends a HTTP request to the SimpleDB service using Zend\Http\Client
      *
-     * @param array $params         List of parameters to send with the request
-     * @return ZendService\Amazon\SimpleDb\Response
-     * @throws ZendService\Amazon\SimpleDb\Exception
+     * @param array $params List of parameters to send with the request
+     * @return Response
+     * @throws Exception\RuntimeException
      */
     protected function _sendRequest(array $params = array())
     {
@@ -491,21 +493,20 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      *    characters when appending strings.
      *
      * @param array  $parameters the parameters for which to get the signature.
-     * @param string $secretKey  the secret key to use to sign the parameters.
      *
      * @return string the signed data.
      */
-    protected function _signParameters(array $paramaters)
+    protected function _signParameters(array $parameters)
     {
         $data  = "POST\n";
         $data .= $this->getEndpoint()->getHost() . "\n";
         $data .= "/\n";
 
-        uksort($paramaters, 'strcmp');
-        unset($paramaters['Signature']);
+        uksort($parameters, 'strcmp');
+        unset($parameters['Signature']);
 
         $arrData = array();
-        foreach ($paramaters as $key => $value) {
+        foreach ($parameters as $key => $value) {
             $value = urlencode($value);
             $value = str_replace("%7E", "~", $value);
             $value = str_replace("+", "%20", $value);
@@ -522,12 +523,12 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
     /**
      * Checks for errors responses from Amazon
      *
-     * @param ZendService\Amazon\SimpleDb\Response $response the response object to
+     * @param Response $response the response object to
      *                                                   check.
      *
      * @return void
      *
-     * @throws ZendService\Amazon\SimpleDb\Exception if one or more errors are
+     * @throws Exception\RuntimeException if one or more errors are
      *         returned from Amazon.
      */
     private function _checkForErrors(Response $response)

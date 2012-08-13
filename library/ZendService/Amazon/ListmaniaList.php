@@ -30,7 +30,7 @@ class ListmaniaList
     /**
      * Assigns values to properties relevant to ListmaniaList
      *
-     * @param  DOMElement $dom
+     * @param  \DOMElement $dom
      * @return void
      */
     public function __construct(\DOMElement $dom)

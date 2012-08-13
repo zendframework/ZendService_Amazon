@@ -30,8 +30,8 @@ class SecurityGroups extends AbstractEc2
      * using the {@link authorizeIp}, {@link authorizeGroup}, {@link revokeGroup} and
      * {$link revokeIp} operations.
      *
-     * @param string $name          Name of the new security group.
-     * @param string $description   Description of the new security group.
+     * @param string $name        Name of the new security group.
+     * @param string $description Description of the new security group.
      * @return boolean
      */
     public function create($name, $description)
@@ -55,7 +55,7 @@ class SecurityGroups extends AbstractEc2
      * Otherwise, information for all security group is returned. If you specify a group
      * that does not exist, a fault is returned.
      *
-     * @param string|array $name    List of security groups to describe
+     * @param string|array $name List of security groups to describe
      * @return array
      */
     public function describe($name = null)
@@ -125,7 +125,7 @@ class SecurityGroups extends AbstractEc2
      * a fault is returned. For example, if security group B has a rule that allows access
      * from security group A, security group A cannot be deleted until the allow rule is removed.
      *
-     * @param string $name          Name of the security group to delete.
+     * @param string $name Name of the security group to delete.
      * @return boolean
      */
     public function delete($name)
@@ -153,13 +153,13 @@ class SecurityGroups extends AbstractEc2
      * possible. However, depending on the number of instances, a small delay might occur.
      *
      *
-     * @param string $name                  Name of the group to modify.
-     * @param string $ipProtocol            IP protocol to authorize access to when operating on a CIDR IP.
-     * @param integer $fromPort             Bottom of port range to authorize access to when operating on a CIDR IP.
-     *                                      This contains the ICMP type if ICMP is being authorized.
-     * @param integer $toPort               Top of port range to authorize access to when operating on a CIDR IP.
-     *                                      This contains the ICMP code if ICMP is being authorized.
-     * @param string $cidrIp                CIDR IP range to authorize access to when operating on a CIDR IP.
+     * @param string $name       Name of the group to modify.
+     * @param string $ipProtocol IP protocol to authorize access to when operating on a CIDR IP.
+     * @param integer $fromPort  Bottom of port range to authorize access to when operating on a CIDR IP.
+     *                           This contains the ICMP type if ICMP is being authorized.
+     * @param integer $toPort    Top of port range to authorize access to when operating on a CIDR IP.
+     *                           This contains the ICMP code if ICMP is being authorized.
+     * @param string $cidrIp     CIDR IP range to authorize access to when operating on a CIDR IP.
      * @return boolean
      */
     public function authorizeIp($name, $ipProtocol, $fromPort, $toPort, $cidrIp)
@@ -189,9 +189,9 @@ class SecurityGroups extends AbstractEc2
      * Permission changes are propagated to instances within the security group as quickly as
      * possible. However, depending on the number of instances, a small delay might occur.
      *
-     * @param string $name                  Name of the group to modify.
-     * @param string $groupName             Name of security group to authorize access to when operating on a user/group pair.
-     * @param string $ownerId               Owner of security group to authorize access to when operating on a user/group pair.
+     * @param string $name      Name of the group to modify.
+     * @param string $groupName Name of security group to authorize access to when operating on a user/group pair.
+     * @param string $ownerId   Owner of security group to authorize access to when operating on a user/group pair.
      * @return boolean
      */
     public function authorizeGroup($name, $groupName, $ownerId)
@@ -224,13 +224,13 @@ class SecurityGroups extends AbstractEc2
      * possible. However, depending on the number of instances, a small delay might occur.
      *
      *
-     * @param string $name                  Name of the group to modify.
-     * @param string $ipProtocol            IP protocol to revoke access to when operating on a CIDR IP.
-     * @param integer $fromPort             Bottom of port range to revoke access to when operating on a CIDR IP.
-     *                                      This contains the ICMP type if ICMP is being revoked.
-     * @param integer $toPort               Top of port range to revoked access to when operating on a CIDR IP.
-     *                                      This contains the ICMP code if ICMP is being revoked.
-     * @param string $cidrIp                CIDR IP range to revoke access to when operating on a CIDR IP.
+     * @param string $name       Name of the group to modify.
+     * @param string $ipProtocol IP protocol to revoke access to when operating on a CIDR IP.
+     * @param integer $fromPort  Bottom of port range to revoke access to when operating on a CIDR IP.
+     *                           This contains the ICMP type if ICMP is being revoked.
+     * @param integer $toPort    Top of port range to revoked access to when operating on a CIDR IP.
+     *                           This contains the ICMP code if ICMP is being revoked.
+     * @param string $cidrIp     CIDR IP range to revoke access to when operating on a CIDR IP.
      * @return boolean
      */
     public function revokeIp($name, $ipProtocol, $fromPort, $toPort, $cidrIp)
@@ -260,9 +260,9 @@ class SecurityGroups extends AbstractEc2
      * When revoking a user/group pair permission, GroupName, SourceSecurityGroupName and
      * SourceSecurityGroupOwnerId must be specified.
      *
-     * @param string $name                  Name of the group to modify.
-     * @param string $groupName             Name of security group to revoke access to when operating on a user/group pair.
-     * @param string $ownerId               Owner of security group to revoke access to when operating on a user/group pair.
+     * @param string $name      Name of the group to modify.
+     * @param string $groupName Name of security group to revoke access to when operating on a user/group pair.
+     * @param string $ownerId   Owner of security group to revoke access to when operating on a user/group pair.
      * @return boolean
      */
     public function revokeGroup($name, $groupName, $ownerId)

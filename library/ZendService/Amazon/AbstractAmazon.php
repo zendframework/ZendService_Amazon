@@ -56,24 +56,23 @@ abstract class AbstractAmazon
     const DATE_PRESERVE_KEY = 'preserve';
 
     /**
-     * Create Amazon client.
+     * Constructor
      *
-     * @param  null|string $accessKey       Override the default Access Key
-     * @param  null|string $secretKey       Override the default Secret Key
+     * @param null|string $accessKey Override the default Access Key
+     * @param null|string $secretKey Override the default Secret Key
+     * @param HttpClient $httpClient
      */
     public function __construct($accessKey = null, $secretKey = null, HttpClient $httpClient = null)
     {
-        $this->accessKey = $accessKey;
-        $this->secretKey = $secretKey;
+        $this->setKeys($accessKey, $secretKey);
         $this->setHttpClient(($httpClient) ?: new HttpClient);
     }
 
     /**
      * Set the keys to use when accessing SQS.
      *
-     * @param  string|null $accessKey       Set the current Access Key
-     * @param  string|null $secretKey       Set the current Secret Key
-     * @return void
+     * @param string|null $accessKey Set the current Access Key
+     * @param string|null $secretKey Set the current Secret Key
      */
     public function setKeys($accessKey, $secretKey)
     {
@@ -104,8 +103,7 @@ abstract class AbstractAmazon
      * If preserve is set, the specific object is kept for further requests
      *
      * @param null|DateTime $date
-     * @param null|boolean  $preserve if the set date must be kept for further requests
-     * @return void
+     * @param null|boolean $preserve if the set date must be kept for further requests
      */
     public function setRequestDate(DateTime $date = null, $preserve = null)
     {
@@ -192,7 +190,7 @@ abstract class AbstractAmazon
     public function getRequestIsoDate()
     {
         if (!is_object($this->requestDate)) {
-            $date = new Date();
+            $date = new DateTime();
         } else {
             $date = $this->requestDate;
             if (empty($date->{self::DATE_PRESERVE_KEY})) {
@@ -200,6 +198,6 @@ abstract class AbstractAmazon
             }
         }
         //DateTimeZone UTC
-        return $date->get('Y-m-d\TH:i:s.000\Z'); //DATE_ISO8601 is not compatible with S3
+        return $date->format('Y-m-d\TH:i:s.000\Z'); //DATE_ISO8601 is not compatible with S3
     }
 }

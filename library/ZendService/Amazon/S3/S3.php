@@ -57,6 +57,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      *
      * @param string|Uri\Uri $endpoint
      * @return S3
+     * @throws Exception\InvalidArgumentException
      */
     public function setEndpoint($endpoint)
     {
@@ -87,7 +88,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * @param string $secretKey
      * @param string $region
      */
-    public function __construct($accessKey=null, $secretKey=null, $region=null)
+    public function __construct($accessKey = null, $secretKey = null, $region = null)
     {
         parent::__construct($accessKey, $secretKey, $region);
 
@@ -100,6 +101,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      *
      * @param string $bucket
      * @return boolean
+     * @throws Exception\InvalidArgumentException
      */
     public function _validBucketName($bucket)
     {
@@ -150,8 +152,9 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
     /**
      * Add a new bucket
      *
-     * @param  string $bucket
-     * @return boolean
+     * @param string $bucket
+     * @param string $location
+     * @return bool
      */
     public function createBucket($bucket, $location = null)
     {
@@ -299,7 +302,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * delimiter - Causes keys that contain the same string between the prefix and the first occurrence of the delimiter to be rolled up into a single result element in the CommonPrefixes collection. These rolled-up keys are not returned elsewhere in the response.
      *
      * @param  string $bucket
-     * @param array $params S3 GET Bucket Paramater
+     * @param array $params S3 GET Bucket Parameter
      * @return array|false
      */
     public function getObjectsByBucket($bucket, $params = array())
@@ -337,7 +340,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * delimiter - Causes keys that contain the same string between the prefix and the first occurrence of the delimiter to be rolled up into a single result element in the CommonPrefixes collection. These rolled-up keys are not returned elsewhere in the response.
      *
      * @param  string $bucket
-     * @param array $params S3 GET Bucket Paramater
+     * @param array $params S3 GET Bucket Parameter
      * @return array|false
      */
     public function getObjectsAndPrefixesByBucket($bucket, $params = array())
@@ -494,6 +497,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * @param string $object Object name
      * @param array  $meta   Metadata
      * @return boolean
+     * @throws Exception\RuntimeException
      */
     public function putFile($path, $object, $meta=null)
     {
@@ -520,6 +524,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * @param string $object Object name
      * @param array  $meta   Metadata
      * @return boolean
+     * @throws Exception\RuntimeException
      */
     public function putFileStream($path, $object, $meta=null)
     {
@@ -594,6 +599,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * @param string $destObject    Destination object name
      * @param array  $meta          (OPTIONAL) Metadata to apply to destination object.
      *                              Set to null to retain existing metadata.
+     * @return bool
      */
     public function moveObject($sourceObject, $destObject, $meta = null)
     {
@@ -618,6 +624,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * @param  array  $headers        HTTP headers
      * @param  string|resource $data  Request data
      * @return \Zend\Http\Response
+     * @throws Exception\InvalidArgumentException
      */
     public function _makeRequest($method, $path='', $params=null, $headers=array(), $data=null)
     {
@@ -944,7 +951,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * Register this object as stream wrapper client
      *
      * @param  string $name
-     * @return Zend_Service_Amazon_S3
+     * @return S3
      */
     public function registerAsClient($name)
     {
@@ -956,7 +963,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * Unregister this object as stream wrapper client
      *
      * @param  string $name
-     * @return Zend_Service_Amazon_S3
+     * @return S3
      */
     public function unregisterAsClient($name)
     {
@@ -968,7 +975,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * Get wrapper client for stream type
      *
      * @param  string $name
-     * @return Zend_Service_Amazon_S3
+     * @return S3
      */
     public static function getWrapperClient($name)
     {
@@ -979,7 +986,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * Register this object as stream wrapper
      *
      * @param  string $name
-     * @return Zend_Service_Amazon_S3
+     * @return S3
      */
     public function registerStreamWrapper($name='s3')
     {
@@ -991,7 +998,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * Unregister this object as stream wrapper
      *
      * @param  string $name
-     * @return Zend_Service_Amazon_S3
+     * @return S3
      */
     public function unregisterStreamWrapper($name='s3')
     {

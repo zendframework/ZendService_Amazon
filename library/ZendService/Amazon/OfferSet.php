@@ -58,14 +58,14 @@ class OfferSet
     public $TotalRefurbished;
 
     /**
-     * @var Zend_Service_Amazon_Offer[]
+     * @var array Of Offer
      */
     public $Offers;
 
     /**
      * Parse the given Offer Set Element
      *
-     * @param  DOMElement $dom
+     * @param  \DOMElement $dom
      * @return void
      */
     public function __construct(\DOMElement $dom)

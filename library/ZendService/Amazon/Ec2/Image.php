@@ -194,6 +194,7 @@ class Image extends AbstractEc2
      *                                          can be associated with an AMI. Once set, the product code cannot be changed or reset.
      *                                          Required for productCodes Attribute
      * @return boolean
+     * @throws Exception\InvalidArgumentException
      */
     public function modifyAttribute($imageId, $attribute, $operationType = 'add', $userId = null, $userGroup = null, $productCode = null)
     {
@@ -248,9 +249,10 @@ class Image extends AbstractEc2
     /**
      * Returns information about an attribute of an AMI. Only one attribute can be specified per call.
      *
-     * @param string $imageId                   ID of the AMI for which an attribute will be described.
-     * @param string $attribute                 Specifies the attribute to describe.  Valid Attributes are
-     *                                          launchPermission, productCodes
+     * @param string $imageId   ID of the AMI for which an attribute will be described.
+     * @param string $attribute Specifies the attribute to describe.  Valid Attributes are
+     *                          launchPermission, productCodes
+     * @return array
      */
     public function describeAttribute($imageId, $attribute)
     {
@@ -295,10 +297,10 @@ class Image extends AbstractEc2
     /**
      * Resets an attribute of an AMI to its default value.  The productCodes attribute cannot be reset
      *
-     * @param string $imageId                   ID of the AMI for which an attribute will be reset.
-     * @param String $attribute                 Specifies the attribute to reset. Currently, only launchPermission is supported.
-     *                                          In the case of launchPermission, all public and explicit launch permissions for
-     *                                          the AMI are revoked.
+     * @param string $imageId   ID of the AMI for which an attribute will be reset.
+     * @param String $attribute Specifies the attribute to reset. Currently, only launchPermission is supported.
+     *                          In the case of launchPermission, all public and explicit launch permissions for
+     *                          the AMI are revoked.
      * @return boolean
      */
     public function resetAttribute($imageId, $attribute)

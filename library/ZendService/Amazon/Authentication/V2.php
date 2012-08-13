@@ -89,23 +89,23 @@ class V2 extends AbstractAuthentication
      *    values before constructing this string. Do not use any separator
      *    characters when appending strings.
      *
-     * @param  string $queue_url  Queue URL
+     * @param  string $url  Queue URL
      * @param  array  $parameters the parameters for which to get the signature.
      *
      * @return string the signed data.
      */
-    protected function _signParameters($url, array &$paramaters)
+    protected function _signParameters($url, array &$parameters)
     {
         $data = $this->_httpMethod . "\n";
         $data .= parse_url($url, PHP_URL_HOST) . "\n";
         $data .= ('' == $path = parse_url($url, PHP_URL_PATH)) ? '/' : $path;
         $data .= "\n";
 
-        uksort($paramaters, 'strcmp');
-        unset($paramaters['Signature']);
+        uksort($parameters, 'strcmp');
+        unset($parameters['Signature']);
 
         $arrData = array();
-        foreach($paramaters as $key => $value) {
+        foreach($parameters as $key => $value) {
             $arrData[] = $key . '=' . str_replace('%7E', '~', rawurlencode($value));
         }
 
@@ -113,7 +113,7 @@ class V2 extends AbstractAuthentication
 
         $hmac = Hmac::compute($this->_secretKey, 'SHA256', $data, Hmac::OUTPUT_BINARY);
 
-        $paramaters['Signature'] = base64_encode($hmac);
+        $parameters['Signature'] = base64_encode($hmac);
 
         return $data;
     }

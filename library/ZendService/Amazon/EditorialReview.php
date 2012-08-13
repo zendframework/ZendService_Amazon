@@ -30,7 +30,7 @@ class EditorialReview
     /**
      * Assigns values to properties relevant to EditorialReview
      *
-     * @param  DOMElement $dom
+     * @param  \DOMElement $dom
      * @return void
      */
     public function __construct(\DOMElement $dom)

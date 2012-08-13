@@ -14,7 +14,7 @@ use ZendService\Amazon;
 use ZendService\Amazon\Ec2\Exception;
 
 /**
- * An Amazon EC2 interface to query which Availibity Zones your account has access to.
+ * An Amazon EC2 interface to query which Availability Zones your account has access to.
  *
  * @category   Zend
  * @package    Zend_Service_Amazon
@@ -26,8 +26,8 @@ class AvailabilityZones extends AbstractEc2
      * Describes availability zones that are currently available to the account
      * and their states.
      *
-     * @param string|array $zoneName            Name of an availability zone.
-     * @return array                            An array that contains all the return items.  Keys: zoneName and zoneState.
+     * @param string|array $zoneName Name of an availability zone.
+     * @return array An array that contains all the return items.  Keys: zoneName and zoneState.
      */
     public function describe($zoneName = null)
     {

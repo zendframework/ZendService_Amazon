@@ -53,7 +53,7 @@ class Stream
     private $_bucketList = array();
 
     /**
-     * @var Zend_Service_Amazon_S3
+     * @var S3
      */
     private $_s3 = null;
 
@@ -61,7 +61,9 @@ class Stream
      * Retrieve client for this stream type
      *
      * @param  string $path
-     * @return Zend_Service_Amazon_S3
+     * @return S3
+     * @throws Exception\InvalidArgumentException
+     * @throws Exception\RuntimeException
      */
     protected function _getS3Client($path)
     {

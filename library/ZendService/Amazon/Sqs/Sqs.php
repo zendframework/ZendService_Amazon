@@ -72,7 +72,7 @@ class Sqs extends \ZendService\Amazon\AbstractAmazon
      * @param  string  $queue_name queue name
      * @param  integer $timeout    default visibility timeout
      * @return string|boolean
-     * @throws ZendService\Amazon\Sqs\Exception
+     * @throws Exception\RuntimeException
      */
     public function create($queue_name, $timeout = null)
     {
@@ -114,7 +114,7 @@ class Sqs extends \ZendService\Amazon\AbstractAmazon
      *
      * @param  string  $queue_url queue URL
      * @return boolean
-     * @throws ZendService\Amazon\Sqs\Exception
+     * @throws Exception\RuntimeException
      */
     public function delete($queue_url)
     {
@@ -131,7 +131,7 @@ class Sqs extends \ZendService\Amazon\AbstractAmazon
      * Get an array of all available queues
      *
      * @return array
-     * @throws ZendService\Amazon\Sqs\Exception
+     * @throws Exception\RuntimeException
      */
     public function getQueues()
     {
@@ -154,7 +154,7 @@ class Sqs extends \ZendService\Amazon\AbstractAmazon
      *
      * @param  string  $queue_url Queue URL
      * @return integer
-     * @throws ZendService\Amazon\Sqs\Exception
+     * @throws Exception\RuntimeException
      */
     public function count($queue_url)
     {
@@ -167,7 +167,7 @@ class Sqs extends \ZendService\Amazon\AbstractAmazon
      * @param  string $queue_url Queue URL
      * @param  string $message   Message to send to the queue
      * @return string            Message ID
-     * @throws ZendService\Amazon\Sqs\Exception
+     * @throws Exception\RuntimeException
      */
     public function send($queue_url, $message)
     {
@@ -194,7 +194,7 @@ class Sqs extends \ZendService\Amazon\AbstractAmazon
      * @param  integer $max_messages Maximum number of messages to return
      * @param  integer $timeout      Visibility timeout for these messages
      * @return array
-     * @throws ZendService\Amazon\Sqs\Exception
+     * @throws Exception\RuntimeException
      */
     public function receive($queue_url, $max_messages = null, $timeout = null)
     {
@@ -238,7 +238,7 @@ class Sqs extends \ZendService\Amazon\AbstractAmazon
      * @param  string $queue_url  Queue URL
      * @param  string $handle     Message handle as returned by SQS
      * @return boolean
-     * @throws ZendService\Amazon\Sqs\Exception
+     * @throws Exception\RuntimeException
      */
     public function deleteMessage($queue_url, $handle)
     {
@@ -261,7 +261,7 @@ class Sqs extends \ZendService\Amazon\AbstractAmazon
      * @param  string $queue_url  Queue URL
      * @param  string $attribute
      * @return string
-     * @throws ZendService\Amazon\Sqs\Exception
+     * @throws Exception\RuntimeException
      */
     public function getAttribute($queue_url, $attribute = 'All')
     {
@@ -291,7 +291,7 @@ class Sqs extends \ZendService\Amazon\AbstractAmazon
      * @param  string           $queue  Queue Name
      * @param  string           $action SQS action
      * @param  array            $params
-     * @return SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     private function _makeRequest($queue_url, $action, $params = array())
     {
@@ -390,7 +390,7 @@ class Sqs extends \ZendService\Amazon\AbstractAmazon
      *
      * @return string the signed data.
      */
-    protected function _signParameters($queue_url, array $paramaters)
+    protected function _signParameters($queue_url, array $parameters)
     {
         $data = "GET\n";
         $data .= $this->_sqsEndpoint . "\n";
@@ -401,11 +401,11 @@ class Sqs extends \ZendService\Amazon\AbstractAmazon
         }
         $data .= "\n";
 
-        uksort($paramaters, 'strcmp');
-        unset($paramaters['Signature']);
+        uksort($parameters, 'strcmp');
+        unset($parameters['Signature']);
 
         $arrData = array();
-        foreach($paramaters as $key => $value) {
+        foreach($parameters as $key => $value) {
             $arrData[] = $key . '=' . str_replace('%7E', '~', urlencode($value));
         }
 

@@ -11,8 +11,7 @@
 namespace ZendService\Amazon;
 
 use Zend\Crypt\Hmac;
-use Zend\Rest\Client;
-use Zend\Service;
+use ZendRest\Client\RestClient;
 use ZendService\Amazon\Exception;
 
 /**
@@ -54,7 +53,7 @@ class Amazon
     /**
      * Reference to REST client object
      *
-     * @var Zend_Rest_Client
+     * @var RestClient
      */
     protected $_rest = null;
 
@@ -64,8 +63,8 @@ class Amazon
      *
      * @param  string $appId       Developer's Amazon appid
      * @param  string $countryCode Country code for Amazon service; may be US, UK, DE, JP, FR, CA
-     * @throws \ZendService\Amazon\Exception
-     * @return \ZendService\Amazon
+     * @throws Exception\InvalidArgumentException
+     * @return Amazon
      */
     public function __construct($appId, $countryCode = 'US', $secretKey = null)
     {
@@ -85,8 +84,8 @@ class Amazon
      * Search for Items
      *
      * @param  array $options Options to use for the Search Query
-     * @throws \ZendService\Amazon\Exception
-     * @return Zend_Service_Amazon_ResultSet
+     * @throws Exception\RuntimeException
+     * @return ResultSet
      * @see http://www.amazon.com/gp/aws/sdk/main.html/102-9041115-9057709?s=AWSEcommerceService&v=2011-08-01&p=ApiReference/ItemSearchOperation
      */
     public function itemSearch(array $options)
@@ -118,8 +117,8 @@ class Amazon
      * @param  string $asin    Amazon ASIN ID
      * @param  array  $options Query Options
      * @see http://www.amazon.com/gp/aws/sdk/main.html/102-9041115-9057709?s=AWSEcommerceService&v=2011-08-01&p=ApiReference/ItemLookupOperation
-     * @throws ZendService\Amazon\Exception
-     * @return Zend_Service_Amazon_Item|Zend_Service_Amazon_ResultSet
+     * @throws Exception\RuntimeException
+     * @return Item|ResultSet
      */
     public function itemLookup($asin, array $options = array())
     {
@@ -156,12 +155,12 @@ class Amazon
     /**
      * Returns a reference to the REST client
      *
-     * @return Zend_Rest_Client
+     * @return RestClient
      */
     public function getRestClient()
     {
         if($this->_rest === null) {
-            $this->_rest = new Client\RestClient();
+            $this->_rest = new RestClient();
         }
         return $this->_rest;
     }
@@ -169,10 +168,10 @@ class Amazon
     /**
      * Set REST client
      *
-     * @param Zend_Rest_Client
-     * @return Zend_Service_Amazon
+     * @param RestClient $client
+     * @return Amazon
      */
-    public function setRestClient(Client\RestClient $client)
+    public function setRestClient(RestClient $client)
     {
         $this->_rest = $client;
         return $this;
@@ -256,8 +255,8 @@ class Amazon
     /**
      * Check result for errors
      *
-     * @param  DOMDocument $dom
-     * @throws Zend\Servicei\Amazon\Exception
+     * @param  \DOMDocument $dom
+     * @throws Exception\RuntimeException
      * @return void
      */
     protected static function _checkErrors(\DOMDocument $dom)

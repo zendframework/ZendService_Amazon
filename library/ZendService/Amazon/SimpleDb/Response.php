@@ -29,29 +29,28 @@ class Response
      *
      * This contains the response body and headers.
      *
-     * @var Zend\Http\Response
+     * @var Http\Response
      */
     private $_httpResponse = null;
 
     /**
      * The response document object
      *
-     * @var DOMDocument
+     * @var \DOMDocument
      */
     private $_document = null;
 
     /**
      * The response XPath
      *
-     * @var DOMXPath
+     * @var \DOMXPath
      */
     private $_xpath = null;
 
     /**
      * Creates a new high-level SimpleDB response object
      *
-     * @param  Zend\Http\Response $httpResponse the HTTP response.
-     * @return void
+     * @param Http\Response $httpResponse the HTTP response.
      */
     public function __construct(Http\Response $httpResponse)
     {
@@ -61,7 +60,7 @@ class Response
     /**
      * Gets the XPath object for this response
      *
-     * @return DOMXPath the XPath object for response.
+     * @return \DOMXPath the XPath object for response.
      */
     public function getXPath()
     {
@@ -82,13 +81,13 @@ class Response
     /**
      * Gets the SimpleXML document object for this response
      *
-     * @return SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     public function getSimpleXMLDocument()
     {
         try {
             $body = $this->_httpResponse->getBody();
-        } catch (Http\Exception $e) {
+        } catch (Http\Exception\ExceptionInterface $e) {
             $body = false;
         }
 
@@ -98,7 +97,7 @@ class Response
     /**
      * Get HTTP response object
      *
-     * @return Zend\Http\Response
+     * @return Http\Response
      */
     public function getHttpResponse()
     {
@@ -108,13 +107,13 @@ class Response
     /**
      * Gets the document object for this response
      *
-     * @return DOMDocument the DOM Document for this response.
+     * @return \DOMDocument the DOM Document for this response.
      */
     public function getDocument()
     {
         try {
             $body = $this->_httpResponse->getBody();
-        } catch (Http\Exception $e) {
+        } catch (Http\Exception\ExceptionInterface $e) {
             $body = false;
         }
 

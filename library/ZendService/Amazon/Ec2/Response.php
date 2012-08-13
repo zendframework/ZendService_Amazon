@@ -10,6 +10,8 @@
 
 namespace ZendService\Amazon\Ec2;
 
+use Zend\Http\Response as HttpResponse;
+
 /**
  * @category   Zend
  * @package    Zend_Service_Amazon
@@ -27,30 +29,30 @@ class Response
      *
      * This contains the response body and headers.
      *
-     * @var Zend_Http_Response
+     * @var HttpResponse
      */
     private $_httpResponse = null;
 
     /**
      * The response document object
      *
-     * @var DOMDocument
+     * @var \DOMDocument
      */
     private $_document = null;
 
     /**
      * The response XPath
      *
-     * @var DOMXPath
+     * @var \DOMXPath
      */
     private $_xpath = null;
 
     /**
      * Creates a new high-level EC2 response object
      *
-     * @param Zend_Http_Response $httpResponse the HTTP response.
+     * @param HttpResponse $httpResponse the HTTP response.
      */
-    public function __construct(\Zend\Http\Response $httpResponse)
+    public function __construct(HttpResponse $httpResponse)
     {
         $this->_httpResponse = $httpResponse;
     }
@@ -58,7 +60,7 @@ class Response
     /**
      * Gets the XPath object for this response
      *
-     * @return DOMXPath the XPath object for response.
+     * @return \DOMXPath the XPath object for response.
      */
     public function getXPath()
     {
@@ -79,7 +81,7 @@ class Response
     /**
      * Gets the document object for this response
      *
-     * @return DOMDocument the DOM Document for this response.
+     * @return \DOMDocument the DOM Document for this response.
      */
     public function getDocument()
     {

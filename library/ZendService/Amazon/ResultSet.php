@@ -10,8 +10,6 @@
 
 namespace ZendService\Amazon;
 
-use ZendService\Amazon\Exception;
-
 /**
  * @category   Zend
  * @package    Zend_Service
@@ -22,21 +20,21 @@ class ResultSet implements \SeekableIterator
     /**
      * A DOMNodeList of <Item> elements
      *
-     * @var DOMNodeList
+     * @var \DOMNodeList
      */
     protected $_results = null;
 
     /**
      * Amazon Web Service Return Document
      *
-     * @var DOMDocument
+     * @var \DOMDocument
      */
     protected $_dom;
 
     /**
      * XPath Object for $this->_dom
      *
-     * @var DOMXPath
+     * @var \DOMXPath
      */
     protected $_xpath;
 
@@ -50,7 +48,7 @@ class ResultSet implements \SeekableIterator
     /**
      * Create an instance of Zend_Service_Amazon_ResultSet and create the necessary data objects
      *
-     * @param  DOMDocument $dom
+     * @param  \DOMDocument $dom
      * @return void
      */
     public function __construct(\DOMDocument $dom)
@@ -86,7 +84,7 @@ class ResultSet implements \SeekableIterator
     /**
      * Implement SeekableIterator::current()
      *
-     * @return Zend_Service_Amazon_Item
+     * @return Item
      */
     public function current()
     {
@@ -131,7 +129,7 @@ class ResultSet implements \SeekableIterator
      * Implement SeekableIterator::seek()
      *
      * @param  int $index
-     * @throws \ZendService\Amazon\OutOfBoundsException
+     * @throws Exception\OutOfBoundsException
      * @return void
      */
     public function seek($index)

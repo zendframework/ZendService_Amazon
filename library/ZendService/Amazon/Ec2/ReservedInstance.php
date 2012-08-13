@@ -22,7 +22,7 @@ class ReservedInstance extends AbstractEc2
     /**
      * Describes Reserved Instances that you purchased.
      *
-     * @param string|array $instanceId        IDs of the Reserved Instance to describe.
+     * @param string|array $instanceId IDs of the Reserved Instance to describe.
      * @return array
      */
     public function describeInstances($instanceId)
@@ -105,16 +105,16 @@ class ReservedInstance extends AbstractEc2
      * for a period of time (without getting insufficient capacity errors) and
      * pay a lower usage rate for the actual time used.
      *
-     * @param string $offeringId            The offering ID of the Reserved Instance to purchase
-     * @param integer $intanceCount         The number of Reserved Instances to purchase.
-     * @return string                       The ID of the purchased Reserved Instances.
+     * @param string $offeringId     The offering ID of the Reserved Instance to purchase
+     * @param integer $instanceCount The number of Reserved Instances to purchase.
+     * @return string The ID of the purchased Reserved Instances.
      */
-    public function purchaseOffering($offeringId, $intanceCount = 1)
+    public function purchaseOffering($offeringId, $instanceCount = 1)
     {
         $params = array();
         $params['Action'] = 'PurchaseReservedInstancesOffering';
         $params['OfferingId.1'] = $offeringId;
-        $params['instanceCount.1'] = intval($intanceCount);
+        $params['instanceCount.1'] = intval($instanceCount);
 
         $response = $this->sendRequest($params);
 

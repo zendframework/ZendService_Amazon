@@ -30,7 +30,7 @@ class Accessories
     /**
      * Assigns values to properties relevant to Accessories
      *
-     * @param  DOMElement $dom
+     * @param  \DOMElement $dom
      * @return void
      */
     public function __construct(\DOMElement $dom)

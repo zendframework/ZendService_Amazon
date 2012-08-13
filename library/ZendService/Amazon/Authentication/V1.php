@@ -64,25 +64,25 @@ class V1 extends AbstractAuthentication
      *    values before constructing this string. Do not use any separator
      *    characters when appending strings.
      *
-     * @param  string $queue_url  Queue URL
-     * @param  array  $parameters the parameters for which to get the signature.
+     * @param string $url Queue URL
+     * @param array $parameters the parameters for which to get the signature.
      *
      * @return string the signed data.
      */
-    protected function _signParameters($url, array &$paramaters)
+    protected function _signParameters($url, array &$parameters)
     {
         $data = '';
 
-        uksort($paramaters, 'strcasecmp');
-        unset($paramaters['Signature']);
+        uksort($parameters, 'strcasecmp');
+        unset($parameters['Signature']);
 
-        foreach($paramaters as $key => $value) {
+        foreach($parameters as $key => $value) {
             $data .= $key . $value;
         }
 
         $hmac = Hmac::compute($this->_secretKey, 'SHA1', $data, Hmac::OUTPUT_BINARY);
 
-        $paramaters['Signature'] = base64_encode($hmac);
+        $parameters['Signature'] = base64_encode($hmac);
 
         return $data;
     }

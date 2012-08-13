@@ -11,7 +11,6 @@
 namespace ZendService\Amazon;
 
 use DOMElement;
-use ZendService\Amazon\Exception;
 
 /**
  * @category   Zend
@@ -66,22 +65,22 @@ class Item
     public $Subjects;
 
     /**
-     * @var Zend_Service_Amazon_OfferSet
+     * @var OfferSet
      */
     public $Offers;
 
     /**
-     * @var Zend_Service_Amazon_CustomerReview[]
+     * @var array CustomerReview
      */
     public $CustomerReviews = array();
 
     /**
-     * @var Zend_Service_Amazon_SimilarProducts[]
+     * @var array Of SimilarProduct
      */
     public $SimilarProducts = array();
 
     /**
-     * @var Zend_Service_Amazon_Accessories[]
+     * @var array Of Accessories
      */
     public $Accessories = array();
 
@@ -91,7 +90,7 @@ class Item
     public $Tracks = array();
 
     /**
-     * @var Zend_Service_Amazon_ListmaniaLists[]
+     * @var array Of ListmaniaList
      */
     public $ListmaniaLists = array();
 

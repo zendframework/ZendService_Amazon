@@ -67,12 +67,13 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
     protected static $_validEc2Regions = array('eu-west-1', 'us-east-1');
 
     /**
-     * Create Amazon client.
+     * Constructor
      *
-     * @param  string $access_key       Override the default Access Key
-     * @param  string $secret_key       Override the default Secret Key
-     * @param  string $region           Sets the AWS Region
-     * @return void
+     * @param null $accessKey Override the default Access Key
+     * @param null $secretKey Override the default Secret Key
+     * @param null $region Sets the AWS Region
+     * @param HttpClient $httpClient  Override the default HTTP Client
+     * @throws Exception\InvalidArgumentException
      */
     public function __construct($accessKey = null, $secretKey = null, $region = null, HttpClient $httpClient = null)
     {
@@ -91,9 +92,10 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
 
     /**
      * Set which region you are working in.  It will append the
-     * end point automaticly
+     * end point automatically
      *
      * @param string $region
+     * @throws Exception\InvalidArgumentException
      */
     public static function setRegion($region)
     {
@@ -117,9 +119,9 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
     /**
      * Sends a HTTP request to the queue service using Zend_Http_Client
      *
-     * @param array $params         List of parameters to send with the request
-     * @return Zend_Service_Amazon_Ec2_Response
-     * @throws ZendService\Amazon\Ec2\Exception
+     * @param array $params List of parameters to send with the request
+     * @return Response
+     * @throws Exception\RuntimeException
      */
     protected function sendRequest(array $params = array())
     {
@@ -128,7 +130,7 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
         $params = $this->addRequiredParameters($params);
 
         try {
-            /* @var $request Zend_Http_Client */
+            /* @var $request HttpClient */
             $request = $this->getHttpClient();
             $request->resetParameters();
 
@@ -200,21 +202,20 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
      *    characters when appending strings.
      *
      * @param array  $parameters the parameters for which to get the signature.
-     * @param string $secretKey  the secret key to use to sign the parameters.
      *
      * @return string the signed data.
      */
-    protected function signParameters(array $paramaters)
+    protected function signParameters(array $parameters)
     {
         $data = "POST\n";
         $data .= $this->_getRegion() . $this->_ec2Endpoint . "\n";
         $data .= "/\n";
 
-        uksort($paramaters, 'strcmp');
-        unset($paramaters['Signature']);
+        uksort($parameters, 'strcmp');
+        unset($parameters['Signature']);
 
         $arrData = array();
-        foreach($paramaters as $key => $value) {
+        foreach($parameters as $key => $value) {
             $arrData[] = $key . '=' . str_replace("%7E", "~", rawurlencode($value));
         }
 
@@ -228,12 +229,8 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
     /**
      * Checks for errors responses from Amazon
      *
-     * @param Zend_Service_Amazon_Ec2_Response $response the response object to
-     *                                                   check.
-     *
-     * @return void
-     *
-     * @throws ZendService\Amazon\Ec2\Exception if one or more errors are
+     * @param Response $response the response object to check.
+     * @throws Exception\RuntimeException if one or more errors are
      *         returned from Amazon.
      */
     private function checkForErrors(Response $response)
@@ -247,6 +244,5 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
             //throw new Exception\RuntimeException($message, 0, $code);
             throw new Exception\RuntimeException($code.' '.$message);
         }
-
     }
 }

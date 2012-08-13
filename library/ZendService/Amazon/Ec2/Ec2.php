@@ -25,13 +25,13 @@ class Ec2
     /**
      * Factory method to fetch what you want to work with.
      *
-     * @param string $section           Create the method that you want to work with
-     * @param string $key               Override the default aws key
-     * @param string $secret_key        Override the default aws secretkey
-     * @throws ZendService\Amazon\Ec2\Exception
+     * @param string $section   Create the method that you want to work with
+     * @param string $key       Override the default aws key
+     * @param string $secretKey Override the default aws secret key
+     * @throws Exception\RuntimeException
      * @return object
      */
-    public static function factory($section, $key = null, $secret_key = null)
+    public static function factory($section, $key = null, $secretKey = null)
     {
         switch(strtolower($section)) {
             case 'keypair':
@@ -68,7 +68,7 @@ class Ec2
                 break;
         }
 
-        return new $class($key, $secret_key);
+        return new $class($key, $secretKey);
     }
 }
 
