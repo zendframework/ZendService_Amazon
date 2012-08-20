@@ -34,6 +34,13 @@ class Amazon
     protected $_secretKey = null;
 
     /**
+     * API Version
+     *
+     * @var string
+     */
+    protected static $version = '2011-08-01';
+
+    /**
      * @var string
      */
     protected $_baseUri = null;
@@ -63,13 +70,18 @@ class Amazon
      *
      * @param  string $appId       Developer's Amazon appid
      * @param  string $countryCode Country code for Amazon service; may be US, UK, DE, JP, FR, CA
+     * @param  string $secretKey   API Secret Key
+     * @param  string $version     API Version to use
      * @throws Exception\InvalidArgumentException
      * @return Amazon
      */
-    public function __construct($appId, $countryCode = 'US', $secretKey = null)
+    public function __construct($appId, $countryCode = 'US', $secretKey = null, $version = null)
     {
         $this->appId = (string) $appId;
         $this->_secretKey = $secretKey;
+
+        if (!is_null($version))
+            self::setVersion($version);
 
         $countryCode = (string) $countryCode;
         if (!isset($this->_baseUriList[$countryCode])) {
@@ -141,7 +153,7 @@ class Amazon
         $dom->loadXML($response->getBody());
         self::_checkErrors($dom);
         $xpath = new \DOMXPath($dom);
-        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/2011-08-01');
+        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/' . self::getVersion());
         $items = $xpath->query('//az:Items/az:Item');
 
         if ($items->length == 1) {
@@ -191,7 +203,7 @@ class Amazon
         $options['AWSAccessKeyId'] = $this->appId;
         $options['Service']        = 'AWSECommerceService';
         $options['Operation']      = (string) $query;
-        $options['Version']        = '2011-08-01';
+        $options['Version']        = self::getVersion();
 
         // de-canonicalize out sort key
         if (isset($options['ResponseGroup'])) {
@@ -262,7 +274,7 @@ class Amazon
     protected static function _checkErrors(\DOMDocument $dom)
     {
         $xpath = new \DOMXPath($dom);
-        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/2011-08-01');
+        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/' . self::getVersion());
 
         if ($xpath->query('//az:Error')->length >= 1) {
             $code = $xpath->query('//az:Error/az:Code/text()')->item(0)->data;
@@ -275,5 +287,30 @@ class Amazon
                     throw new Exception\RuntimeException("$message ($code)");
             }
         }
+    }
+
+    /**
+     * Set the Amazon API version
+     *
+     * @static
+     * @param string $version API Version
+     */
+    public static function setVersion($version)
+    {
+        if (!preg_match('/\d{4}-\d{2}-\d{2}/', $version)) {
+            throw new Exception\InvalidArgumentException("$version is an invalid API Version");
+        }
+        self::$version = $version;
+    }
+
+    /**
+     * Return the Amazon API version
+     *
+     * @static
+     * @return string
+     */
+    public static function getVersion()
+    {
+        return self::$version;
     }
 }
