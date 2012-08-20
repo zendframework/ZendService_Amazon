@@ -138,9 +138,11 @@ BODY;
         //Valid bucket name
         $bucket   = 'iamavalidbucket';
         $location = '';
+        $accessKey = 'AKIAIDCZ2WXN6NNB7YZA';
+        $secretKey = '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';
         $requestDate = DateTime::createFromFormat(DateTime::RFC1123, 'Tue, 15 May 2012 15:18:31 +0000');
         $this->amazon->setRequestDate($requestDate);
-        $this->amazon->setKeys('AKIAIDCZ2WXN6NNB7YZA', 'sagA0Lge8R+ifORcyb6Z/qVbmtimFCUczvh51Jq8'); //Fake keys
+        $this->amazon->setKeys($accessKey, $secretKey); //Fake keys
 
         /**
          * Check of request inside _makeRequest
@@ -172,7 +174,7 @@ BODY;
             ->with(array(
                     "Date"          => "Tue, 15 May 2012 15:18:31 +0000",
                     "Content-Type"  => "application/xml",
-                    "Authorization" => "AWS AKIAIDCZ2WXN6NNB7YZA:NjNlNGY4OWQ5YzQ4ZDcwMDYyZDU4OWY1MDRjOWNlMmJkMDgzODhlMw==",
+                    "Authorization" => "AWS ".$accessKey.":Y+T4nZxI1wBi1Yn1BMnOK9CDiOM=",
                     ));
 
         /**
