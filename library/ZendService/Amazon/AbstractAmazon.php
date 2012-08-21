@@ -195,9 +195,6 @@ abstract class AbstractAmazon
             $date = new DateTime();
         } else {
             $date = $this->requestDate;
-            if (empty($date->{self::DATE_PRESERVE_KEY})) {
-                $this->requestDate = null;
-            }
         }
         //DateTimeZone UTC
         return $date->format('Y-m-d\TH:i:s.000\Z'); //DATE_ISO8601 is not compatible with S3
