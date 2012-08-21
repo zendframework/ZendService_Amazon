@@ -10,6 +10,7 @@
 
 namespace ZendService\Amazon\S3;
 
+use SimpleXMLElement;
 use Zend\Crypt\Hmac;
 use Zend\Http\Header;
 use Zend\Http\Response\Stream as StreamResponse;
@@ -263,7 +264,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
             return false;
         }
 
-        $xml = new \SimpleXMLElement($response->getBody());
+        $xml = new SimpleXMLElement($response->getBody());
 
         $buckets = array();
         foreach ($xml->Buckets->Bucket as $bucket) {
@@ -313,7 +314,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
             return false;
         }
 
-        $xml = new \SimpleXMLElement($response->getBody());
+        $xml = new SimpleXMLElement($response->getBody());
 
         $objects = array();
         if (isset($xml->Contents)) {
@@ -351,7 +352,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
             return false;
         }
 
-        $xml = new \SimpleXMLElement($response->getBody());
+        $xml = new SimpleXMLElement($response->getBody());
 
         $objects = array();
         if (isset($xml->Contents)) {

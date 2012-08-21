@@ -10,6 +10,9 @@
 
 namespace ZendService\Amazon;
 
+use DOMElement;
+use DOMXPath;
+
 /**
  * @category   Zend
  * @package    Zend_Service
@@ -30,12 +33,11 @@ class EditorialReview
     /**
      * Assigns values to properties relevant to EditorialReview
      *
-     * @param  \DOMElement $dom
-     * @return void
+     * @param  DOMElement $dom
      */
-    public function __construct(\DOMElement $dom)
+    public function __construct(DOMElement $dom)
     {
-        $xpath = new \DOMXPath($dom->ownerDocument);
+        $xpath = new DOMXPath($dom->ownerDocument);
         $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/2011-08-01');
         foreach (array('Source', 'Content') as $el) {
             $this->$el = (string) $xpath->query("./az:$el/text()", $dom)->item(0)->data;

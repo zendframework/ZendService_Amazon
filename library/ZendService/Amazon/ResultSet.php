@@ -10,6 +10,9 @@
 
 namespace ZendService\Amazon;
 
+use DOMDocument;
+use DOMXPath;
+
 /**
  * @category   Zend
  * @package    Zend_Service
@@ -27,14 +30,14 @@ class ResultSet implements \SeekableIterator
     /**
      * Amazon Web Service Return Document
      *
-     * @var \DOMDocument
+     * @var DOMDocument
      */
     protected $_dom;
 
     /**
      * XPath Object for $this->_dom
      *
-     * @var \DOMXPath
+     * @var DOMXPath
      */
     protected $_xpath;
 
@@ -48,13 +51,13 @@ class ResultSet implements \SeekableIterator
     /**
      * Create an instance of Zend_Service_Amazon_ResultSet and create the necessary data objects
      *
-     * @param  \DOMDocument $dom
+     * @param  DOMDocument $dom
      * @return void
      */
-    public function __construct(\DOMDocument $dom)
+    public function __construct(DOMDocument $dom)
     {
         $this->_dom = $dom;
-        $this->_xpath = new \DOMXPath($dom);
+        $this->_xpath = new DOMXPath($dom);
         $this->_xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/2011-08-01');
         $this->_results = $this->_xpath->query('//az:Item');
     }

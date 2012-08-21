@@ -10,6 +10,8 @@
 
 namespace ZendService\Amazon\Ec2;
 
+use DOMDocument;
+use DOMXPath;
 use Zend\Http\Response as HttpResponse;
 
 /**
@@ -36,14 +38,14 @@ class Response
     /**
      * The response document object
      *
-     * @var \DOMDocument
+     * @var DOMDocument
      */
     private $_document = null;
 
     /**
      * The response XPath
      *
-     * @var \DOMXPath
+     * @var DOMXPath
      */
     private $_xpath = null;
 
@@ -60,7 +62,7 @@ class Response
     /**
      * Gets the XPath object for this response
      *
-     * @return \DOMXPath the XPath object for response.
+     * @return DOMXPath the XPath object for response.
      */
     public function getXPath()
     {
@@ -69,7 +71,7 @@ class Response
             if ($document === false) {
                 $this->_xpath = false;
             } else {
-                $this->_xpath = new \DOMXPath($document);
+                $this->_xpath = new DOMXPath($document);
                 $this->_xpath->registerNamespace('ec2',
                     $this->getNamespace());
             }
@@ -81,7 +83,7 @@ class Response
     /**
      * Gets the document object for this response
      *
-     * @return \DOMDocument the DOM Document for this response.
+     * @return DOMDocument the DOM Document for this response.
      */
     public function getDocument()
     {
@@ -96,7 +98,7 @@ class Response
                 // turn off libxml error handling
                 $errors = libxml_use_internal_errors();
 
-                $this->_document = new \DOMDocument();
+                $this->_document = new DOMDocument();
                 if (!$this->_document->loadXML($body)) {
                     $this->_document = false;
                 }

@@ -10,6 +10,7 @@
 
 namespace ZendService\Amazon\Ec2;
 
+use DOMXPath;
 use ZendService\Amazon;
 use ZendService\Amazon\Ec2\Exception;
 use Zend\Crypt\Hmac;
@@ -235,7 +236,7 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
      */
     private function checkForErrors(Response $response)
     {
-        $xpath = new \DOMXPath($response->getDocument());
+        $xpath = new DOMXPath($response->getDocument());
         $list  = $xpath->query('//Error');
         if ($list->length > 0) {
             $node    = $list->item(0);

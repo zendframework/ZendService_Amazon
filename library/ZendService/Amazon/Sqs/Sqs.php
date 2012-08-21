@@ -10,6 +10,7 @@
 
 namespace ZendService\Amazon\Sqs;
 
+use SimpleXMLElement;
 use Zend\Crypt\Hmac;
 use ZendService\Amazon;
 use ZendService\Amazon\Sqs\Exception;
@@ -22,7 +23,7 @@ use ZendService\Amazon\Sqs\Exception;
  * @subpackage Amazon_Sqs
  * @see        http://aws.amazon.com/sqs/ Amazon Simple Queue Service
  */
-class Sqs extends \ZendService\Amazon\AbstractAmazon
+class Sqs extends Amazon\AbstractAmazon
 {
     /**
      * Default timeout for createQueue() function
@@ -291,7 +292,7 @@ class Sqs extends \ZendService\Amazon\AbstractAmazon
      * @param  string           $queue  Queue Name
      * @param  string           $action SQS action
      * @param  array            $params
-     * @return \SimpleXMLElement
+     * @return SimpleXMLElement
      */
     private function _makeRequest($queue_url, $action, $params = array())
     {
@@ -336,7 +337,7 @@ class Sqs extends \ZendService\Amazon\AbstractAmazon
 
         unset($client);
 
-        return new \SimpleXMLElement($response->getBody());
+        return new SimpleXMLElement($response->getBody());
     }
 
     /**

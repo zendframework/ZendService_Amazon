@@ -10,6 +10,7 @@
 
 namespace ZendService\Amazon\SimpleDb;
 
+use DOMXPath;
 use Zend\Crypt\Hmac;
 use Zend\Http;
 use Zend\Uri;
@@ -533,7 +534,7 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      */
     private function _checkForErrors(Response $response)
     {
-        $xpath = new \DOMXPath($response->getDocument());
+        $xpath = new DOMXPath($response->getDocument());
         $list  = $xpath->query('//Error');
         if ($list->length > 0) {
             $node    = $list->item(0);

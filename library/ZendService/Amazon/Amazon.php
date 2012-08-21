@@ -10,6 +10,8 @@
 
 namespace ZendService\Amazon;
 
+use DOMDocument;
+use DOMXPath;
 use Zend\Crypt\Hmac;
 use ZendRest\Client\RestClient;
 use ZendService\Amazon\Exception;
@@ -103,7 +105,7 @@ class Amazon
                                            . $response->getStatusCode());
         }
 
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         $dom->loadXML($response->getBody());
         self::_checkErrors($dom);
 
@@ -137,10 +139,10 @@ class Amazon
             );
         }
 
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         $dom->loadXML($response->getBody());
         self::_checkErrors($dom);
-        $xpath = new \DOMXPath($dom);
+        $xpath = new DOMXPath($dom);
         $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/2011-08-01');
         $items = $xpath->query('//az:Items/az:Item');
 
@@ -255,13 +257,13 @@ class Amazon
     /**
      * Check result for errors
      *
-     * @param  \DOMDocument $dom
+     * @param  DOMDocument $dom
      * @throws Exception\RuntimeException
      * @return void
      */
-    protected static function _checkErrors(\DOMDocument $dom)
+    protected static function _checkErrors(DOMDocument $dom)
     {
-        $xpath = new \DOMXPath($dom);
+        $xpath = new DOMXPath($dom);
         $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/2011-08-01');
 
         if ($xpath->query('//az:Error')->length >= 1) {
