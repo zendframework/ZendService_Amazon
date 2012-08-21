@@ -39,7 +39,7 @@ class SimilarProduct
     public function __construct(DOMElement $dom)
     {
         $xpath = new DOMXPath($dom->ownerDocument);
-        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/2011-08-01');
+        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/' . Amazon::getVersion());
         foreach (array('ASIN', 'Title') as $el) {
             $text = $xpath->query("./az:$el/text()", $dom)->item(0);
             if ($text instanceof DOMText) {

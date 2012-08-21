@@ -11,7 +11,6 @@
 namespace ZendServiceTest\Amazon;
 
 use ZendService\Amazon;
-use Zend\Service;
 
 /**
  * @category   Zend
@@ -25,21 +24,21 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
     /**
      * Reference to Amazon service consumer object
      *
-     * @var Zend_Service_Amazon
+     * @var Amazon\Amazon
      */
     protected $_amazon;
 
     /**
      * Reference to Amazon query API object
      *
-     * @var Zend_Service_Amazon_Query
+     * @var Amazon\Query
      */
     protected $_query;
 
     /**
      * Socket based HTTP client adapter
      *
-     * @var Zend_Http_Client_Adapter_Socket
+     * @var \Zend\Http\Client\Adapter\Socket
      */
     protected $_httpClientAdapterSocket;
 

@@ -10,7 +10,8 @@
 
 namespace ZendServiceTest\Amazon;
 
-use ZendService\Amazon;
+use ZendService\Amazon,
+    Zend\Http\Client\Adapter\Test as HttpClientAdapter;
 
 /**
  * Test helper
@@ -26,14 +27,14 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
     /**
      * Reference to Amazon service consumer object
      *
-     * @var Zend_Service_Amazon
+     * @var Amazon\Amazon
      */
     protected $amazon;
 
     /**
      * HTTP client adapter for testing
      *
-     * @var Zend\Http\Client\Adapter\Test
+     * @var HttpClientAdapter
      */
     protected $httpClientTestAdapter;
 
@@ -46,7 +47,7 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
     {
         $this->amazon = new Amazon\Amazon(constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ACCESSKEYID'));
 
-        $this->httpClientTestAdapter = new \Zend\Http\Client\Adapter\Test();
+        $this->httpClientTestAdapter = new HttpClientAdapter();
     }
 
     /**
