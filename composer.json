@@ -12,6 +12,7 @@
     ],
     "homepage": "http://packages.zendframework.com/",
     "license": "BSD-3-Clause",
+    "minimum-stability": "dev",
     "autoload": {
         "psr-0": {
             "ZendService": "library/"
@@ -27,7 +28,8 @@
         "php": ">=5.3.3",
         "zendframework/zend-http": ">=2.0.0beta5",
         "zendframework/zendrest": ">=2.0.0beta5",
-        "zendframework/zend-crypt": ">=2.0.0beta5"
+        "zendframework/zend-crypt": ">=2.0.0beta5",
+        "zendframework/zend-json": ">=2.0.0beta5"
     },
     "require-dev": {
         "zendframework/zend-i18n": ">=2.0.0beta5"
