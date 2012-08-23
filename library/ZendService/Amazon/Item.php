@@ -11,7 +11,7 @@
 namespace ZendService\Amazon;
 
 use DOMElement;
-use ZendService\Amazon\Exception;
+use DOMXPath;
 
 /**
  * @category   Zend
@@ -66,22 +66,22 @@ class Item
     public $Subjects;
 
     /**
-     * @var Zend_Service_Amazon_OfferSet
+     * @var OfferSet
      */
     public $Offers;
 
     /**
-     * @var Zend_Service_Amazon_CustomerReview[]
+     * @var array CustomerReview
      */
     public $CustomerReviews = array();
 
     /**
-     * @var Zend_Service_Amazon_SimilarProducts[]
+     * @var array Of SimilarProduct
      */
     public $SimilarProducts = array();
 
     /**
-     * @var Zend_Service_Amazon_Accessories[]
+     * @var array Of Accessories
      */
     public $Accessories = array();
 
@@ -91,7 +91,7 @@ class Item
     public $Tracks = array();
 
     /**
-     * @var Zend_Service_Amazon_ListmaniaLists[]
+     * @var array Of ListmaniaList
      */
     public $ListmaniaLists = array();
 
@@ -107,8 +107,8 @@ class Item
      */
     public function __construct(DOMElement $dom)
     {
-        $xpath = new \DOMXPath($dom->ownerDocument);
-        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/2011-08-01');
+        $xpath = new DOMXPath($dom->ownerDocument);
+        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/' . Amazon::getVersion());
         $this->ASIN = $xpath->query('./az:ASIN/text()', $dom)->item(0)->data;
 
         $result = $xpath->query('./az:DetailPageURL/text()', $dom);

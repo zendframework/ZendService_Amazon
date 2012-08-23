@@ -24,10 +24,9 @@ class Attribute
     /**
      * Constructor
      *
-     * @param  string $itemName
-     * @param  string $name
-     * @param  array $values
-     * @return void
+     * @param string $itemName
+     * @param string $name
+     * @param array $values
      */
     public function __construct($itemName, $name, $values)
     {
@@ -86,6 +85,9 @@ class Attribute
         }
     }
 
+    /**
+     * @param mixed $values
+     */
     public function setValues($values)
     {
         if (!is_array($values)) {

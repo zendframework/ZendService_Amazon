@@ -10,6 +10,8 @@
 
 namespace ZendService\Amazon\SimpleDb;
 
+use DOMDocument;
+use DOMXPath;
 use Zend\Http;
 
 /**
@@ -29,7 +31,7 @@ class Response
      *
      * This contains the response body and headers.
      *
-     * @var Zend\Http\Response
+     * @var Http\Response
      */
     private $_httpResponse = null;
 
@@ -50,8 +52,7 @@ class Response
     /**
      * Creates a new high-level SimpleDB response object
      *
-     * @param  Zend\Http\Response $httpResponse the HTTP response.
-     * @return void
+     * @param Http\Response $httpResponse the HTTP response.
      */
     public function __construct(Http\Response $httpResponse)
     {
@@ -70,7 +71,7 @@ class Response
             if ($document === false) {
                 $this->_xpath = false;
             } else {
-                $this->_xpath = new \DOMXPath($document);
+                $this->_xpath = new DOMXPath($document);
                 $this->_xpath->registerNamespace('sdb',
                     $this->getNamespace());
             }
@@ -82,13 +83,13 @@ class Response
     /**
      * Gets the SimpleXML document object for this response
      *
-     * @return SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     public function getSimpleXMLDocument()
     {
         try {
             $body = $this->_httpResponse->getBody();
-        } catch (Http\Exception $e) {
+        } catch (Http\Exception\ExceptionInterface $e) {
             $body = false;
         }
 
@@ -98,7 +99,7 @@ class Response
     /**
      * Get HTTP response object
      *
-     * @return Zend\Http\Response
+     * @return Http\Response
      */
     public function getHttpResponse()
     {
@@ -114,7 +115,7 @@ class Response
     {
         try {
             $body = $this->_httpResponse->getBody();
-        } catch (Http\Exception $e) {
+        } catch (Http\Exception\ExceptionInterface $e) {
             $body = false;
         }
 
@@ -123,7 +124,7 @@ class Response
                 // turn off libxml error handling
                 $errors = libxml_use_internal_errors();
 
-                $this->_document = new \DOMDocument();
+                $this->_document = new DOMDocument();
                 if (!$this->_document->loadXML($body)) {
                     $this->_document = false;
                 }

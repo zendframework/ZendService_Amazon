@@ -139,7 +139,7 @@ class CloudWatch extends AbstractEc2
     protected $_validStatistics = array('Average', 'Maximum', 'Minimum', 'Samples', 'Sum');
 
     /**
-     * Valid Dimention Keys for getMetricStatistics
+     * Valid Dimension Keys for getMetricStatistics
      *
      * ImageId: This dimension filters the data you request for all instances running
      *  this EC2 Amazon Machine Image (AMI).
@@ -213,6 +213,8 @@ class CloudWatch extends AbstractEc2
      *                                  EndTime: The timestamp to use for determining the last datapoint to return. This is
      *                                      the last datapoint to fetch, exclusive. For example, 2008-02-26T20:00:00+00:00.
      *                                      (in ISO 8601 format)
+     * @return array
+     * @throws Exception\InvalidArgumentException
      */
     public function getMetricStatistics(array $options)
     {
@@ -302,9 +304,9 @@ class CloudWatch extends AbstractEc2
     /**
      * Return the Metrics that are aviable for your current monitored instances
      *
-     * @param string $nextToken     The NextToken parameter is an optional parameter
-     *                                 that allows you to retrieve the next set of results
-     *                                 for your ListMetrics query.
+     * @param string $nextToken The NextToken parameter is an optional parameter
+     *                          that allows you to retrieve the next set of results
+     *                          for your ListMetrics query.
      * @return array
      */
     public function listMetrics($nextToken = null)

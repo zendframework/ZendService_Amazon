@@ -28,9 +28,8 @@ class Page
     /**
      * Constructor
      *
-     * @param  string $data
-     * @param  string|null $token
-     * @return void
+     * @param string $data
+     * @param string $token
      */
     public function __construct($data, $token = null)
     {
@@ -61,7 +60,7 @@ class Page
     /**
      * Determine whether this is the last page of data
      *
-     * @return void
+     * @return bool
      */
     public function isLast()
     {

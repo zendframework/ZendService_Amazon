@@ -64,8 +64,8 @@ class WindowsInstance extends AbstractEc2
     /**
      * Cancels an Amazon EC2 bundling operation
      *
-     * @param string $bundleId          The ID of the bundle task to cancel
-     * @return array                    Information on the bundle task
+     * @param string $bundleId The ID of the bundle task to cancel
+     * @return array           Information on the bundle task
      */
     public function cancelBundle($bundleId)
     {
@@ -93,9 +93,9 @@ class WindowsInstance extends AbstractEc2
     /**
      * Describes current bundling tasks
      *
-     * @param string|array $bundleId            A single or a list of bundle tasks that you want
-     *                                          to find information for.
-     * @return array                            Information for the task that you requested
+     * @param string|array $bundleId A single or a list of bundle tasks that you want
+     *                               to find information for.
+     * @return array                 Information for the task that you requested
      */
     public function describeBundle($bundleId = '')
     {
@@ -159,8 +159,8 @@ class WindowsInstance extends AbstractEc2
     /**
      * Signed S3 Upload Policy
      *
-     * @param string $policy            Base64 Encoded string that is the upload policy
-     * @return string                   SHA1 encoded S3 Upload Policy
+     * @param string $policy Base64 Encoded string that is the upload policy
+     * @return string        SHA1 encoded S3 Upload Policy
      */
     protected function _signS3UploadPolicy($policy)
     {

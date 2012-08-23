@@ -10,6 +10,10 @@
 
 namespace ZendService\Amazon;
 
+use DOMElement;
+use DOMText;
+use DOMXPath;
+
 /**
  * @category   Zend
  * @package    Zend_Service
@@ -65,13 +69,12 @@ class Offer
     /**
      * Parse the given Offer element
      *
-     * @param  DOMElement $dom
-     * @return void
+     * @param DOMElement $dom
      */
-    public function __construct(\DOMElement $dom)
+    public function __construct(DOMElement $dom)
     {
-        $xpath = new \DOMXPath($dom->ownerDocument);
-        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/2011-08-01');
+        $xpath = new DOMXPath($dom->ownerDocument);
+        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/' . Amazon::getVersion());
         $this->MerchantId = (string) $xpath->query('./az:Merchant/az:MerchantId/text()', $dom)->item(0)->data;
         $name = $xpath->query('./az:Merchant/az:Name/text()', $dom);
         if ($name->length == 1) {
@@ -86,7 +89,7 @@ class Offer
             $this->CurrencyCode = (string) $xpath->query('./az:OfferListing/az:Price/az:CurrencyCode/text()', $dom)->item(0)->data;
         }
         $availability = $xpath->query('./az:OfferListing/az:Availability/text()', $dom)->item(0);
-        if($availability instanceof \DOMText) {
+        if($availability instanceof DOMText) {
             $this->Availability = (string) $availability->data;
         }
         $result = $xpath->query('./az:OfferListing/az:IsEligibleForSuperSaverShipping/text()', $dom);

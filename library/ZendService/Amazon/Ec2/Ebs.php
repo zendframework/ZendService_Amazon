@@ -15,7 +15,7 @@ use ZendService\Amazon\Ec2\Exception;
 
 /**
  * An Amazon EC2 interface to create, describe, attach, detach and delete Elastic Block
- * Storage Volumes and Snaphsots.
+ * Storage Volumes and Snapshots.
  *
  * @category   Zend
  * @package    Zend_Service_Amazon
@@ -29,8 +29,8 @@ class Ebs extends AbstractEc2
      * You must specify an availability zone when creating a volume. The volume and
      * any instance to which it attaches must be in the same availability zone.
      *
-     * @param string $size                  The size of the volume, in GiB.
-     * @param string $availabilityZone      The availability zone in which to create the new volume.
+     * @param string $size             The size of the volume, in GiB.
+     * @param string $availabilityZone The availability zone in which to create the new volume.
      * @return array
      */
     public function createNewVolume($size, $availabilityZone)
@@ -44,11 +44,11 @@ class Ebs extends AbstractEc2
         $xpath = $response->getXPath();
 
         $return = array();
-        $return['volumeId']             = $xpath->evaluate('string(//ec2:volumeId/text())');
-        $return['size']                 = $xpath->evaluate('string(//ec2:size/text())');
-        $return['status']               = $xpath->evaluate('string(//ec2:status/text())');
-        $return['createTime']           = $xpath->evaluate('string(//ec2:createTime/text())');
-        $return['availabilityZone']     = $xpath->evaluate('string(//ec2:availabilityZone/text())');
+        $return['volumeId']         = $xpath->evaluate('string(//ec2:volumeId/text())');
+        $return['size']             = $xpath->evaluate('string(//ec2:size/text())');
+        $return['status']           = $xpath->evaluate('string(//ec2:status/text())');
+        $return['createTime']       = $xpath->evaluate('string(//ec2:createTime/text())');
+        $return['availabilityZone'] = $xpath->evaluate('string(//ec2:availabilityZone/text())');
 
         return $return;
     }
@@ -59,8 +59,8 @@ class Ebs extends AbstractEc2
      * You must specify an availability zone when creating a volume. The volume and
      * any instance to which it attaches must be in the same availability zone.
      *
-     * @param string $snapshotId            The snapshot from which to create the new volume.
-     * @param string $availabilityZone      The availability zone in which to create the new volume.
+     * @param string $snapshotId The snapshot from which to create the new volume.
+     * @param string $availabilityZone The availability zone in which to create the new volume.
      * @return array
      */
     public function createVolumeFromSnapshot($snapshotId, $availabilityZone)
@@ -74,12 +74,12 @@ class Ebs extends AbstractEc2
         $xpath = $response->getXPath();
 
         $return = array();
-        $return['volumeId']             = $xpath->evaluate('string(//ec2:volumeId/text())');
-        $return['size']                 = $xpath->evaluate('string(//ec2:size/text())');
-        $return['status']               = $xpath->evaluate('string(//ec2:status/text())');
-        $return['createTime']           = $xpath->evaluate('string(//ec2:createTime/text())');
-        $return['availabilityZone']     = $xpath->evaluate('string(//ec2:availabilityZone/text())');
-        $return['snapshotId']           = $xpath->evaluate('string(//ec2:snapshotId/text())');
+        $return['volumeId']         = $xpath->evaluate('string(//ec2:volumeId/text())');
+        $return['size']             = $xpath->evaluate('string(//ec2:size/text())');
+        $return['status']           = $xpath->evaluate('string(//ec2:status/text())');
+        $return['createTime']       = $xpath->evaluate('string(//ec2:createTime/text())');
+        $return['availabilityZone'] = $xpath->evaluate('string(//ec2:availabilityZone/text())');
+        $return['snapshotId']       = $xpath->evaluate('string(//ec2:snapshotId/text())');
 
         return $return;
     }
@@ -88,7 +88,7 @@ class Ebs extends AbstractEc2
      * Lists one or more Amazon EBS volumes that you own, If you do not
      * specify any volumes, Amazon EBS returns all volumes that you own.
      *
-     * @param string|array $volumeId        The ID or array of ID's of the volume(s) to list
+     * @param string|array $volumeId The ID or array of ID's of the volume(s) to list
      * @return array
      */
     public function describeVolume($volumeId = null)
@@ -137,6 +137,10 @@ class Ebs extends AbstractEc2
         return $return;
     }
 
+    /**
+     * @param $instanceId
+     * @return array
+     */
     public function describeAttachedVolumes($instanceId)
     {
         $volumes = $this->describeVolume();

@@ -10,6 +10,10 @@
 
 namespace ZendService\Amazon\Ec2;
 
+use DOMDocument;
+use DOMXPath;
+use Zend\Http\Response as HttpResponse;
+
 /**
  * @category   Zend
  * @package    Zend_Service_Amazon
@@ -27,7 +31,7 @@ class Response
      *
      * This contains the response body and headers.
      *
-     * @var Zend_Http_Response
+     * @var HttpResponse
      */
     private $_httpResponse = null;
 
@@ -48,9 +52,9 @@ class Response
     /**
      * Creates a new high-level EC2 response object
      *
-     * @param Zend_Http_Response $httpResponse the HTTP response.
+     * @param HttpResponse $httpResponse the HTTP response.
      */
-    public function __construct(\Zend\Http\Response $httpResponse)
+    public function __construct(HttpResponse $httpResponse)
     {
         $this->_httpResponse = $httpResponse;
     }
@@ -67,7 +71,7 @@ class Response
             if ($document === false) {
                 $this->_xpath = false;
             } else {
-                $this->_xpath = new \DOMXPath($document);
+                $this->_xpath = new DOMXPath($document);
                 $this->_xpath->registerNamespace('ec2',
                     $this->getNamespace());
             }
@@ -94,7 +98,7 @@ class Response
                 // turn off libxml error handling
                 $errors = libxml_use_internal_errors();
 
-                $this->_document = new \DOMDocument();
+                $this->_document = new DOMDocument();
                 if (!$this->_document->loadXML($body)) {
                     $this->_document = false;
                 }

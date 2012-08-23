@@ -27,7 +27,7 @@ class Keypair extends AbstractEc2
      * be used to reference this key pair when launching new instances.
      *
      * @param string $keyName           A unique name for the key pair.
-     * @throws ZendService\Amazon\Ec2\Exception
+     * @throws Exception\InvalidArgumentException
      * @return array
      */
     public function create($keyName)
@@ -58,7 +58,7 @@ class Keypair extends AbstractEc2
      * key pairs, information about those key pairs is returned. Otherwise,
      * information for all registered key pairs is returned.
      *
-     * @param string|array $keyName    Key pair IDs to describe.
+     * @param string|array $keyName Key pair IDs to describe.
      * @return array
      */
     public function describe($keyName = null)
@@ -96,7 +96,7 @@ class Keypair extends AbstractEc2
      * Deletes a key pair
      *
      * @param string $keyName           Name of the key pair to delete.
-     * @throws ZendService\Amazon\Ec2\Exception
+     * @throws Exception\InvalidArgumentException
      * @return boolean                  Return true or false from the deletion.
      */
     public function delete($keyName)

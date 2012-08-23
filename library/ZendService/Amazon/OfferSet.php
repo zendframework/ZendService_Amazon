@@ -10,6 +10,9 @@
 
 namespace ZendService\Amazon;
 
+use DOMElement;
+use DOMXPath;
+
 /**
  * @category   Zend
  * @package    Zend_Service
@@ -58,7 +61,7 @@ class OfferSet
     public $TotalRefurbished;
 
     /**
-     * @var Zend_Service_Amazon_Offer[]
+     * @var array Of Offer
      */
     public $Offers;
 
@@ -66,12 +69,11 @@ class OfferSet
      * Parse the given Offer Set Element
      *
      * @param  DOMElement $dom
-     * @return void
      */
-    public function __construct(\DOMElement $dom)
+    public function __construct(DOMElement $dom)
     {
-        $xpath = new \DOMXPath($dom->ownerDocument);
-        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/2011-08-01');
+        $xpath = new DOMXPath($dom->ownerDocument);
+        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/' . Amazon::getVersion());
 
         $offer = $xpath->query('./az:OfferSummary', $dom);
         if ($offer->length == 1) {

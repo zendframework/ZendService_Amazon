@@ -10,6 +10,8 @@
 
 namespace ZendService\Amazon;
 
+use DOMElement;
+use DOMXPath;
 use Zend\Uri;
 
 /**
@@ -44,12 +46,11 @@ class Image
      * Assigns values to properties relevant to Image
      *
      * @param  DOMElement $dom
-     * @return void
      */
-    public function __construct(\DOMElement $dom)
+    public function __construct(DOMElement $dom)
     {
-        $xpath = new \DOMXPath($dom->ownerDocument);
-        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/2011-08-01');
+        $xpath = new DOMXPath($dom->ownerDocument);
+        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/' . Amazon::getVersion());
 
         $this->Url    = Uri\UriFactory::factory($xpath->query('./az:URL/text()', $dom)->item(0)->data);
         $this->Height = (int) $xpath->query('./az:Height/text()', $dom)->item(0)->data;

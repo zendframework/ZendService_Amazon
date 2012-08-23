@@ -10,9 +10,10 @@
 
 namespace ZendService\Amazon;
 
+use DOMDocument;
+use DOMXPath;
 use Zend\Crypt\Hmac;
-use Zend\Rest\Client;
-use Zend\Service;
+use ZendRest\Client\RestClient;
 use ZendService\Amazon\Exception;
 
 /**
@@ -35,6 +36,13 @@ class Amazon
     protected $_secretKey = null;
 
     /**
+     * API Version
+     *
+     * @var string
+     */
+    protected static $version = '2011-08-01';
+
+    /**
      * @var string
      */
     protected $_baseUri = null;
@@ -54,7 +62,7 @@ class Amazon
     /**
      * Reference to REST client object
      *
-     * @var Zend_Rest_Client
+     * @var RestClient
      */
     protected $_rest = null;
 
@@ -64,13 +72,18 @@ class Amazon
      *
      * @param  string $appId       Developer's Amazon appid
      * @param  string $countryCode Country code for Amazon service; may be US, UK, DE, JP, FR, CA
-     * @throws \ZendService\Amazon\Exception
-     * @return \ZendService\Amazon
+     * @param  string $secretKey   API Secret Key
+     * @param  string $version     API Version to use
+     * @throws Exception\InvalidArgumentException
+     * @return Amazon
      */
-    public function __construct($appId, $countryCode = 'US', $secretKey = null)
+    public function __construct($appId, $countryCode = 'US', $secretKey = null, $version = null)
     {
         $this->appId = (string) $appId;
         $this->_secretKey = $secretKey;
+
+        if (!is_null($version))
+            self::setVersion($version);
 
         $countryCode = (string) $countryCode;
         if (!isset($this->_baseUriList[$countryCode])) {
@@ -85,8 +98,8 @@ class Amazon
      * Search for Items
      *
      * @param  array $options Options to use for the Search Query
-     * @throws \ZendService\Amazon\Exception
-     * @return Zend_Service_Amazon_ResultSet
+     * @throws Exception\RuntimeException
+     * @return ResultSet
      * @see http://www.amazon.com/gp/aws/sdk/main.html/102-9041115-9057709?s=AWSEcommerceService&v=2011-08-01&p=ApiReference/ItemSearchOperation
      */
     public function itemSearch(array $options)
@@ -104,7 +117,7 @@ class Amazon
                                            . $response->getStatusCode());
         }
 
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         $dom->loadXML($response->getBody());
         self::_checkErrors($dom);
 
@@ -118,8 +131,8 @@ class Amazon
      * @param  string $asin    Amazon ASIN ID
      * @param  array  $options Query Options
      * @see http://www.amazon.com/gp/aws/sdk/main.html/102-9041115-9057709?s=AWSEcommerceService&v=2011-08-01&p=ApiReference/ItemLookupOperation
-     * @throws ZendService\Amazon\Exception
-     * @return Zend_Service_Amazon_Item|Zend_Service_Amazon_ResultSet
+     * @throws Exception\RuntimeException
+     * @return Item|ResultSet
      */
     public function itemLookup($asin, array $options = array())
     {
@@ -138,11 +151,11 @@ class Amazon
             );
         }
 
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         $dom->loadXML($response->getBody());
         self::_checkErrors($dom);
-        $xpath = new \DOMXPath($dom);
-        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/2011-08-01');
+        $xpath = new DOMXPath($dom);
+        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/' . self::getVersion());
         $items = $xpath->query('//az:Items/az:Item');
 
         if ($items->length == 1) {
@@ -156,12 +169,12 @@ class Amazon
     /**
      * Returns a reference to the REST client
      *
-     * @return Zend_Rest_Client
+     * @return RestClient
      */
     public function getRestClient()
     {
         if($this->_rest === null) {
-            $this->_rest = new Client\RestClient();
+            $this->_rest = new RestClient();
         }
         return $this->_rest;
     }
@@ -169,10 +182,10 @@ class Amazon
     /**
      * Set REST client
      *
-     * @param Zend_Rest_Client
-     * @return Zend_Service_Amazon
+     * @param RestClient $client
+     * @return Amazon
      */
-    public function setRestClient(Client\RestClient $client)
+    public function setRestClient(RestClient $client)
     {
         $this->_rest = $client;
         return $this;
@@ -192,7 +205,7 @@ class Amazon
         $options['AWSAccessKeyId'] = $this->appId;
         $options['Service']        = 'AWSECommerceService';
         $options['Operation']      = (string) $query;
-        $options['Version']        = '2011-08-01';
+        $options['Version']        = self::getVersion();
 
         // de-canonicalize out sort key
         if (isset($options['ResponseGroup'])) {
@@ -257,13 +270,13 @@ class Amazon
      * Check result for errors
      *
      * @param  DOMDocument $dom
-     * @throws Zend\Servicei\Amazon\Exception
+     * @throws Exception\RuntimeException
      * @return void
      */
-    protected static function _checkErrors(\DOMDocument $dom)
+    protected static function _checkErrors(DOMDocument $dom)
     {
-        $xpath = new \DOMXPath($dom);
-        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/2011-08-01');
+        $xpath = new DOMXPath($dom);
+        $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/' . self::getVersion());
 
         if ($xpath->query('//az:Error')->length >= 1) {
             $code = $xpath->query('//az:Error/az:Code/text()')->item(0)->data;
@@ -276,5 +289,30 @@ class Amazon
                     throw new Exception\RuntimeException("$message ($code)");
             }
         }
+    }
+
+    /**
+     * Set the Amazon API version
+     *
+     * @static
+     * @param string $version API Version
+     */
+    public static function setVersion($version)
+    {
+        if (!preg_match('/\d{4}-\d{2}-\d{2}/', $version)) {
+            throw new Exception\InvalidArgumentException("$version is an invalid API Version");
+        }
+        self::$version = $version;
+    }
+
+    /**
+     * Return the Amazon API version
+     *
+     * @static
+     * @return string
+     */
+    public static function getVersion()
+    {
+        return self::$version;
     }
 }
