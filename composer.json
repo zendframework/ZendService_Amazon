@@ -12,7 +12,6 @@
     ],
     "homepage": "http://packages.zendframework.com/",
     "license": "BSD-3-Clause",
-    "minimum-stability": "dev",
     "autoload": {
         "psr-0": {
             "ZendService": "library/"
@@ -26,20 +25,20 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zend-http": ">=2.0.0beta5",
-        "zendframework/zendrest": ">=2.0.0beta5",
-        "zendframework/zend-crypt": ">=2.0.0beta5",
-        "zendframework/zend-json": ">=2.0.0beta5"
+        "zendframework/zend-http": ">=2.0.0",
+        "zendframework/zendrest": ">=2.0.0",
+        "zendframework/zend-crypt": ">=2.0.0",
+        "zendframework/zend-json": ">=2.0.0"
     },
     "require-dev": {
-        "zendframework/zend-i18n": ">=2.0.0beta5"
+        "zendframework/zend-i18n": ">=2.0.0"
     },
     "suggest": {
         "zendframework/zend-uri": "Zend\\Uri component"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.0-dev"
+            "dev-master": "2.0.x-dev"
         }
     }
 }
