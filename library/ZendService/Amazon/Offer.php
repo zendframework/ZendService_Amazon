@@ -75,7 +75,10 @@ class Offer
     {
         $xpath = new DOMXPath($dom->ownerDocument);
         $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/' . Amazon::getVersion());
-        $this->MerchantId = (string) $xpath->query('./az:Merchant/az:MerchantId/text()', $dom)->item(0)->data;
+        $merchantId = $xpath->query('./az:Merchant/az:MerchantId/text()', $dom);
+        if ($merchantId->length == 1) {
+            $this->MerchantId = (string) $merchantId->item(0)->data;
+        }
         $name = $xpath->query('./az:Merchant/az:Name/text()', $dom);
         if ($name->length == 1) {
           $this->MerchantName = (string) $name->item(0)->data;
