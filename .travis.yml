@@ -15,7 +15,6 @@ before_script:
   - phpenv rehash
 
 script:
-  - cd tests
   - phpunit -c tests/phpunit.xml.dist
 
 notifications:
