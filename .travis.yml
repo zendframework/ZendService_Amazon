@@ -10,8 +10,13 @@ before_install:
  - curl -s https://getcomposer.org/installer | php
  - php composer.phar install --dev
 
+before_script:
+  - pyrus install -o pear.phpunit.de/PHPUnit
+  - phpenv rehash
+
 script:
- - php ./tests/run-tests.php
+  - cd tests
+  - phpunit -c tests/phpunit.xml.dist
 
 notifications:
   irc: "irc.freenode.org#zftalk.2"
