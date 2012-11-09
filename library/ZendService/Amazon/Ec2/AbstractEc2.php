@@ -53,12 +53,12 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
     /**
      * @var string Amazon Region
      */
-    protected static $_defaultRegion = null;
+    protected static $_defaultRegion = 'us-east-1';
 
     /**
      * @var string Amazon Region
      */
-    protected $_region;
+    protected static $_region;
 
     /**
      * An array that contains all the valid Amazon Ec2 Regions.
@@ -79,16 +79,7 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
     public function __construct($accessKey = null, $secretKey = null, $region = null, HttpClient $httpClient = null)
     {
         parent::__construct($accessKey, $secretKey, $httpClient);
-        if(!$region) {
-            $region = self::$_defaultRegion;
-        } else {
-            // make rue the region is valid
-            if(!empty($region) && !in_array(strtolower($region), self::$_validEc2Regions, true)) {
-                throw new Exception\InvalidArgumentException('Invalid Amazon Ec2 Region');
-            }
-        }
-
-        $this->_region = $region;
+        self::setRegion($region ?: self::$_region ?: self::$_defaultRegion);
     }
 
     /**
@@ -114,7 +105,7 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
      */
     protected function _getRegion()
     {
-        return (!empty($this->_region)) ? $this->_region . '.' : '';
+        return (!empty(self::$_region)) ? self::$_region . '.' : '';
     }
 
     /**
