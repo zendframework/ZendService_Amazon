@@ -232,7 +232,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
             $info['type']  = $headers->get('Content-type');
             $info['size']  = $headers->get('Content-length');
             $info['mtime'] = $headers->get('Last-modified');
-            $info['etag']  = $headers->get('Content-type');
+            $info['etag']  = $headers->get('Etag');
 
             //Prevents from the fatal error method call on a non-object
             foreach ($info as $key => $value)
