@@ -528,13 +528,16 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
     public function testCommonPrefixes()
     {
         $this->_amazon->createBucket($this->_bucket);
-        $this->_amazon->putObject($this->_bucket.'/test-folder/test1','test');
-        $this->_amazon->putObject($this->_bucket.'/test-folder/test2-folder/','');
-        $params= array(
-                    'prefix' => 'test-folder/',
-                    'delimiter' => '/'
-                 );
-        $response= $this->_amazon->getObjectsAndPrefixesByBucket($this->_bucket,$params);
+        $this->_amazon->putObject($this->_bucket . '/test-folder/test1', 'test');
+        $this->_amazon->putObject($this->_bucket . '/test-folder/test2-folder/', 'test');
+        $this->_amazon->putObject($this->_bucket . '/test-folder/test3-folder/', '');
+
+        $params = array(
+            'prefix' => 'test-folder/',
+            'delimiter' => '/'
+        );
+        $response = $this->_amazon->getObjectsAndPrefixesByBucket($this->_bucket, $params);
+
         $this->assertEquals($response['objects'][0],'test-folder/test1');
         $this->assertEquals($response['prefixes'][0],'test-folder/test2-folder/');
     }
