@@ -11,7 +11,8 @@
 namespace ZendServiceTest\Amazon\S3;
 
 use ZendService\Amazon\S3;
-use ZendService\Amazon\S3\Exception\InvalidArgumentException;
+use InvalidArgumentException;
+use RuntimeException;
 use Zend\Http\Response;
 
 /**
@@ -284,7 +285,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
         $filedir = __DIR__."/_files/";
 
         $this->setExpectedException(
-            'ZendService\Amazon\Sqs\Exception\RuntimeException',
+            'RuntimeException',
             'Cannot read file ' . $filedir."nosuchfile");
 
         $this->_amazon->putFile($filedir."nosuchfile", $this->_bucket."/zftestfile");
@@ -300,7 +301,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
         $filedir = __DIR__."/_files/";
         try {
             $this->_amazon->putFile($filedir."nosuchfile", $this->_bucket."/zftestfile");
-        } catch (\ZendService\Amazon\Sqs\Exception\RuntimeException $e) {
+        } catch (RuntimeException $e) {
             $this->assertFalse($this->_amazon->isObjectAvailable($this->_bucket."/zftestfile"));
             return;
         }
