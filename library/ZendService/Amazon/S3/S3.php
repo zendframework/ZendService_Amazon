@@ -174,14 +174,25 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
     /**
      * Checks if a given bucket name is available
      *
+     * To determine whether a bucket name exists using REST, use HEAD, specify the name of the bucket, and set max-keys to 0.
+     * http://docs.amazonwebservices.com/AmazonS3/2006-03-01/dev/UsingBucket.html
+     *
+     * Most common responses:
+     * HTTP 200 OK: Success -- you own the bucket or have permission to access it
+     * HTTP 403 Forbidden: AccessDenied -- someone else owns the bucket
+     * HTTP 404 Not Found: NoSuchBucket -- bucket is not available
+     * For full list, see: http://docs.amazonwebservices.com/AmazonS3/2006-03-01/API/ErrorResponses.html
+     *
      * @param  string $bucket
      * @return boolean
      */
     public function isBucketAvailable($bucket)
     {
+        $this->_validBucketName($bucket);
+
         $response = $this->_makeRequest('HEAD', $bucket, array('max-keys'=>0));
 
-        return ($response->getStatusCode() != 404);
+        return ($response->getStatusCode() == 200);
     }
 
     /**

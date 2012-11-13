@@ -94,6 +94,30 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test bucket availability
+     */
+    public function testIsBucketAvailable()
+    {
+        $this->assertFalse(
+            $this->_amazon->isBucketAvailable($this->_bucket),
+            "Bucket should not be available before it's created."
+        );
+        $this->assertTrue(
+            $this->_amazon->createBucket($this->_bucket),
+            "Creating bucket should work."
+        );
+        $this->assertTrue(
+            $this->_amazon->isBucketAvailable($this->_bucket),
+            "Bucket should now be available."
+        );
+
+        $this->assertFalse(
+            $this->_amazon->isBucketAvailable(uniqid('zftest.nonexisting-', true)),
+            "That bucket really shouldn't exist."
+        );
+    }
+
+    /**
      * Test creating object
      *
      * @return void
@@ -363,41 +387,41 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
     public function testCreateBucketWithBadName()
     {
         $this->setExpectedException(
-            'ZendService\Amazon\Sqs\Exception\InvalidArgumentException',
-            'Bucket name "This is a Very Bad Name" contains invalid characters');
-        $this->_amazon->createBucket("This is a Very Bad Name");
+            'InvalidArgumentException',
+            'Bucket name "VERY.BAD.NAME" contains invalid characters');
+        $this->_amazon->createBucket("VERY.BAD.NAME");
     }
 
     public function testBucketAvailabilityWithBadName()
     {
         $this->setExpectedException(
-            '\Zend\Http\Client\Adapter\Exception',
-            'Unable to Connect to tcp://This is a Very Bad Name.s3.amazonaws.com:80');
-        $this->_amazon->isBucketAvailable("This is a Very Bad Name");
+            'InvalidArgumentException',
+            'Bucket name "VERY.BAD.NAME" contains invalid characters');
+        $this->_amazon->isBucketAvailable("VERY.BAD.NAME");
     }
 
     public function testPutObjectWithBadName()
     {
         $this->setExpectedException(
-            'ZendService\Amazon\Sqs\Exception\InvalidArgumentException',
-            'Bucket name "This is a Very Bad Name" contains invalid characters');
-        $this->_amazon->putObject("This is a Very Bad Name/And It Gets Worse", "testdata");
+            'InvalidArgumentException',
+            'Bucket name "VERY.BAD.NAME" contains invalid characters');
+        $this->_amazon->putObject("VERY.BAD.NAME/And It Gets Worse", "testdata");
     }
 
     public function testGetObjectWithBadName()
     {
         $this->setExpectedException(
-            'ZendService\Amazon\Sqs\Exception\InvalidArgumentException',
-            'Bucket name "This is a Very Bad Name" contains invalid characters');
-        $this->_amazon->getObject("This is a Very Bad Name/And It Gets Worse");
+            'InvalidArgumentException',
+            'Bucket name "VERY.BAD.NAME" contains invalid characters');
+        $this->_amazon->getObject("VERY.BAD.NAME/And It Gets Worse");
     }
 
     public function testGetInfoWithBadName()
     {
         $this->setExpectedException(
-            'ZendService\Amazon\Sqs\Exception\InvalidArgumentException',
-            'Bucket name "This is a Very Bad Name" contains invalid characters');
-        $this->_amazon->getInfo("This is a Very Bad Name/And It Gets Worse");
+            'InvalidArgumentException',
+            'Bucket name "VERY.BAD.NAME" contains invalid characters');
+        $this->_amazon->getInfo("VERY.BAD.NAME/And It Gets Worse");
     }
 
     public function testSetEndpointWithBadName()
@@ -405,7 +429,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException(
             'ZendService\Amazon\Sqs\Exception\InvalidArgumentException',
             'Invalid endpoint supplied');
-        $this->_amazon->setEndpoint("This is a Very Bad Name/And It Gets Worse");
+        $this->_amazon->setEndpoint("//");
     }
 
     public function testBucketNameIsTooShort()
