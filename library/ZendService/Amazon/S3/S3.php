@@ -42,6 +42,11 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      */
     protected $_endpoint;
 
+    private $lastThrottle = null;
+
+    // terms of use compliance: no more than one query per second
+    const S3_REQUEST_THROTTLE_TIME = 1001;
+
     const S3_ENDPOINT = 's3.amazonaws.com';
 
     const S3_ACL_PRIVATE = 'private';
@@ -693,14 +698,14 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
 
         do {
             $retry                = false;
-            $this->lastResponse   = $client->send();
+            $this->lastResponse   = $this->throttle(array($client, 'send'));
             $responseCode         = $this->lastResponse->getStatusCode();
 
             // Some 5xx errors are expected, so retry automatically
             if ($responseCode >= 500 && $responseCode < 600 && $retryCount <= 5) {
                 $retry = true;
                 $retryCount++;
-                sleep($retryCount / 4 * $retryCount);
+                sleep(($retryCount / 4 * $retryCount));
             } elseif ($responseCode == 307) {
                 // Need to redirect, new S3 endpoint given
                 // This should never happen as Zend_Http_Client will redirect automatically
@@ -710,6 +715,30 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
         } while ($retry);
 
         return $this->lastResponse;
+    }
+
+    /**
+     * Make sure calls are throttled with a minimum time interval $throttleTime
+     *
+     * @param int $throttleTime Max. microseconds to throttle between calls
+     */
+    public function throttle(Callable $callback, $params = array(), $throttleTime = 1000)
+    {
+        $now = microtime(true);
+
+        if ($this->lastThrottle === null) {
+            $this->lastThrottle = $now - $throttleTime;
+        }
+
+        $sleepySecs = $now - ($this->lastThrottle + $throttleTime);
+
+        if ($sleepySecs > 0) {
+            printf("Throttling for %3.4f microseconds...\n", 1000 * $sleepySecs);
+            usleep(1000 * $sleepySecs);
+        }
+
+        $this->lastThrottle = $now;
+        return call_user_func_array($callback, $params);
     }
 
     /**
