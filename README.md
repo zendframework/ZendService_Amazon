@@ -1,4 +1,6 @@
-ZendService\Amazon component
+### ZendService\Amazon component
+
+Master: [![Build Status](https://secure.travis-ci.org/zendframework/ZendService_Amazon.png?branch=master)](http://travis-ci.org/zendframework/ZendService_Amazon)
 
 You can install using:
 
