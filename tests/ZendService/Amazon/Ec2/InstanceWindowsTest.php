@@ -225,4 +225,3 @@ class InstanceWindowsTest extends \PHPUnit_Framework_TestCase
     }
 
 }
-
