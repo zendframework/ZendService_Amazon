@@ -467,7 +467,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
     {
         $endpoint = $this->_amazon->getEndpoint();
         $this->_amazon->setEndpoint('https://s3.amazonaws.com');
-        $this->assertEquals('https://s3.amazonaws.com', $this->_amazon->getEndpoint()->generate());
+        $this->assertEquals('https://s3.amazonaws.com', $this->_amazon->getEndpoint()->toString());
         $this->_amazon->createBucket($this->_bucket);
         $this->_amazon->putObject($this->_bucket."/zftest", "testdata");
         $this->assertEquals("testdata", $this->_amazon->getObject($this->_bucket."/zftest"));
