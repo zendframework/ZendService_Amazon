@@ -56,7 +56,7 @@ class TestAmazonAbstract extends \ZendService\Amazon\Ec2\AbstractEc2
 
     public function returnRegion()
     {
-        return self::$_region;
+        return $this->_region;
     }
 
     public function testSign($params)
