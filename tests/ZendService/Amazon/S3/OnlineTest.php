@@ -11,8 +11,6 @@
 namespace ZendServiceTest\Amazon\S3;
 
 use ZendService\Amazon\S3;
-use InvalidArgumentException;
-use RuntimeException;
 use Zend\Http\Response;
 
 /**
@@ -286,7 +284,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
         $filedir = __DIR__."/_files/";
 
         $this->setExpectedException(
-            'RuntimeException',
+            'ZendService\Amazon\S3\Exception\RuntimeException',
             'Cannot read file ' . $filedir."nosuchfile");
 
         $this->_amazon->putFile($filedir."nosuchfile", $this->_bucket."/zftestfile");
@@ -302,7 +300,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
         $filedir = __DIR__."/_files/";
         try {
             $this->_amazon->putFile($filedir."nosuchfile", $this->_bucket."/zftestfile");
-        } catch (RuntimeException $e) {
+        } catch (S3\Exception\RuntimeException $e) {
             $this->assertFalse($this->_amazon->isObjectAvailable($this->_bucket."/zftestfile"));
             return;
         }
@@ -363,7 +361,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
     public function testCreateBucketWithBadName()
     {
         $this->setExpectedException(
-            'InvalidArgumentException',
+            'ZendService\Amazon\S3\Exception\InvalidArgumentException',
             'Bucket name "This is a Very Bad Name" contains invalid characters');
         $this->_amazon->createBucket("This is a Very Bad Name");
     }
@@ -379,7 +377,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
     public function testPutObjectWithBadName()
     {
         $this->setExpectedException(
-            'InvalidArgumentException',
+            'ZendService\Amazon\S3\Exception\InvalidArgumentException',
             'Bucket name "This is a Very Bad Name" contains invalid characters');
         $this->_amazon->putObject("This is a Very Bad Name/And It Gets Worse", "testdata");
     }
@@ -387,7 +385,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
     public function testGetObjectWithBadName()
     {
         $this->setExpectedException(
-            'InvalidArgumentException',
+            'ZendService\Amazon\S3\Exception\InvalidArgumentException',
             'Bucket name "This is a Very Bad Name" contains invalid characters');
         $this->_amazon->getObject("This is a Very Bad Name/And It Gets Worse");
     }
@@ -395,7 +393,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
     public function testGetInfoWithBadName()
     {
         $this->setExpectedException(
-            'InvalidArgumentException',
+            'ZendService\Amazon\S3\Exception\InvalidArgumentException',
             'Bucket name "This is a Very Bad Name" contains invalid characters');
         $this->_amazon->getInfo("This is a Very Bad Name/And It Gets Worse");
     }
@@ -403,7 +401,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
     public function testSetEndpointWithBadName()
     {
         $this->setExpectedException(
-            'InvalidArgumentException',
+            'ZendService\Amazon\S3\Exception\InvalidArgumentException',
             'Invalid endpoint supplied');
         $this->_amazon->setEndpoint("This is a Very Bad Name/And It Gets Worse");
     }
@@ -411,7 +409,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
     public function testBucketNameIsTooShort()
     {
         $this->setExpectedException(
-            'InvalidArgumentException',
+            'ZendService\Amazon\S3\Exception\InvalidArgumentException',
             sprintf('Bucket name "%s" must be between 3 and 255 characters long', 'xx'));
         $this->_amazon->createBucket('xx');
     }
@@ -420,7 +418,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
     {
         $bucketName = str_repeat('x', 256);
         $this->setExpectedException(
-            'InvalidArgumentException',
+            'ZendService\Amazon\S3\Exception\InvalidArgumentException',
             sprintf('Bucket name "%s" must be between 3 and 255 characters long', $bucketName));
         $this->_amazon->createBucket($bucketName);
     }
@@ -483,7 +481,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
     public function testBucketIPMaskException()
     {
         $this->setExpectedException(
-            'InvalidArgumentException',
+            'ZendService\Amazon\S3\Exception\InvalidArgumentException',
             'Bucket name "127.0.0.1" cannot be an IP address');
         $this->_amazon->createBucket("127.0.0.1");
     }
@@ -497,7 +495,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
     {
         try {
             $this->_amazon->createBucket("127.0.0.1");
-        } catch(InvalidArgumentException $e) {
+        } catch(S3\Exception\InvalidArgumentException $e) {
             $this->_amazon->createBucket("123-456-789-123");
             $this->assertTrue($this->_amazon->isBucketAvailable("123-456-789-123"));
             $this->_amazon->removeBucket("123-456-789-123");
