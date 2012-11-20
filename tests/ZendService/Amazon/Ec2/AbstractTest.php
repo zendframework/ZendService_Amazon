@@ -25,18 +25,18 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
 {
     public function testSetRegion()
     {
-        TestAmazonAbstract::setRegion('eu-west-1');
-
-        $class = new TestAmazonAbstract('TestAccessKey', 'TestSecretKey');
-        $this->assertEquals('eu-west-1', $class->returnRegion());
+        $ec2 = new TestAmazonAbstract('TestAccessKey', 'TestSecretKey');
+        $ec2->setRegion('eu-west-1');
+        $this->assertEquals('eu-west-1', $ec2->returnRegion());
     }
 
     public function testSetInvalidRegionThrowsException()
     {
+        $ec2 = new TestAmazonAbstract('TestAccessKey', 'TestSecretKey');
         $this->setExpectedException(
             'ZendService\Amazon\Ec2\Exception\InvalidArgumentException',
             'Invalid Amazon Ec2 Region');
-        TestAmazonAbstract::setRegion('eu-west-1a');
+        $ec2->setRegion('eu-west-1a');
     }
 
     public function testSignParamsWithSpaceEncodesWithPercentInsteadOfPlus()
@@ -56,7 +56,7 @@ class TestAmazonAbstract extends \ZendService\Amazon\Ec2\AbstractEc2
 
     public function returnRegion()
     {
-        return self::$_region;
+        return $this->_region;
     }
 
     public function testSign($params)
