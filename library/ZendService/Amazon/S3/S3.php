@@ -706,7 +706,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
             if ($responseCode >= 500 && $responseCode < 600 && $retryCount <= 5) {
                 $retry = true;
                 $retryCount++;
-                sleep(($retryCount / 4 * $retryCount));
+                sleep($retryCount / 4 * $retryCount);
             } elseif ($responseCode == 307) {
                 // Need to redirect, new S3 endpoint given
                 // This should never happen as Zend_Http_Client will redirect automatically
