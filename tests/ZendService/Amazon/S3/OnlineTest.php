@@ -49,8 +49,8 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('Zend_Service_Amazon online tests are not enabled');
         }
         $this->_amazon = new S3\S3(constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ACCESSKEYID'),
-                                                    constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_SECRETKEY')
-                                                    );
+                                   constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_SECRETKEY')
+        );
         $this->_nosuchbucket = "nonexistingbucketnamewhichnobodyshoulduse";
         $this->_httpClientAdapterSocket = new \Zend\Http\Client\Adapter\Socket();
 
@@ -174,7 +174,8 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("testdata", $stream_read, 'Downloaded stream does not seem to match!');
         $this->assertEquals("testdata", $file_read, 'Downloaded file does not seem to match!');
     }
-/**
+
+    /**
      * Test getting info
      *
      * @return void
@@ -331,7 +332,6 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
         $this->fail('Expected exception not thrown');
     }
 
-
     /**
      * @depends testCreateBucket
      * @depends testCreateObject
@@ -382,7 +382,6 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
         $this->_amazon->putObject($this->_bucket."/это тоже тест!", "testdata123");
         $this->assertEquals("testdata123", $this->_amazon->getObject($this->_bucket."/это тоже тест!"));
     }
-
 
     public function testCreateBucketWithBadName()
     {
@@ -471,7 +470,6 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
      * Test bucket name with /'s and encoding
      *
      * ZF-6855
-     *
      */
     public function testObjectPath()
     {
@@ -493,7 +491,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
     {
         $endpoint = $this->_amazon->getEndpoint();
         $this->_amazon->setEndpoint('https://s3.amazonaws.com');
-        $this->assertEquals('https://s3.amazonaws.com', $this->_amazon->getEndpoint()->generate());
+        $this->assertEquals('https://s3.amazonaws.com', $this->_amazon->getEndpoint()->toString());
         $this->_amazon->createBucket($this->_bucket);
         $this->_amazon->putObject($this->_bucket."/zftest", "testdata");
         $this->assertEquals("testdata", $this->_amazon->getObject($this->_bucket."/zftest"));
@@ -533,7 +531,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *  @group ZF-7773
+     * @group ZF-7773
      */
     public function testGetObjectsByBucketParams()
     {
