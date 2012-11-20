@@ -42,10 +42,11 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      */
     protected $_endpoint;
 
-    private $lastThrottle = null;
+    private static $lastThrottle = null;
 
-    // terms of use compliance: no more than one query per second
-    const S3_REQUEST_THROTTLE_TIME = 1001;
+    // Amazon terms of use compliance: no more than one query per second
+    // Make it slightly more than one second to account for possible one second timing precision on the server
+    const S3_REQUEST_THROTTLE_TIME = 1.001;
 
     const S3_ENDPOINT = 's3.amazonaws.com';
 
@@ -720,24 +721,28 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
     /**
      * Make sure calls are throttled with a minimum time interval $throttleTime
      *
-     * @param int $throttleTime Max. microseconds to throttle between calls
+     * @param callback $callback The function to be throttled
+     * @param array $params Parameters for the callback
+     * @param int $throttleTime Maximum seconds to throttle between calls
      */
-    public function throttle(Callable $callback, $params = array(), $throttleTime = 1000)
+    public function throttle($callback, $params = array(), $throttleTime = 1.0)
     {
-        $now = microtime(true);
-
-        if ($this->lastThrottle === null) {
-            $this->lastThrottle = $now - $throttleTime;
+        if (self::$lastThrottle) {
+            $last = self::$lastThrottle;
+        } else {
+            $last = microtime(true);
+            self::$lastThrottle = $last - $throttleTime; // Do not throttle for the first time
         }
 
-        $sleepySecs = $now - ($this->lastThrottle + $throttleTime);
+        $sleepySecs = (self::$lastThrottle + $throttleTime) - $last;
 
         if ($sleepySecs > 0) {
-            printf("Throttling for %3.4f microseconds...\n", 1000 * $sleepySecs);
-            usleep(1000 * $sleepySecs);
+            // @TODO warn with monolog?
+            // printf("Throttling for %3.4f milliseconds...\n", 1e3 * $sleepySecs);
+            usleep(1e6 * $sleepySecs);
         }
 
-        $this->lastThrottle = $now;
+        self::$lastThrottle = microtime(true);
         return call_user_func_array($callback, $params);
     }
 
