@@ -323,9 +323,9 @@ class Sqs extends Amazon\AbstractAmazon
             $client->resetParameters();
             $client->setParameterGet($params);
 
-            $response = $client->request('GET');
+            $response = $client->send();
 
-            $response_code = $response->getStatus();
+            $response_code = $response->getStatusCode();
 
             // Some 5xx errors are expected, so retry automatically
             if ($response_code >= 500 && $response_code < 600 && $retry_count <= 5) {
