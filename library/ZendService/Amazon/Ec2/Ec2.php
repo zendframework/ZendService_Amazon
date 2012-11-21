@@ -71,4 +71,3 @@ class Ec2
         return new $class($key, $secretKey);
     }
 }
-

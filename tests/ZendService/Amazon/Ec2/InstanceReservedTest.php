@@ -179,4 +179,3 @@ class InstanceReservedTest extends \PHPUnit_Framework_TestCase
     }
 
 }
-

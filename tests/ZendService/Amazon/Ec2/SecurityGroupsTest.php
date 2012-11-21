@@ -455,5 +455,3 @@ class SecurityGroupsTest extends \PHPUnit_Framework_TestCase
     }
 
 }
-
-
