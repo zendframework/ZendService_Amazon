@@ -127,4 +127,3 @@ class RegionTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($arrRegion, $response);
     }
 }
-
