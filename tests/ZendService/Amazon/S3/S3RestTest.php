@@ -273,4 +273,3 @@ BODY;
         $this->amazon->_validBucketName('iam.aninvalid.-bucketname');
     }
 }
-

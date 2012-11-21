@@ -515,4 +515,3 @@ class Instance extends AbstractEc2
     }
 
 }
-
