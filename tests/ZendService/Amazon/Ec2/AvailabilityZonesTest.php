@@ -119,4 +119,3 @@ class AvailabilityZonesTest extends \PHPUnit_Framework_TestCase
         }
     }
 }
-
