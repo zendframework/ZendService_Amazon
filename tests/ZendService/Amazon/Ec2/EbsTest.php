@@ -560,4 +560,3 @@ class EbsTest extends \PHPUnit_Framework_TestCase
     }
 
 }
-

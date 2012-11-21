@@ -152,4 +152,3 @@ class S3Test extends \PHPUnit_Framework_TestCase
     }
 
 }
-
