@@ -79,7 +79,7 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
     public function __construct($accessKey = null, $secretKey = null, $region = null, HttpClient $httpClient = null)
     {
         parent::__construct($accessKey, $secretKey, $httpClient);
-        self::setRegion($region ?: $this->_region ?: self::$_defaultRegion);
+        $this->setRegion($region ?: self::$_defaultRegion);
     }
 
     /**
