@@ -162,8 +162,8 @@ BODY;
             ->with('/');
 
         $this->httpClient->expects($this->once())
-             ->method('setUri')
-            ->with($this->uriHttp);
+            ->method('setUri')
+            ->with((string) $this->uriHttp);
 
         $this->httpClient->expects($this->once())
             ->method('setMethod')
