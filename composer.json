@@ -14,7 +14,7 @@
     "license": "BSD-3-Clause",
     "autoload": {
         "psr-0": {
-            "ZendService": "library/"
+            "ZendService\\Amazon\\": "library/"
         }
     },
     "repositories": [
