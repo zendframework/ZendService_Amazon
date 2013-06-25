@@ -66,17 +66,17 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
      * @var array
      */
     protected static $_validEc2Regions = array(
-        'us-east-1', 'us-west-2', 'us-west-1', 'eu-west-1', 
-        'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1', 
+        'us-east-1', 'us-west-2', 'us-west-1', 'eu-west-1',
+        'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1',
         'sa-east-1');
 
     /**
      * Constructor
      *
-     * @param null $accessKey Override the default Access Key
-     * @param null $secretKey Override the default Secret Key
-     * @param null $region Sets the AWS Region
-     * @param HttpClient $httpClient  Override the default HTTP Client
+     * @param  null                               $accessKey  Override the default Access Key
+     * @param  null                               $secretKey  Override the default Secret Key
+     * @param  null                               $region     Sets the AWS Region
+     * @param  HttpClient                         $httpClient Override the default HTTP Client
      * @throws Exception\InvalidArgumentException
      */
     public function __construct($accessKey = null, $secretKey = null, $region = null, HttpClient $httpClient = null)
@@ -89,12 +89,12 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
      * Set which region you are working in.  It will append the
      * end point automatically
      *
-     * @param string $region
+     * @param  string                             $region
      * @throws Exception\InvalidArgumentException
      */
     public function setRegion($region)
     {
-        if(in_array(strtolower($region), self::$_validEc2Regions, true)) {
+        if (in_array(strtolower($region), self::$_validEc2Regions, true)) {
             $this->_region = $region;
         } else {
             throw new Exception\InvalidArgumentException('Invalid Amazon Ec2 Region');
@@ -114,7 +114,7 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
     /**
      * Sends a HTTP request to the queue service using Zend_Http_Client
      *
-     * @param array $params List of parameters to send with the request
+     * @param  array                      $params List of parameters to send with the request
      * @return Response
      * @throws Exception\RuntimeException
      */
@@ -138,7 +138,6 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
             $request->setParameterPost($params);
 
             $httpResponse = $request->send();
-
 
         } catch (\Zend\Http\Client\Exception\ExceptionInterface $zhce) {
             $message = 'Error in request to AWS service: ' . $zhce->getMessage();
@@ -196,7 +195,7 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
      *    values before constructing this string. Do not use any separator
      *    characters when appending strings.
      *
-     * @param array  $parameters the parameters for which to get the signature.
+     * @param array $parameters the parameters for which to get the signature.
      *
      * @return string the signed data.
      */
@@ -210,7 +209,7 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
         unset($parameters['Signature']);
 
         $arrData = array();
-        foreach($parameters as $key => $value) {
+        foreach ($parameters as $key => $value) {
             $arrData[] = $key . '=' . str_replace("%7E", "~", rawurlencode($value));
         }
 
@@ -224,7 +223,7 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
     /**
      * Checks for errors responses from Amazon
      *
-     * @param Response $response the response object to check.
+     * @param  Response                   $response the response object to check.
      * @throws Exception\RuntimeException if one or more errors are
      *         returned from Amazon.
      */
