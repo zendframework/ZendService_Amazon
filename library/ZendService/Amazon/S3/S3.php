@@ -95,9 +95,9 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * @param string $secretKey
      * @param string $region
      */
-    public function __construct($accessKey = null, $secretKey = null, $region = null)
+    public function __construct($accessKey = null, $secretKey = null, HttpClient $httpClient = null)
     {
-        parent::__construct($accessKey, $secretKey, $region);
+        parent::__construct($accessKey, $secretKey, $httpClient);
 
         $this->setEndpoint('http://'.self::S3_ENDPOINT);
     }
