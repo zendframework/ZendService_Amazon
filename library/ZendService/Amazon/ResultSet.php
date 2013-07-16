@@ -70,7 +70,7 @@ class ResultSet implements \SeekableIterator
     public function totalResults()
     {
         $result = $this->_xpath->query('//az:TotalResults/text()');
-        return (int) $result->item(0)->data;
+        return (int)(isset($result->item(0)->data) ? $result->item(0)->data : 0);
     }
 
     /**
@@ -81,7 +81,7 @@ class ResultSet implements \SeekableIterator
     public function totalPages()
     {
         $result = $this->_xpath->query('//az:TotalPages/text()');
-        return (int) $result->item(0)->data;
+        return (int)(isset($result->item(0)->data) ? $result->item(0)->data : 0);
     }
 
     /**
