@@ -330,7 +330,7 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * NOTICE error does not occur even if RequestThrottled error happen in totaoResults method.
+     * NOTICE error does not occur even if RequestThrottled error happen in totalResults method.
      */
     public function testNoticeErrorDoesNotHappenInTotalResults()
     {
