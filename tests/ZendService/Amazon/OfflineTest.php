@@ -328,4 +328,22 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('ZendService\Amazon\Exception\ExceptionInterface');
         $result->current();
     }
+
+    /**
+     * NOTICE error does not occur even if RequestThrottled error happen.
+     */
+    public function testNoticeErrorDoesNotHappenInTotalResults()
+    {
+        $xml = file_get_contents(__DIR__ . '/_files/amazon-response-request-throttled-error.xml');
+        $dom = new \DOMDocument();
+        $dom->loadXML($xml);
+
+        $result = new Amazon\ResultSet($dom);
+
+        try {
+            $result->totalResults();
+        } catch (\PHPUnit_Framework_Error_Notice $e) {
+            $this->fail('totalResult method should not be occurred NOTICE error.');
+        }
+    }
 }
