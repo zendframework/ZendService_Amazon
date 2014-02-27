@@ -13,6 +13,7 @@ namespace ZendService\Amazon\SimpleDb;
 use DOMDocument;
 use DOMXPath;
 use Zend\Http;
+use ZendXml\Security as XmlSecurity;
 
 /**
  * @category   Zend
@@ -93,7 +94,7 @@ class Response
             $body = false;
         }
 
-        return simplexml_load_string($body);
+        return XmlSecurity::scan($body);
     }
 
     /**

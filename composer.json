@@ -28,7 +28,8 @@
         "zendframework/zend-http": ">=2.0.0",
         "zendframework/zendrest": ">=2.0.0",
         "zendframework/zend-crypt": ">=2.0.0",
-        "zendframework/zend-json": ">=2.0.0"
+        "zendframework/zend-json": ">=2.0.0",
+        "zendframework/zendxml": "dev-master"
     },
     "require-dev": {
         "zendframework/zend-i18n": ">=2.0.0"
