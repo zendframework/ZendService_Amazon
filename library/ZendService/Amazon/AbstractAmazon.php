@@ -54,6 +54,11 @@ abstract class AbstractAmazon
      * @var string attribute for preserving the date object
      */
     const DATE_PRESERVE_KEY = 'preserve';
+    
+    /**
+     * @var string Format to use for Date header
+     */
+    const AMAZON_DATE_FORMAT='D, d M Y H:i:s \G\M\T';
 
     /**
      * Constructor
@@ -156,9 +161,9 @@ abstract class AbstractAmazon
     }
 
     /**
-     * Method to get the request date - returns gmdate(DATE_RFC1123, time())
+     * Method to get the request date - returns date in GMT to self::AMAZON_DATE_FORMAT format
      *
-     *     "Tue, 15 May 2012 15:18:31 +0000"
+     *     "Tue, 15 May 2012 15:18:31 GMT"
      *
      * Unless setRequestDate was set (as when testing the service)
      *
@@ -174,7 +179,9 @@ abstract class AbstractAmazon
                 $this->requestDate = null;
             }
         }
-        return $date->format(DateTime::RFC1123);
+        
+        $date->setTimezone(new \DateTimeZone('GMT'));
+        return $date->format(self::AMAZON_DATE_FORMAT);
     }
 
     /**
