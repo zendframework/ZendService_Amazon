@@ -79,7 +79,7 @@ class Attribute
     public function addValue($value)
     {
         if (is_array($value)) {
-             $this->_values += $value;
+            $this->_values += $value;
         } else {
             $this->_values[] = $value;
         }

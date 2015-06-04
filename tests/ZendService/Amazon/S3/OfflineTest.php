@@ -11,7 +11,6 @@
 namespace ZendServiceTest\Amazon\S3;
 
 use ZendService\Amazon\S3\S3;
-use ReflectionProperty;
 
 /**
  * @category   Zend
