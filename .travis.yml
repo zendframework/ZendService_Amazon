@@ -10,17 +10,10 @@ matrix:
   fast_finish: true
   include:
     - php: 5.3
-      env:
-        - DISABLE_XDEBUG=true
     - php: 5.4
-      env:
-        - DISABLE_XDEBUG=true
     - php: 5.5
-      env:
-        - DISABLE_XDEBUG=true
     - php: 5.6
       env:
-        - DISABLE_XDEBUG=true
         - EXECUTE_CS_CHECK=true
     - php: 7
     - php: hhvm
@@ -29,7 +22,7 @@ matrix:
     - php: hhvm
 
 before_install:
- - if [[ $DISABLE_XDEBUG == 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
+ - phpenv config-rm xdebug.ini || return 0
  - composer self-update
  - cp tests/TestConfiguration.php.travis tests/TestConfiguration.php
 

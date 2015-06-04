@@ -365,11 +365,11 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
             $isLast = $page->isLast();
             if (!$isLast) {
                 // The old isLast() assertTrue failed in full suite runs. Token often
-              // decodes to 'TestsZendServiceAmazonSimpleDbDomain_testPutAttributes'
-              // which no longer exists. Instead of a plain assertTrue, which seemed
-              // to pass only in single-case runs, we'll make sure the token's
-              // presence is worth a negative.
-              $token = $page->getToken();
+                // decodes to 'TestsZendServiceAmazonSimpleDbDomain_testPutAttributes'
+                // which no longer exists. Instead of a plain assertTrue, which seemed
+                // to pass only in single-case runs, we'll make sure the token's
+                // presence is worth a negative.
+                $token = $page->getToken();
                 if ($token) {
                     $tokenDomainName = base64_decode($token);
                     if (false !== strpos($tokenDomainName, $this->_testDomainNamePrefix)) {
