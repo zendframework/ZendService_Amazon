@@ -36,7 +36,7 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
         $times = array_map($throttler, range(0, $limit));
 
         $diffs = array_map(
-            function  ($a, $b) { return $a - $b; },
+            function ($a, $b) { return $a - $b; },
             array_slice($times, 1, count($times)),
             array_slice($times, 0, count($times) - 1)
         );
