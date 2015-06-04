@@ -45,7 +45,7 @@ class Attribute
      *
      * @return string
      */
-    public function getItemName ()
+    public function getItemName()
     {
         return $this->_itemName;
     }
@@ -65,7 +65,7 @@ class Attribute
      *
      * @return string
      */
-    public function getName ()
+    public function getName()
     {
         return $this->_name;
     }
