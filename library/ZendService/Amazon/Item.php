@@ -46,17 +46,17 @@ class Item
     public $AverageRating;
 
     /**
-     * @var string
+     * @var Image
      */
     public $SmallImage;
 
     /**
-     * @var string
+     * @var Image
      */
     public $MediumImage;
 
     /**
-     * @var string
+     * @var Image
      */
     public $LargeImage;
 
