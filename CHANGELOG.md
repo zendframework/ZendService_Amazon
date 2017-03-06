@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - [#63](https://github.com/zendframework/ZendService_Amazon/pull/63) added
   support for zend-crypt v3 and zend-json v3
+- [#65](https://github.com/zendframework/ZendService_Amazon/pull/65) added php 7
 
 ### Deprecated
 
@@ -15,8 +16,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- [#63](https://github.com/zendframework/ZendService_Amazon/pull/63) dropped
-  php <5.5 support
+- [#65](https://github.com/zendframework/ZendService_Amazon/pull/65) dropped
+  php <5.6 support
 
 ### Fixed
 
