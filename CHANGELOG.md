@@ -22,4 +22,6 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - [#32](https://github.com/zendframework/ZendService_Amazon/pull/48) added
   missing use statement
+- [#49](https://github.com/zendframework/ZendService_Amazon/pull/49) fixed date
+  format mismatch with signature in S3
 
