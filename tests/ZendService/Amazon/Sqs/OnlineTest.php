@@ -10,6 +10,8 @@
 
 namespace ZendServiceTest\Amazon\Sqs;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @category   Zend
  * @package    Zend_Service_Amazon
@@ -18,7 +20,7 @@ namespace ZendServiceTest\Amazon\Sqs;
  * @group      Zend_Service_Amazon
  * @group      Zend_Service_Amazon_Sqs
  */
-class OnlineTest extends \PHPUnit_Framework_TestCase
+class OnlineTest extends TestCase
 {
     /**
      * Reference to Amazon service consumer object

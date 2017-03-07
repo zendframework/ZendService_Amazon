@@ -32,7 +32,7 @@
     },
     "require-dev": {
         "fabpot/php-cs-fixer": "~1.7.0",
-        "phpunit/phpunit": "~4.0",
+        "phpunit/phpunit": "^6.0.8 || ^5.7.15",
         "zendframework/zend-i18n": "~2.0"
     },
     "suggest": {

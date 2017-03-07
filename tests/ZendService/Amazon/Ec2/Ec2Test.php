@@ -10,7 +10,9 @@
 
 namespace ZendServiceTest\Amazon\Ec2;
 
+use PHPUnit\Framework\TestCase;
 use ZendService\Amazon\Ec2;
+use ZendService\Amazon\Ec2\Exception\RuntimeException;
 
 /**
  * ZendService\Amazon\Ec2 test case.
@@ -22,7 +24,7 @@ use ZendService\Amazon\Ec2;
  * @group      Zend_Service_Amazon
  * @group      Zend_Service_Amazon_Ec2
  */
-class Ec2Test extends \PHPUnit_Framework_TestCase
+class Ec2Test extends TestCase
 {
 
     /**
@@ -74,10 +76,7 @@ class Ec2Test extends \PHPUnit_Framework_TestCase
 
     public function testFactoryWillFailInvalidSection()
     {
-        try {
-            $object = Ec2\Ec2::factory('avaavaavailabilityzones', 'access_key', 'secret_access_key');
-            $this->fail('RuntimeException was expected but not thrown');
-        } catch (Ec2\Exception\RuntimeException $e) {
-        }
+        $this->expectException(RuntimeException::class);
+        $object = Ec2\Ec2::factory('avaavaavailabilityzones', 'access_key', 'secret_access_key');
     }
 }

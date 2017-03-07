@@ -10,7 +10,10 @@
 
 namespace ZendServiceTest\Amazon;
 
+use PHPUnit\Framework\TestCase;
 use ZendService\Amazon;
+use ZendService\Amazon\Exception\InvalidArgumentException;
+use ZendService\Amazon\Exception\RuntimeException;
 
 /**
  * @category   Zend
@@ -19,7 +22,7 @@ use ZendService\Amazon;
  * @group      Zend_Service
  * @group      Zend_Service_Amazon
  */
-class OnlineTest extends \PHPUnit_Framework_TestCase
+class OnlineTest extends TestCase
 {
     /**
      * Reference to Amazon service consumer object
@@ -80,9 +83,8 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
 
     public function testUnknownCountryException()
     {
-        $this->setExpectedException(
-            'ZendService\Amazon\Exception\InvalidArgumentException',
-            'Unknown country code: wrong-country-code');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown country code: wrong-country-code');
         $aws = new Amazon\Amazon(
             TESTS_ZEND_SERVICE_AMAZON_ONLINE_ACCESSKEYID,
             'wrong-country-code',
@@ -191,10 +193,8 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
      */
     public function testItemSearchExceptionCityInvalid()
     {
-        $this->setExpectedException(
-            'ZendService\Amazon\Exception\RuntimeException',
-            'The value you specified for SearchIndex is invalid.'
-        );
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('The value you specified for SearchIndex is invalid.');
         $this->_amazon->itemSearch(array(
             'SearchIndex' => 'Restaurants',
             'Keywords'    => 'seafood',
@@ -220,10 +220,8 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
      */
     public function testItemLookupExceptionAsinInvalid()
     {
-        $this->setExpectedException(
-            'ZendService\Amazon\Exception\RuntimeException',
-            'OOPS is not a valid value for ItemId. Please change this value and retry your request. (AWS.InvalidParameterValue)'
-        );
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('OOPS is not a valid value for ItemId. Please change this value and retry your request. (AWS.InvalidParameterValue)');
         $this->_amazon->itemLookup('oops');
     }
 
@@ -252,10 +250,8 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
      */
     public function testItemLookupExceptionSearchIndex()
     {
-        $this->setExpectedException(
-            'ZendService\Amazon\Exception\RuntimeException',
-            'Your request contained a restricted parameter combination.  When IdType equals ASIN, SearchIndex cannot be present.'
-        );
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Your request contained a restricted parameter combination.  When IdType equals ASIN, SearchIndex cannot be present.');
         $this->_amazon->itemLookup('oops', array('SearchIndex' => 'Books'));
     }
 
@@ -280,10 +276,8 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
      */
     public function testQueryExceptionCategoryMissing()
     {
-        $this->setExpectedException(
-            'ZendService\Amazon\Exception\RuntimeException',
-            'You must set a category before setting the search parameters'
-        );
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('You must set a category before setting the search parameters');
         $this->_query->Keywords('php');
     }
 
@@ -294,10 +288,8 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
      */
     public function testQueryExceptionCategoryInvalid()
     {
-        $this->setExpectedException(
-            'ZendService\Amazon\Exception\RuntimeException',
-            'The value you specified for SearchIndex is invalid.'
-        );
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('The value you specified for SearchIndex is invalid.');
         $this->_query->category('oops')->search();
     }
 
@@ -321,7 +313,7 @@ class OnlineTest extends \PHPUnit_Framework_TestCase
  * @group      Zend_Service
  * @group      Zend_Service_Amazon
  */
-class Skip extends \PHPUnit_Framework_TestCase
+class Skip extends TestCase
 {
     public function setUp()
     {

@@ -10,6 +10,7 @@
 
 namespace ZendServiceTest\Amazon\SimpleDb;
 
+use PHPUnit\Framework\TestCase;
 use ZendService\Amazon\SimpleDb;
 use ZendService\Amazon\SimpleDb\Exception;
 use Zend\Http\Client\Adapter\Socket;
@@ -20,7 +21,7 @@ use Zend\Http\Client\Adapter\Socket;
  * @package    ZendService\Amazon\SimpleDb
  * @subpackage UnitTests
  */
-class OnlineTest extends \PHPUnit_Framework_TestCase
+class OnlineTest extends TestCase
 {
     /**
      * Reference to Amazon service consumer object
