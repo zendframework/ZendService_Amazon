@@ -171,9 +171,9 @@ BODY;
         $this->httpClient->expects($this->once())
             ->method('setHeaders')
             ->with(array(
-                    "Date"          => "Tue, 15 May 2012 15:18:31 +0000",
+                    "Date"          => "Tue, 15 May 2012 15:18:31 GMT",
                     "Content-Type"  => "application/xml",
-                    "Authorization" => "AWS ".$accessKey.":Y+T4nZxI1wBi1Yn1BMnOK9CDiOM=",
+                    "Authorization" => "AWS ".$accessKey.":u1NQAGg+l7A7h8/HodDd4vxVzyE=",
                     ));
 
         /**
