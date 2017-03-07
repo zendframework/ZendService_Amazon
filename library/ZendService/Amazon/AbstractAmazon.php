@@ -54,7 +54,7 @@ abstract class AbstractAmazon
      * @var string attribute for preserving the date object
      */
     const DATE_PRESERVE_KEY = 'preserve';
-    
+
     /**
      * @var string Format to use for Date header
      */
@@ -179,7 +179,7 @@ abstract class AbstractAmazon
                 $this->requestDate = null;
             }
         }
-        
+
         $date->setTimezone(new \DateTimeZone('GMT'));
         return $date->format(self::AMAZON_DATE_FORMAT);
     }
