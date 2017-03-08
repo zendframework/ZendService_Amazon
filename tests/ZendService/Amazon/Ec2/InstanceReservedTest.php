@@ -10,6 +10,7 @@
 
 namespace ZendServiceTest\Amazon\Ec2;
 
+use PHPUnit\Framework\TestCase;
 use ZendService\Amazon\Ec2\ReservedInstance;
 use Zend\Http\Client as HttpClient;
 use Zend\Http\Client\Adapter\Test as HttpClientTestAdapter;
@@ -25,7 +26,7 @@ use Zend\Http\Client\Adapter\Test as HttpClientTestAdapter;
  * @group      Zend_Service_Amazon
  * @group      Zend_Service_Amazon_Ec2
  */
-class InstanceReservedTest extends \PHPUnit_Framework_TestCase
+class InstanceReservedTest extends TestCase
 {
 
     /**

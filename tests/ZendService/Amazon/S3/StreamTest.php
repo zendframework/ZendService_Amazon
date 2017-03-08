@@ -10,6 +10,8 @@
 
 namespace ZendServiceTest\Amazon\S3;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @category   Zend
  * @package    Zend_Service_Amazon_S3
@@ -18,7 +20,7 @@ namespace ZendServiceTest\Amazon\S3;
  * @group      Zend_Service_Amazon
  * @group      Zend_Service_Amazon_S3
  */
-class StreamTest extends \PHPUnit_Framework_TestCase
+class StreamTest extends TestCase
 {
     /**
      * Sets up this test case
