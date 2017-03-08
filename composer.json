@@ -42,5 +42,18 @@
         "branch-alias": {
             "dev-master": "2.0.x-dev"
         }
-    }
+    },
+    "scripts": {
+        "check": [
+            "@license-check",
+            "@cs-check",
+            "@test"
+        ],
+        "upload-coverage": "coveralls -v",
+        "cs-check": "php-cs-fixer fix -v --diff --dry-run",
+        "cs-fix": "php-cs-fixer fix -v --diff",
+        "test": "phpunit --colors=always -c ./tests",
+        "test-coverage": "phpunit --coverage-clover clover.xml -c ./tests",
+        "license-check": "true"
+}
 }
