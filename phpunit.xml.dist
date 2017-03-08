@@ -1,0 +1,19 @@
+<phpunit bootstrap="./tests/Bootstrap.php" colors="true">
+    <testsuites>
+        <testsuite name="ZendService Amazon Test Suite">
+            <directory>./tests/ZendService</directory>
+        </testsuite>
+    </testsuites>
+
+    <groups>
+        <exclude>
+            <group>disable</group>
+        </exclude>
+    </groups>
+
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./library</directory>
+        </whitelist>
+    </filter>
+</phpunit>

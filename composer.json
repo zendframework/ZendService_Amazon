@@ -52,8 +52,8 @@
         "upload-coverage": "coveralls -v",
         "cs-check": "php-cs-fixer fix -v --diff --dry-run",
         "cs-fix": "php-cs-fixer fix -v --diff",
-        "test": "phpunit --colors=always -c ./tests",
-        "test-coverage": "phpunit --coverage-clover clover.xml -c ./tests",
+        "test": "phpunit --colors=always",
+        "test-coverage": "phpunit --coverage-clover clover.xml",
         "license-check": "true"
 }
 }
