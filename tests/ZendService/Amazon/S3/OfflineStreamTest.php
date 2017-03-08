@@ -27,11 +27,9 @@ class OfflineStreamTest extends \PHPUnit_Framework_TestCase
      * Setup a fake S3 object with a fake document inside it. Return the document
      * so we can set expectations appropriately.
      *
-     * @param int $expectedChunkSize Expected chunk size in requests.
-     *
      * @return string
      */
-    protected function setUpS3($expectedChunkSize)
+    protected function setUpS3()
     {
         // Mock the S3 client:
         $s3 = $this->getMockBuilder('ZendService\Amazon\S3\S3')
@@ -39,37 +37,33 @@ class OfflineStreamTest extends \PHPUnit_Framework_TestCase
             ->setMethods(['getInfo', '_makeRequest', '_validBucketName'])
             ->getMock();
 
-        // Simulate a 500-byte file
-        $document = pack('C*', ...range(0, 255)) . pack('C*', ...range(255, 0, -1));
+        // Create fake data.
+        $document = '';
+        for ($x = 0; $x < 20; $x++) {
+            $document .= pack('C*', ...range(0, 255))
+                . pack('C*', ...range(255, 0, -1));
+        }
         $docSize = strlen($document);
         $s3->expects($this->once())->method('getInfo')
             ->will($this->returnValue(['size' => $docSize]));
 
-        $at = 1;
-        for ($pos = 0; $pos < $docSize; $pos += $expectedChunkSize) {
-            // Simulate an appropriately-sized response to the current request (and
-            // confirm that the appropriate byte range was requested):
+        $callback = function ($a, $b, $c, $headers) use ($document) {
+            // Parse values from "Bytes=x-y" string:
+            $range = explode('-', explode('=', $headers['Range'])[1]);
             $response = new Response();
             $response->setStatusCode(Response::STATUS_CODE_206);
-            $chunk = substr($document, $pos, $expectedChunkSize);
+            $chunk = substr($document, $range[0], $range[1] - $range[0] + 1);
             $response->setContent($chunk);
-
-            // Calculate the expected range parameter:
-            $endPos = $pos + $expectedChunkSize - 1;
-            if ($endPos > $docSize) {
-                $endPos = $docSize - 1;
-            }
-            $range = sprintf("bytes=%s-%s", $pos, $endPos);
-
-            // Set up expectations and simulated response for current chunk:
-            $s3->expects($this->at($at++))->method('_makeRequest')
-                ->with(
-                    $this->equalTo('GET'),
-                    $this->anything(),
-                    $this->equalTo(null),
-                    $this->equalTo(['Range' => $range])
-                )->will($this->returnValue($response));
-        }
+            return $response;
+        };
+        // Set up expectations and simulated response for current chunk:
+        $s3->expects($this->any())->method('_makeRequest')
+            ->with(
+                $this->equalTo('GET'),
+                $this->anything(),
+                $this->equalTo(null),
+                $this->anything()
+            )->will($this->returnCallback($callback));
 
         // Register the mock client so it is called for all test:// URLs:
         $s3->registerAsClient('test');
@@ -111,13 +105,18 @@ class OfflineStreamTest extends \PHPUnit_Framework_TestCase
     public function testStreamRead()
     {
         // Set up the test document:
-        $document = $this->setUpS3(500);
+        $document = $this->setUpS3();
+        $docSize = strlen($document);
 
         // Run the test:
         $stream = new S3\Stream();
         $stream->stream_open('test://foo/bar', 'r', 0, null);
         // Read document in two 500-byte chunks, make sure it is intact:
-        $final = $stream->stream_read(500) . $stream->stream_read(500);
+        $final = '';
+        $chunkSize = 500;
+        for ($requested = 0; $requested < $docSize; $requested += $chunkSize) {
+            $final .= $stream->stream_read($chunkSize);
+        }
         $this->assertEquals($document, $final);
     }
 }
