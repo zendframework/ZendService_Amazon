@@ -27,9 +27,12 @@ class OfflineStreamTest extends \PHPUnit_Framework_TestCase
      * Setup a fake S3 object with a fake document inside it. Return the document
      * so we can set expectations appropriately.
      *
+     * @param int $fileSizeTimes256 Data size in multiples of 256 bytes.
+     * @param $rangeConstraint PHPUnit constraint for Range header value
+     *
      * @return string
      */
-    protected function setUpS3()
+    protected function setUpS3($fileSizeTimes256 = 10, $rangeConstraint = null)
     {
         // Mock the S3 client:
         $s3 = $this->getMockBuilder('ZendService\Amazon\S3\S3')
@@ -37,38 +40,59 @@ class OfflineStreamTest extends \PHPUnit_Framework_TestCase
             ->setMethods(['getInfo', '_makeRequest', '_validBucketName'])
             ->getMock();
 
-        // Create fake data.
-        $document = '';
-        for ($x = 0; $x < 20; $x++) {
-            $document .= pack('C*', ...range(0, 255))
-                . pack('C*', ...range(255, 0, -1));
-        }
-        $docSize = strlen($document);
+        // Simulate a 500-byte file
+        $file = str_repeat(
+            pack('C*', ...range(0, 255)) . pack('C*', ...range(255, 0, -1)),
+            $fileSizeTimes256
+        );
+        $fileSize = strlen($file);
         $s3->expects($this->once())->method('getInfo')
-            ->will($this->returnValue(['size' => $docSize]));
+            ->will($this->returnValue(['size' => $fileSize]));
 
-        $callback = function ($a, $b, $c, $headers) use ($document) {
-            // Parse values from "Bytes=x-y" string:
-            $range = explode('-', explode('=', $headers['Range'])[1]);
+        $callback = function ($a, $b, $c, $headers) use ($file, $rangeConstraint) {
+            if ($rangeConstraint) {
+                $rangeConstraint = $this->logicalAnd(
+                    $this->matches('bytes=%d-%d'),
+                    $rangeConstraint
+                );
+            } else {
+                $rangeConstraint = $this->matches('bytes=%d-%d');
+            }
+            $this->assertThat(
+                $headers['Range'],
+                $rangeConstraint
+            );
+            $range = explode('-', substr($headers['Range'], 6));
+            $startPos = (int) $range[0];
+            $endPos = (int) $range[1];
+            $this->assertGreaterThanOrEqual(
+                (int)$startPos,
+                (int)$endPos,
+                'Range header end position must be greater than or equal to start position'
+            );
+            $length =  $endPos - $startPos + 1;
+
+            // Simulate an appropriately-sized response to the current request
             $response = new Response();
             $response->setStatusCode(Response::STATUS_CODE_206);
-            $chunk = substr($document, $range[0], $range[1] - $range[0] + 1);
+            $chunk = substr($file, (int) $startPos, $length);
             $response->setContent($chunk);
             return $response;
         };
-        // Set up expectations and simulated response for current chunk:
+
+
         $s3->expects($this->any())->method('_makeRequest')
             ->with(
                 $this->equalTo('GET'),
                 $this->anything(),
                 $this->equalTo(null),
-                $this->anything()
+                $this->arrayHasKey('Range')
             )->will($this->returnCallback($callback));
 
         // Register the mock client so it is called for all test:// URLs:
         $s3->registerAsClient('test');
 
-        return $document;
+        return $file;
     }
 
     /**
@@ -79,7 +103,7 @@ class OfflineStreamTest extends \PHPUnit_Framework_TestCase
     public function testFread()
     {
         // Set up the test document:
-        $document = $this->setUpS3(512);
+        $document = $this->setUpS3(20);
 
         // Run the test:
         $stream = new S3\Stream();
@@ -91,7 +115,11 @@ class OfflineStreamTest extends \PHPUnit_Framework_TestCase
             $final .= $chunk;
         }
         fclose($handle);
-        $this->assertEquals($document, $final);
+        // don't use equals, we don't want binary data output into terminal
+        $this->assertTrue(
+            $document === $final,
+            'Resulting data does not match original'
+        );
     }
 
     /**
@@ -105,18 +133,42 @@ class OfflineStreamTest extends \PHPUnit_Framework_TestCase
     public function testStreamRead()
     {
         // Set up the test document:
-        $document = $this->setUpS3();
-        $docSize = strlen($document);
+        $document = $this->setUpS3(20);
 
         // Run the test:
         $stream = new S3\Stream();
         $stream->stream_open('test://foo/bar', 'r', 0, null);
-        // Read document in two 500-byte chunks, make sure it is intact:
+        // Read document in 500-byte chunks, make sure it is intact:
         $final = '';
-        $chunkSize = 500;
-        for ($requested = 0; $requested < $docSize; $requested += $chunkSize) {
-            $final .= $stream->stream_read($chunkSize);
+        while ($chunk = $stream->stream_read(500)) {
+            $final .= $chunk;
         }
-        $this->assertEquals($document, $final);
+        // don't use equals, we don't want binary data output into terminal
+        $this->assertTrue(
+            $document === $final,
+            'Resulting data does not match original'
+        );
+    }
+
+    /**
+     * Test correct range constraint on first chunk.
+     *
+     * @return void
+     */
+    public function testRangeConstraint()
+    {
+        // Set up the test document:
+        $document = $this->setUpS3(20, $this->equalTo('bytes=0-499'));
+
+        // Run the test:
+        $stream = new S3\Stream();
+        $stream->stream_open('test://foo/bar', 'r', 0, null);
+        // Read first 500-byte chunk:
+        $chunk = $stream->stream_read(500);
+        // don't use equals, we don't want binary data output into terminal
+        $this->assertTrue(
+            substr($document, 0, 500) === $chunk,
+            'Resulting data does not match original'
+        );
     }
 }
