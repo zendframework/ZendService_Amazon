@@ -2,12 +2,13 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.1.0 - TBD
+## 2.1.0 - 2017-03-09
 
 ### Added
 
 - [#63](https://github.com/zendframework/ZendService_Amazon/pull/63) added
   support for zend-crypt v3 and zend-json v3
+- [#65](https://github.com/zendframework/ZendService_Amazon/pull/65) added php 7
 
 ### Deprecated
 
@@ -15,8 +16,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- [#63](https://github.com/zendframework/ZendService_Amazon/pull/63) dropped
-  php <5.5 support
+- [#65](https://github.com/zendframework/ZendService_Amazon/pull/65) dropped
+  php <5.6 support
 
 ### Fixed
 
@@ -25,5 +26,5 @@ All notable changes to this project will be documented in this file, in reverse 
 - [#49](https://github.com/zendframework/ZendService_Amazon/pull/49) fixed date
   format mismatch with signature in S3
 - [#67](https://github.com/zendframework/ZendService_Amazon/pull/67) fixed
-  of-by-one bug in S3 stream that was truncating and corrupting data
+  off-by-one bug in S3 stream that was truncating and corrupting data
 

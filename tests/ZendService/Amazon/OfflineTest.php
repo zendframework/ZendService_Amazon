@@ -10,7 +10,10 @@
 
 namespace ZendServiceTest\Amazon;
 
+use PHPUnit\Framework\TestCase;
 use ZendService\Amazon;
+use ZendService\Amazon\Exception\ExceptionInterface;
+use ZendService\Amazon\Exception\InvalidArgumentException;
 use Zend\Http\Client\Adapter\Test as HttpClientAdapter;
 
 /**
@@ -22,7 +25,7 @@ use Zend\Http\Client\Adapter\Test as HttpClientAdapter;
  * @group      Zend_Service
  * @group      Zend_Service_Amazon
  */
-class OfflineTest extends \PHPUnit_Framework_TestCase
+class OfflineTest extends TestCase
 {
     /**
      * Reference to Amazon service consumer object
@@ -57,10 +60,8 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructExceptionCountryCodeInvalid()
     {
-        $this->setExpectedException(
-            'ZendService\Amazon\Exception\InvalidArgumentException',
-            'Unknown country code: oops'
-        );
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown country code: oops');
         $amazon = new Amazon\Amazon(constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ACCESSKEYID'), 'oops');
     }
 
@@ -105,6 +106,7 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
         $product->appendChild($asin);
 
         $similarproduct = new Amazon\SimilarProduct($product);
+        $this->assertTrue(is_object($similarproduct));
     }
 
     /**
@@ -325,7 +327,7 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
 
         $result = new Amazon\ResultSet($dom);
 
-        $this->setExpectedException('ZendService\Amazon\Exception\ExceptionInterface');
+        $this->expectException(ExceptionInterface::class);
         $result->current();
     }
 
@@ -339,12 +341,7 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
         $dom->loadXML($xml);
 
         $result = new Amazon\ResultSet($dom);
-
-        try {
-            $result->totalResults();
-        } catch (\PHPUnit_Framework_Error_Notice $e) {
-            $this->fail('totalResult method should not be occurred NOTICE error.');
-        }
+        $this->assertEquals(0, $result->totalResults());
     }
 
     /**
@@ -358,10 +355,6 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
 
         $result = new Amazon\ResultSet($dom);
 
-        try {
-            $result->totalPages();
-        } catch (\PHPUnit_Framework_Error_Notice $e) {
-            $this->fail('totalResult method should not be occurred NOTICE error.');
-        }
+        $this->assertEquals(0, $result->totalPages());
     }
 }

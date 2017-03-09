@@ -10,6 +10,7 @@
 
 namespace ZendServiceTest\Amazon\S3;
 
+use PHPUnit\Framework\TestCase;
 use ZendService\Amazon\S3\S3;
 
 /**
@@ -20,7 +21,7 @@ use ZendService\Amazon\S3\S3;
  * @group      Zend_Service_Amazon
  * @group      Zend_Service_Amazon_S3
  */
-class OfflineTest extends \PHPUnit_Framework_TestCase
+class OfflineTest extends TestCase
 {
     public function testThrottle()
     {

@@ -10,7 +10,9 @@
 
 namespace ZendServiceTest\Amazon\Ec2;
 
+use PHPUnit\Framework\TestCase;
 use ZendService\Amazon\Ec2;
+use ZendService\Amazon\Ec2\Exception\InvalidArgumentException;
 use Zend\Http\Client as HttpClient;
 use Zend\Http\Client\Adapter\Test as HttpClientTestAdapter;
 
@@ -24,7 +26,7 @@ use Zend\Http\Client\Adapter\Test as HttpClientTestAdapter;
  * @group      Zend_Service_Amazon
  * @group      Zend_Service_Amazon_Ec2
  */
-class KeypairTest extends \PHPUnit_Framework_TestCase
+class KeypairTest extends TestCase
 {
 
     /**
@@ -55,9 +57,8 @@ class KeypairTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateKeyPairNoNameThrowsException()
     {
-        $this->setExpectedException(
-            'ZendService\Amazon\Ec2\Exception\InvalidArgumentException',
-            'Invalid Key Name');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid Key Name');
         $this->keypairInstance->create('');
     }
 
@@ -185,9 +186,8 @@ class KeypairTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteKeyPairNoNameThrowsException()
     {
-        $this->setExpectedException(
-            'ZendService\Amazon\Ec2\Exception\InvalidArgumentException',
-            'Invalid Key Name');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid Key Name');
         $this->keypairInstance->delete('');
     }
 

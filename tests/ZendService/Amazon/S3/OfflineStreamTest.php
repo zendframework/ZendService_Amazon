@@ -10,6 +10,7 @@
 
 namespace ZendServiceTest\Amazon\S3;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Http\Response;
 use ZendService\Amazon\S3;
 
@@ -21,7 +22,7 @@ use ZendService\Amazon\S3;
  * @group      Zend_Service_Amazon
  * @group      Zend_Service_Amazon_S3
  */
-class OfflineStreamTest extends \PHPUnit_Framework_TestCase
+class OfflineStreamTest extends TestCase
 {
     /**
      * Setup a fake S3 object with a fake document inside it. Return the document

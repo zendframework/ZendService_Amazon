@@ -13,80 +13,29 @@
  */
 error_reporting(E_ALL | E_STRICT);
 
-$phpUnitVersion = PHPUnit_Runner_Version::id();
-if ('@package_version@' !== $phpUnitVersion && version_compare($phpUnitVersion, '3.5.0', '<')) {
-    echo 'This version of PHPUnit (' . PHPUnit_Runner_Version::id() . ') is not supported in Zend Framework 2.x unit tests.' . PHP_EOL;
-    exit(1);
-}
-unset($phpUnitVersion);
-
-/*
- * Determine the root, library, and tests directories of the framework
- * distribution.
- */
-$zfRoot        = realpath(dirname(__DIR__));
-$zfCoreLibrary = "$zfRoot/library";
-$zfCoreTests   = "$zfRoot/tests";
-
-/*
- * Prepend the Zend Framework library/ and tests/ directories to the
- * include_path. This allows the tests to run out of the box and helps prevent
- * loading other copies of the framework code and tests that would supersede
- * this copy.
- */
-$path = array(
-    $zfCoreLibrary,
-    $zfCoreTests,
-    get_include_path(),
-);
-set_include_path(implode(PATH_SEPARATOR, $path));
 
 /**
  * Setup autoloading
  */
-include __DIR__ . '/_autoload.php';
+if (!file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    throw new RuntimeException('This component has dependencies that are unmet.
+
+Please install composer (http://getcomposer.org), and run the following
+command in the root of this project:
+
+    php /path/to/composer.phar install
+
+After that, you should be able to run tests.');
+}
+
+include_once __DIR__ . '/../vendor/autoload.php';
 
 /*
  * Load the user-defined test configuration file, if it exists; otherwise, load
  * the default configuration.
  */
-if (is_readable($zfCoreTests . DIRECTORY_SEPARATOR . 'TestConfiguration.php')) {
-    require_once $zfCoreTests . DIRECTORY_SEPARATOR . 'TestConfiguration.php';
+if (is_readable(__DIR__ . '/TestConfiguration.php')) {
+    require_once __DIR__ . '/TestConfiguration.php';
 } else {
-    require_once $zfCoreTests . DIRECTORY_SEPARATOR . 'TestConfiguration.php.dist';
+    require_once __DIR__ . '/TestConfiguration.php.dist';
 }
-
-if (defined('TESTS_GENERATE_REPORT') && TESTS_GENERATE_REPORT === true) {
-    $codeCoverageFilter = PHP_CodeCoverage_Filter::getInstance();
-
-    $lastArg = end($_SERVER['argv']);
-    if (is_dir($zfCoreTests . '/' . $lastArg)) {
-        $codeCoverageFilter->addDirectoryToWhitelist($zfCoreLibrary . '/' . $lastArg);
-    } elseif (is_file($zfCoreTests . '/' . $lastArg)) {
-        $codeCoverageFilter->addDirectoryToWhitelist(dirname($zfCoreLibrary . '/' . $lastArg));
-    } else {
-        $codeCoverageFilter->addDirectoryToWhitelist($zfCoreLibrary);
-    }
-
-    /*
-     * Omit from code coverage reports the contents of the tests directory
-     */
-    $codeCoverageFilter->addDirectoryToBlacklist($zfCoreTests, '');
-    $codeCoverageFilter->addDirectoryToBlacklist(PEAR_INSTALL_DIR, '');
-    $codeCoverageFilter->addDirectoryToBlacklist(PHP_LIBDIR, '');
-
-    unset($codeCoverageFilter);
-}
-
-
-/**
- * Start output buffering, if enabled
- */
-if (defined('TESTS_ZEND_OB_ENABLED') && constant('TESTS_ZEND_OB_ENABLED')) {
-    ob_start();
-}
-
-/*
- * Unset global variables that are no longer needed.
- */
-unset($zfRoot, $zfCoreLibrary, $zfCoreTests, $path);

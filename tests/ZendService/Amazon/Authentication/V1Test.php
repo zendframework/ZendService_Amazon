@@ -10,6 +10,7 @@
 
 namespace ZendServiceTest\Amazon\Authentication;
 
+use PHPUnit\Framework\TestCase;
 use ZendService\Amazon\Authentication;
 
 /**
@@ -19,7 +20,7 @@ use ZendService\Amazon\Authentication;
  * @package    Zend_Service_Amazon_Authentication
  * @subpackage UnitTests
  */
-class V1Test extends \PHPUnit_Framework_TestCase
+class V1Test extends TestCase
 {
 
     /**
