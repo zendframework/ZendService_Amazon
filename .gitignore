@@ -4,3 +4,6 @@ composer.phar
 .buildpath
 .project
 .settings/
+phpunit.xml
+clover.xml
+coveralls-upload.json
