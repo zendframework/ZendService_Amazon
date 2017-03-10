@@ -30,7 +30,7 @@ class S3 extends AbstractAuthentication
     public function generateSignature($method, $path, &$headers)
     {
         if (! is_array($headers)) {
-            $headers = array($headers);
+            $headers = [$headers];
         }
 
         $type = $md5 = $date = '';
@@ -55,7 +55,7 @@ class S3 extends AbstractAuthentication
 
         // For x-amz- headers, combine like keys, lowercase them, sort them
         // alphabetically and remove excess spaces around values
-        $amz_headers = array();
+        $amz_headers = [];
         foreach ($headers as $key => $val) {
             $key = strtolower($key);
             if (substr($key, 0, 6) == 'x-amz-') {
@@ -66,7 +66,7 @@ class S3 extends AbstractAuthentication
                 }
             }
         }
-        if (!empty($amz_headers)) {
+        if (! empty($amz_headers)) {
             ksort($amz_headers);
             foreach ($amz_headers as $key => $val) {
                 $sig_str .= $key . ':' . implode(',', $val) . "\n";

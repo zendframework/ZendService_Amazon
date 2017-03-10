@@ -17,12 +17,15 @@ namespace ZendService\Amazon;
  */
 class Query extends Amazon
 {
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
+
     /**
      * Search parameters
      *
      * @var array
      */
-    protected $_search = array();
+    protected $_search = [];
 
     /**
      * Search index
@@ -30,6 +33,8 @@ class Query extends Amazon
      * @var string
      */
     protected $_searchIndex = null;
+
+    // @codingStandardsIgnoreEnd
 
     /**
      * Prepares query parameters
@@ -50,7 +55,9 @@ class Query extends Amazon
         if (strtolower($method) === 'category') {
             $this->_searchIndex = $args[0];
             $this->_search['SearchIndex'] = $args[0];
-        } elseif (isset($this->_search['SearchIndex']) || $this->_searchIndex !== null || $this->_searchIndex === 'asin') {
+        } elseif (isset($this->_search['SearchIndex']) || $this->_searchIndex !== null
+            || $this->_searchIndex === 'asin'
+        ) {
             $this->_search[$method] = $args[0];
         } else {
             throw new Exception\RuntimeException('You must set a category before setting the search parameters');

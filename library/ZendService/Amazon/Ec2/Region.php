@@ -29,12 +29,12 @@ class Region extends AbstractEc2
      */
     public function describe($region = null)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'DescribeRegions';
 
-        if (is_array($region) && !empty($region)) {
-            foreach ($region as $k=>$name) {
-                $params['Region.' . ($k+1)] = $name;
+        if (is_array($region) && ! empty($region)) {
+            foreach ($region as $k => $name) {
+                $params['Region.' . ($k + 1)] = $name;
             }
         } elseif ($region) {
             $params['Region.1'] = $region;
@@ -45,9 +45,9 @@ class Region extends AbstractEc2
         $xpath  = $response->getXPath();
         $nodes  = $xpath->query('//ec2:item');
 
-        $return = array();
+        $return = [];
         foreach ($nodes as $k => $node) {
-            $item = array();
+            $item = [];
             $item['regionName']   = $xpath->evaluate('string(ec2:regionName/text())', $node);
             $item['regionUrl']  = $xpath->evaluate('string(ec2:regionUrl/text())', $node);
 

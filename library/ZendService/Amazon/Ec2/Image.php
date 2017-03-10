@@ -40,9 +40,9 @@ class Image extends AbstractEc2
      */
     public function register($imageLocation)
     {
-        $params                 = array();
+        $params                 = [];
         $params['Action']       = 'RegisterImage';
-        $params['ImageLocation']= $imageLocation;
+        $params['ImageLocation'] = $imageLocation;
 
         $response = $this->sendRequest($params);
         $xpath = $response->getXPath();
@@ -89,28 +89,28 @@ class Image extends AbstractEc2
      */
     public function describe($imageId = null, $owner = null, $executableBy = null)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'DescribeImages';
 
-        if (is_array($imageId) && !empty($imageId)) {
-            foreach ($imageId as $k=>$name) {
-                $params['ImageId.' . ($k+1)] = $name;
+        if (is_array($imageId) && ! empty($imageId)) {
+            foreach ($imageId as $k => $name) {
+                $params['ImageId.' . ($k + 1)] = $name;
             }
         } elseif ($imageId) {
             $params['ImageId.1'] = $imageId;
         }
 
-        if (is_array($owner) && !empty($owner)) {
-            foreach ($owner as $k=>$name) {
-                $params['Owner.' . ($k+1)] = $name;
+        if (is_array($owner) && ! empty($owner)) {
+            foreach ($owner as $k => $name) {
+                $params['Owner.' . ($k + 1)] = $name;
             }
         } elseif ($owner) {
             $params['Owner.1'] = $owner;
         }
 
-        if (is_array($executableBy) && !empty($executableBy)) {
-            foreach ($executableBy as $k=>$name) {
-                $params['ExecutableBy.' . ($k+1)] = $name;
+        if (is_array($executableBy) && ! empty($executableBy)) {
+            foreach ($executableBy as $k => $name) {
+                $params['ExecutableBy.' . ($k + 1)] = $name;
             }
         } elseif ($executableBy) {
             $params['ExecutableBy.1'] = $executableBy;
@@ -121,9 +121,9 @@ class Image extends AbstractEc2
         $xpath  = $response->getXPath();
         $nodes = $xpath->query('//ec2:imagesSet/ec2:item');
 
-        $return = array();
+        $return = [];
         foreach ($nodes as $node) {
-            $item = array();
+            $item = [];
 
             $item['imageId']        = $xpath->evaluate('string(ec2:imageId/text())', $node);
             $item['imageLocation']  = $xpath->evaluate('string(ec2:imageLocation/text())', $node);
@@ -152,7 +152,7 @@ class Image extends AbstractEc2
      */
     public function deregister($imageId)
     {
-        $params                 = array();
+        $params                 = [];
         $params['Action']       = 'DeregisterImage';
         $params['ImageId']      = $imageId;
 
@@ -180,8 +180,8 @@ class Image extends AbstractEc2
      * @param string $attribute                 Specifies the attribute to modify. See the preceding
      *                                          attributes table for supported attributes.
      * @param string $operationType             Specifies the operation to perform on the attribute.
-     *                                          See the preceding attributes table for supported operations for attributes.
-     *                                          Valid Values: add | remove
+     *                                          See the preceding attributes table for supported operations for
+     *                                          attributes. Valid Values: add | remove
      *                                          Required for launchPermssion Attribute
      *
      * @param string|array $userId              User IDs to add to or remove from the launchPermission attribute.
@@ -190,14 +190,20 @@ class Image extends AbstractEc2
      *                                          Currently, the all group is available, which will make it a public AMI.
      *                                          Required for launchPermssion Attribute
      * @param string $productCode               Attaches a product code to the AMI. Currently only one product code
-     *                                          can be associated with an AMI. Once set, the product code cannot be changed or reset.
-     *                                          Required for productCodes Attribute
+     *                                          can be associated with an AMI. Once set, the product code cannot be
+     *                                          changed or reset. Required for productCodes Attribute
      * @return boolean
      * @throws Exception\InvalidArgumentException
      */
-    public function modifyAttribute($imageId, $attribute, $operationType = 'add', $userId = null, $userGroup = null, $productCode = null)
-    {
-        $params = array();
+    public function modifyAttribute(
+        $imageId,
+        $attribute,
+        $operationType = 'add',
+        $userId = null,
+        $userGroup = null,
+        $productCode = null
+    ) {
+        $params = [];
         $params['Action'] = 'ModifyImageAttribute';
         $parmas['ImageId'] = $imageId;
         $params['Attribute'] = $attribute;
@@ -209,17 +215,17 @@ class Image extends AbstractEc2
                 $params['Attribute'] = 'launchPermission';
                 $params['OperationType'] = $operationType;
 
-                if (is_array($userId) && !empty($userId)) {
-                    foreach ($userId as $k=>$name) {
-                        $params['UserId.' . ($k+1)] = $name;
+                if (is_array($userId) && ! empty($userId)) {
+                    foreach ($userId as $k => $name) {
+                        $params['UserId.' . ($k + 1)] = $name;
                     }
                 } elseif ($userId) {
                     $params['UserId.1'] = $userId;
                 }
 
-                if (is_array($userGroup) && !empty($userGroup)) {
-                    foreach ($userGroup as $k=>$name) {
-                        $params['UserGroup.' . ($k+1)] = $name;
+                if (is_array($userGroup) && ! empty($userGroup)) {
+                    foreach ($userGroup as $k => $name) {
+                        $params['UserGroup.' . ($k + 1)] = $name;
                     }
                 } elseif ($userGroup) {
                     $params['UserGroup.1'] = $userGroup;
@@ -233,7 +239,9 @@ class Image extends AbstractEc2
                 $params['ProductCode.1'] = $productCode;
                 break;
             default:
-                throw new Exception\InvalidArgumentException('Invalid attribute passed in. Valid image attributes are launchpermission and productcode.');
+                throw new Exception\InvalidArgumentException(
+                    'Invalid attribute passed in. Valid image attributes are launchpermission and productcode.'
+                );
                 break;
         }
 
@@ -255,7 +263,7 @@ class Image extends AbstractEc2
      */
     public function describeAttribute($imageId, $attribute)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'DescribeImageAttribute';
         $params['ImageId'] = $imageId;
         $params['Attribute'] = $attribute;
@@ -263,7 +271,7 @@ class Image extends AbstractEc2
         $response = $this->sendRequest($params);
         $xpath = $response->getXPath();
 
-        $return = array();
+        $return = [];
         $return['imageId'] = $xpath->evaluate('string(//ec2:imageId/text())');
 
         // check for launchPermission
@@ -271,7 +279,7 @@ class Image extends AbstractEc2
             $lPnodes = $xpath->query('//ec2:launchPermission/ec2:item');
 
             if ($lPnodes->length > 0) {
-                $return['launchPermission'] = array();
+                $return['launchPermission'] = [];
                 foreach ($lPnodes as $node) {
                     $return['launchPermission'][] = $xpath->evaluate('string(ec2:userId/text())', $node);
                 }
@@ -282,7 +290,7 @@ class Image extends AbstractEc2
         if ($attribute == 'productCodes') {
             $pCnodes = $xpath->query('//ec2:productCodes/ec2:item');
             if ($pCnodes->length > 0) {
-                $return['productCodes'] = array();
+                $return['productCodes'] = [];
                 foreach ($pCnodes as $node) {
                     $return['productCodes'][] = $xpath->evaluate('string(ec2:productCode/text())', $node);
                 }
@@ -303,7 +311,7 @@ class Image extends AbstractEc2
      */
     public function resetAttribute($imageId, $attribute)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'ResetImageAttribute';
         $params['ImageId'] = $imageId;
         $params['Attribute'] = $attribute;

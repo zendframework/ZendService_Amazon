@@ -24,6 +24,9 @@ use Zend\Http\Client as HttpClient;
  */
 abstract class AbstractEc2 extends Amazon\AbstractAmazon
 {
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
+
     /**
      * The HTTP query server
      */
@@ -64,10 +67,12 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
      *
      * @var array
      */
-    protected static $_validEc2Regions = array(
+    protected static $_validEc2Regions = [
         'us-east-1', 'us-west-2', 'us-west-1', 'eu-west-1',
         'ap-southeast-1', 'ap-southeast-2', 'ap-northeast-1',
-        'sa-east-1');
+        'sa-east-1'];
+
+    // @codingStandardsIgnoreEnd
 
     /**
      * Constructor
@@ -100,15 +105,21 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
         }
     }
 
+    // TODO: Unsuppress standards checking when underscores removed from method name
+    // @codingStandardsIgnoreStart
+
     /**
      * Method to fetch the AWS Region
      *
      * @return string
+     * @deprecated Underscore should be removed from method name
      */
     protected function _getRegion()
     {
-        return (!empty($this->_region)) ? $this->_region . '.' : '';
+        return (! empty($this->_region)) ? $this->_region . '.' : '';
     }
+
+    // @codingStandardsIgnoreEnd
 
     /**
      * Sends a HTTP request to the queue service using Zend_Http_Client
@@ -117,7 +128,7 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
      * @return Response
      * @throws Exception\RuntimeException
      */
-    protected function sendRequest(array $params = array())
+    protected function sendRequest(array $params = [])
     {
         $url = 'https://' . $this->_getRegion() . $this->_ec2Endpoint . '/';
 
@@ -128,9 +139,9 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
             $request = $this->getHttpClient();
             $request->resetParameters();
 
-            $request->setOptions(array(
+            $request->setOptions([
                 'timeout' => $this->_httpTimeout
-            ));
+            ]);
 
             $request->setUri($url);
             $request->setMethod('POST');
@@ -206,7 +217,7 @@ abstract class AbstractEc2 extends Amazon\AbstractAmazon
         uksort($parameters, 'strcmp');
         unset($parameters['Signature']);
 
-        $arrData = array();
+        $arrData = [];
         foreach ($parameters as $key => $value) {
             $arrData[] = $key . '=' . str_replace("%7E", "~", rawurlencode($value));
         }

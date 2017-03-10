@@ -30,16 +30,19 @@ class Amazon
     public $appId;
 
     /**
-     * @var string
-     */
-    protected $_secretKey = null;
-
-    /**
      * API Version
      *
      * @var string
      */
     protected static $version = '2011-08-01';
+
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
+
+    /**
+     * @var string
+     */
+    protected $_secretKey = null;
 
     /**
      * @var string
@@ -51,12 +54,12 @@ class Amazon
      *
      * @var array
      */
-    protected $_baseUriList = array('US' => 'http://webservices.amazon.com',
+    protected $_baseUriList = ['US' => 'http://webservices.amazon.com',
                                     'UK' => 'http://webservices.amazon.co.uk',
                                     'DE' => 'http://webservices.amazon.de',
                                     'JP' => 'http://webservices.amazon.co.jp',
                                     'FR' => 'http://webservices.amazon.fr',
-                                    'CA' => 'http://webservices.amazon.ca');
+                                    'CA' => 'http://webservices.amazon.ca'];
 
     /**
      * Reference to REST client object
@@ -65,6 +68,7 @@ class Amazon
      */
     protected $_rest = null;
 
+    // @codingStandardsIgnoreEnd
 
     /**
      * Constructs a new Amazon Web Services Client
@@ -81,12 +85,12 @@ class Amazon
         $this->appId = (string) $appId;
         $this->_secretKey = $secretKey;
 
-        if (!is_null($version)) {
+        if (! is_null($version)) {
             self::setVersion($version);
         }
 
         $countryCode = (string) $countryCode;
-        if (!isset($this->_baseUriList[$countryCode])) {
+        if (! isset($this->_baseUriList[$countryCode])) {
             throw new Exception\InvalidArgumentException("Unknown country code: $countryCode");
         }
 
@@ -107,7 +111,7 @@ class Amazon
         $client = $this->getRestClient();
         $client->setUri($this->_baseUri);
 
-        $defaultOptions = array('ResponseGroup' => 'Small');
+        $defaultOptions = ['ResponseGroup' => 'Small'];
         $options = $this->_prepareOptions('ItemSearch', $options, $defaultOptions);
         $client->getHttpClient()->resetParameters();
         $response = $client->restGet('/onca/xml', $options);
@@ -134,13 +138,13 @@ class Amazon
      * @throws Exception\RuntimeException
      * @return Item|ResultSet
      */
-    public function itemLookup($asin, array $options = array())
+    public function itemLookup($asin, array $options = [])
     {
         $client = $this->getRestClient();
         $client->setUri($this->_baseUri);
         $client->getHttpClient()->resetParameters();
 
-        $defaultOptions = array('ResponseGroup' => 'Small');
+        $defaultOptions = ['ResponseGroup' => 'Small'];
         $options['ItemId'] = (string) $asin;
         $options = $this->_prepareOptions('ItemLookup', $options, $defaultOptions);
         $response = $client->restGet('/onca/xml', $options);
@@ -191,6 +195,8 @@ class Amazon
         return $this;
     }
 
+    // TODO: Unsuppress standards checking when underscores removed from method name
+    // @codingStandardsIgnoreStart
 
     /**
      * Prepare options for request
@@ -199,6 +205,7 @@ class Amazon
      * @param  array  $options        User supplied options
      * @param  array  $defaultOptions Default options
      * @return array
+     * @deprecated Underscore should be removed from method name
      */
     protected function _prepareOptions($query, array $options, array $defaultOptions)
     {
@@ -211,7 +218,7 @@ class Amazon
         if (isset($options['ResponseGroup'])) {
             $responseGroup = explode(',', $options['ResponseGroup']);
 
-            if (!in_array('Request', $responseGroup)) {
+            if (! in_array('Request', $responseGroup)) {
                 $responseGroup[] = 'Request';
                 $options['ResponseGroup'] = implode(',', $responseGroup);
             }
@@ -227,6 +234,8 @@ class Amazon
 
         return $options;
     }
+
+    // @codingStandardsIgnoreEnd
 
     /**
      * Compute Signature for Authentication with Amazon Product Advertising Webservices
@@ -254,17 +263,20 @@ class Amazon
     public static function buildRawSignature($baseUri, $options)
     {
         ksort($options);
-        $params = array();
+        $params = [];
         foreach ($options as $k => $v) {
             $params[] = $k."=".rawurlencode($v);
         }
 
-        return sprintf("GET\n%s\n/onca/xml\n%s",
+        return sprintf(
+            "GET\n%s\n/onca/xml\n%s",
             str_replace('http://', '', $baseUri),
             implode("&", $params)
         );
     }
 
+    // TODO: Unsuppress standards checking when underscores removed from method name
+    // @codingStandardsIgnoreStart
 
     /**
      * Check result for errors
@@ -272,6 +284,7 @@ class Amazon
      * @param  DOMDocument $dom
      * @throws Exception\RuntimeException
      * @return void
+     * @deprecated Underscore should be removed from method name
      */
     protected static function _checkErrors(DOMDocument $dom)
     {
@@ -291,6 +304,8 @@ class Amazon
         }
     }
 
+    // @codingStandardsIgnoreEnd
+
     /**
      * Set the Amazon API version
      *
@@ -299,7 +314,7 @@ class Amazon
      */
     public static function setVersion($version)
     {
-        if (!preg_match('/\d{4}-\d{2}-\d{2}/', $version)) {
+        if (! preg_match('/\d{4}-\d{2}-\d{2}/', $version)) {
             throw new Exception\InvalidArgumentException("$version is an invalid API Version");
         }
         self::$version = $version;

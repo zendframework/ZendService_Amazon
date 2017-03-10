@@ -29,6 +29,9 @@ class Sqs extends Amazon\AbstractAmazon
      */
     const CREATE_TIMEOUT_DEFAULT = 30;
 
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
+
     /**
      * HTTP end point for the Amazon SQS service
      */
@@ -48,6 +51,8 @@ class Sqs extends Amazon\AbstractAmazon
      * Signature Encoding Method
      */
     protected $_sqsSignatureMethod = 'HmacSHA256';
+
+    // @codingStandardsIgnoreEnd
 
     /**
      * Constructor
@@ -76,7 +81,7 @@ class Sqs extends Amazon\AbstractAmazon
      */
     public function create($queue_name, $timeout = null)
     {
-        $params = array();
+        $params = [];
         $params['QueueName'] = $queue_name;
         $timeout = ($timeout === null) ? self::CREATE_TIMEOUT_DEFAULT : (int)$timeout;
         $params['DefaultVisibilityTimeout'] = $timeout;
@@ -140,7 +145,7 @@ class Sqs extends Amazon\AbstractAmazon
             throw new Exception\RuntimeException($result->Error->Code);
         }
 
-        $queues = array();
+        $queues = [];
         foreach ($result->ListQueuesResult->QueueUrl as $queue_url) {
             $queues[] = (string)$queue_url;
         }
@@ -170,7 +175,7 @@ class Sqs extends Amazon\AbstractAmazon
      */
     public function send($queue_url, $message)
     {
-        $params = array();
+        $params = [];
         $params['MessageBody'] = urlencode($message);
 
         $checksum = md5($params['MessageBody']);
@@ -197,7 +202,7 @@ class Sqs extends Amazon\AbstractAmazon
      */
     public function receive($queue_url, $max_messages = null, $timeout = null)
     {
-        $params = array();
+        $params = [];
 
         // If not set, the visibility timeout on the queue is used
         if ($timeout !== null) {
@@ -215,14 +220,14 @@ class Sqs extends Amazon\AbstractAmazon
             throw new Exception\RuntimeException($result->Error->Code);
         }
 
-        $data = array();
+        $data = [];
         foreach ($result->ReceiveMessageResult->Message as $message) {
-            $data[] = array(
+            $data[] = [
                 'message_id' => (string)$message->MessageId,
                 'handle'     => (string)$message->ReceiptHandle,
                 'md5'        => (string)$message->MD5OfBody,
                 'body'       => urldecode((string)$message->Body),
-            );
+            ];
         }
 
         return $data;
@@ -241,7 +246,7 @@ class Sqs extends Amazon\AbstractAmazon
      */
     public function deleteMessage($queue_url, $handle)
     {
-        $params = array();
+        $params = [];
         $params['ReceiptHandle'] = (string)$handle;
 
         $result = $this->_makeRequest($queue_url, 'DeleteMessage', $params);
@@ -264,7 +269,7 @@ class Sqs extends Amazon\AbstractAmazon
      */
     public function getAttribute($queue_url, $attribute = 'All')
     {
-        $params = array();
+        $params = [];
         $params['AttributeName'] = $attribute;
 
         $result = $this->_makeRequest($queue_url, 'GetQueueAttributes', $params);
@@ -274,7 +279,7 @@ class Sqs extends Amazon\AbstractAmazon
         }
 
         if (count($result->GetQueueAttributesResult->Attribute) > 1) {
-            $attr_result = array();
+            $attr_result = [];
             foreach ($result->GetQueueAttributesResult->Attribute as $attribute) {
                 $attr_result[(string)$attribute->Name] = (string)$attribute->Value;
             }
@@ -284,6 +289,9 @@ class Sqs extends Amazon\AbstractAmazon
         }
     }
 
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
+
     /**
      * Make a request to Amazon SQS
      *
@@ -291,8 +299,9 @@ class Sqs extends Amazon\AbstractAmazon
      * @param  string           $action SQS action
      * @param  array            $params
      * @return SimpleXMLElement
+     * @deprecated Underscore should be removed from method name
      */
-    private function _makeRequest($queue_url, $action, $params = array())
+    private function _makeRequest($queue_url, $action, $params = [])
     {
         $params['Action'] = $action;
         $params = $this->addRequiredParameters($queue_url, $params);
@@ -338,6 +347,8 @@ class Sqs extends Amazon\AbstractAmazon
         return new SimpleXMLElement($response->getBody());
     }
 
+    // @codingStandardsIgnoreEnd
+
     /**
      * Adds required authentication and version parameters to an array of
      * parameters
@@ -361,13 +372,16 @@ class Sqs extends Amazon\AbstractAmazon
     {
         $parameters['AWSAccessKeyId']   = $this->_getAccessKey();
         $parameters['SignatureVersion'] = $this->_sqsSignatureVersion;
-        $parameters['Timestamp']        = gmdate('Y-m-d\TH:i:s\Z', time()+10);
+        $parameters['Timestamp']        = gmdate('Y-m-d\TH:i:s\Z', time() + 10);
         $parameters['Version']          = $this->_sqsApiVersion;
         $parameters['SignatureMethod']  = $this->_sqsSignatureMethod;
         $parameters['Signature']        = $this->_signParameters($queue_url, $parameters);
 
         return $parameters;
     }
+
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
 
     /**
      * Computes the RFC 2104-compliant HMAC signature for request parameters
@@ -388,6 +402,7 @@ class Sqs extends Amazon\AbstractAmazon
      * @param  array  $parameters the parameters for which to get the signature.
      *
      * @return string the signed data.
+     * @deprecated Underscore should be removed from method name
      */
     protected function _signParameters($queue_url, array $parameters)
     {
@@ -403,7 +418,7 @@ class Sqs extends Amazon\AbstractAmazon
         uksort($parameters, 'strcmp');
         unset($parameters['Signature']);
 
-        $arrData = array();
+        $arrData = [];
         foreach ($parameters as $key => $value) {
             $arrData[] = $key . '=' . str_replace('%7E', '~', urlencode($value));
         }
@@ -414,4 +429,5 @@ class Sqs extends Amazon\AbstractAmazon
 
         return base64_encode($hmac);
     }
+    // @codingStandardsIgnoreEnd
 }

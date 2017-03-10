@@ -19,11 +19,16 @@ namespace ZendService\Amazon\SimpleDb;
  */
 class Page
 {
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
+
     /** @var string Page data */
     protected $_data;
 
     /** @var string|null Token identifying page */
     protected $_token;
+
+    // @codingStandardsIgnoreEnd
 
     /**
      * Constructor

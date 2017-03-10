@@ -11,6 +11,7 @@
 namespace ZendService\Amazon\Ec2;
 
 use ZendService\Amazon;
+
 /**
  * An Amazon EC2 interface to create, describe, attach, detach and delete Elastic Block
  * Storage Volumes and Snapshots.
@@ -33,7 +34,7 @@ class Ebs extends AbstractEc2
      */
     public function createNewVolume($size, $availabilityZone)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'CreateVolume';
         $params['AvailabilityZone'] = $availabilityZone;
         $params['Size'] = $size;
@@ -41,7 +42,7 @@ class Ebs extends AbstractEc2
         $response = $this->sendRequest($params);
         $xpath = $response->getXPath();
 
-        $return = array();
+        $return = [];
         $return['volumeId']         = $xpath->evaluate('string(//ec2:volumeId/text())');
         $return['size']             = $xpath->evaluate('string(//ec2:size/text())');
         $return['status']           = $xpath->evaluate('string(//ec2:status/text())');
@@ -63,7 +64,7 @@ class Ebs extends AbstractEc2
      */
     public function createVolumeFromSnapshot($snapshotId, $availabilityZone)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'CreateVolume';
         $params['AvailabilityZone'] = $availabilityZone;
         $params['SnapshotId'] = $snapshotId;
@@ -71,7 +72,7 @@ class Ebs extends AbstractEc2
         $response = $this->sendRequest($params);
         $xpath = $response->getXPath();
 
-        $return = array();
+        $return = [];
         $return['volumeId']         = $xpath->evaluate('string(//ec2:volumeId/text())');
         $return['size']             = $xpath->evaluate('string(//ec2:size/text())');
         $return['status']           = $xpath->evaluate('string(//ec2:status/text())');
@@ -91,12 +92,12 @@ class Ebs extends AbstractEc2
      */
     public function describeVolume($volumeId = null)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'DescribeVolumes';
 
-        if (is_array($volumeId) && !empty($volumeId)) {
-            foreach ($volumeId as $k=>$name) {
-                $params['VolumeId.' . ($k+1)] = $name;
+        if (is_array($volumeId) && ! empty($volumeId)) {
+            foreach ($volumeId as $k => $name) {
+                $params['VolumeId.' . ($k + 1)] = $name;
             }
         } elseif ($volumeId) {
             $params['VolumeId.1'] = $volumeId;
@@ -107,9 +108,9 @@ class Ebs extends AbstractEc2
         $xpath  = $response->getXPath();
         $nodes = $xpath->query('//ec2:volumeSet/ec2:item', $response->getDocument());
 
-        $return = array();
+        $return = [];
         foreach ($nodes as $node) {
-            $item = array();
+            $item = [];
 
             $item['volumeId']   = $xpath->evaluate('string(ec2:volumeId/text())', $node);
             $item['size']       = $xpath->evaluate('string(ec2:size/text())', $node);
@@ -119,7 +120,7 @@ class Ebs extends AbstractEc2
             $attachmentSet = $xpath->query('ec2:attachmentSet/ec2:item', $node);
             if ($attachmentSet->length == 1) {
                 $_as = $attachmentSet->item(0);
-                $as = array();
+                $as = [];
                 $as['volumeId'] = $xpath->evaluate('string(ec2:volumeId/text())', $_as);
                 $as['instanceId'] = $xpath->evaluate('string(ec2:instanceId/text())', $_as);
                 $as['device'] = $xpath->evaluate('string(ec2:device/text())', $_as);
@@ -143,7 +144,7 @@ class Ebs extends AbstractEc2
     {
         $volumes = $this->describeVolume();
 
-        $return = array();
+        $return = [];
         foreach ($volumes as $vol) {
             if (isset($vol['attachmentSet']) && $vol['attachmentSet']['instanceId'] == $instanceId) {
                 $return[] = $vol;
@@ -163,7 +164,7 @@ class Ebs extends AbstractEc2
      */
     public function attachVolume($volumeId, $instanceId, $device)
     {
-        $params = array();
+        $params = [];
         $params['Action']       = 'AttachVolume';
         $params['VolumeId']     = $volumeId;
         $params['InstanceId']   = $instanceId;
@@ -173,7 +174,7 @@ class Ebs extends AbstractEc2
 
         $xpath = $response->getXPath();
 
-        $return = array();
+        $return = [];
         $return['volumeId']     = $xpath->evaluate('string(//ec2:volumeId/text())');
         $return['instanceId']   = $xpath->evaluate('string(//ec2:instanceId/text())');
         $return['device']       = $xpath->evaluate('string(//ec2:device/text())');
@@ -191,15 +192,15 @@ class Ebs extends AbstractEc2
      * @param string $device                The device name
      * @param boolean $force                Forces detachment if the previous detachment attempt did not occur cleanly
      *                                      (logging into an instance, unmounting the volume, and detaching normally).
-     *                                      This option can lead to data loss or a corrupted file system. Use this option
-     *                                      only as a last resort to detach an instance from a failed instance. The
-     *                                      instance will not have an opportunity to flush file system caches nor
+     *                                      This option can lead to data loss or a corrupted file system. Use this
+     *                                      option only as a last resort to detach an instance from a failed instance.
+     *                                      The instance will not have an opportunity to flush file system caches nor
      *                                      file system meta data.
      * @return array
      */
     public function detachVolume($volumeId, $instanceId = null, $device = null, $force = false)
     {
-        $params = array();
+        $params = [];
         $params['Action']       = 'DetachVolume';
         $params['VolumeId']     = $volumeId;
         $params['InstanceId']   = strval($instanceId);
@@ -210,7 +211,7 @@ class Ebs extends AbstractEc2
 
         $xpath = $response->getXPath();
 
-        $return = array();
+        $return = [];
         $return['volumeId']     = $xpath->evaluate('string(//ec2:volumeId/text())');
         $return['instanceId']   = $xpath->evaluate('string(//ec2:instanceId/text())');
         $return['device']       = $xpath->evaluate('string(//ec2:device/text())');
@@ -228,7 +229,7 @@ class Ebs extends AbstractEc2
      */
     public function deleteVolume($volumeId)
     {
-        $params = array();
+        $params = [];
         $params['Action']       = 'DeleteVolume';
         $params['VolumeId']     = $volumeId;
 
@@ -249,7 +250,7 @@ class Ebs extends AbstractEc2
      */
     public function createSnapshot($volumeId)
     {
-        $params = array();
+        $params = [];
         $params['Action']       = 'CreateSnapshot';
         $params['VolumeId']     = $volumeId;
 
@@ -257,7 +258,7 @@ class Ebs extends AbstractEc2
 
         $xpath = $response->getXPath();
 
-        $return = array();
+        $return = [];
         $return['snapshotId']   = $xpath->evaluate('string(//ec2:snapshotId/text())');
         $return['volumeId']     = $xpath->evaluate('string(//ec2:volumeId/text())');
         $return['status']       = $xpath->evaluate('string(//ec2:status/text())');
@@ -275,12 +276,12 @@ class Ebs extends AbstractEc2
      */
     public function describeSnapshot($snapshotId = null)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'DescribeSnapshots';
 
-        if (is_array($snapshotId) && !empty($snapshotId)) {
-            foreach ($snapshotId as $k=>$name) {
-                $params['SnapshotId.' . ($k+1)] = $name;
+        if (is_array($snapshotId) && ! empty($snapshotId)) {
+            foreach ($snapshotId as $k => $name) {
+                $params['SnapshotId.' . ($k + 1)] = $name;
             }
         } elseif ($snapshotId) {
             $params['SnapshotId.1'] = $snapshotId;
@@ -291,9 +292,9 @@ class Ebs extends AbstractEc2
         $xpath  = $response->getXPath();
         $nodes = $xpath->query('//ec2:snapshotSet/ec2:item', $response->getDocument());
 
-        $return = array();
+        $return = [];
         foreach ($nodes as $node) {
-            $item = array();
+            $item = [];
 
             $item['snapshotId'] = $xpath->evaluate('string(ec2:snapshotId/text())', $node);
             $item['volumeId']   = $xpath->evaluate('string(ec2:volumeId/text())', $node);
@@ -316,7 +317,7 @@ class Ebs extends AbstractEc2
      */
     public function deleteSnapshot($snapshotId)
     {
-        $params = array();
+        $params = [];
         $params['Action']       = 'DeleteSnapshot';
         $params['SnapshotId']   = $snapshotId;
 

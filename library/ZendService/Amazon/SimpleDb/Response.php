@@ -22,6 +22,9 @@ use ZendXml\Security as XmlSecurity;
  */
 class Response
 {
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
+
     /**
      * XML namespace used for SimpleDB responses.
      */
@@ -50,6 +53,8 @@ class Response
      */
     private $_xpath = null;
 
+    // @codingStandardsIgnoreEnd
+
     /**
      * Creates a new high-level SimpleDB response object
      *
@@ -73,8 +78,10 @@ class Response
                 $this->_xpath = false;
             } else {
                 $this->_xpath = new DOMXPath($document);
-                $this->_xpath->registerNamespace('sdb',
-                    $this->getNamespace());
+                $this->_xpath->registerNamespace(
+                    'sdb',
+                    $this->getNamespace()
+                );
             }
         }
 
@@ -126,7 +133,7 @@ class Response
                 $errors = libxml_use_internal_errors();
 
                 $this->_document = new DOMDocument();
-                if (!$this->_document->loadXML($body)) {
+                if (! $this->_document->loadXML($body)) {
                     $this->_document = false;
                 }
 

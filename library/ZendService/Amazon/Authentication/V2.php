@@ -19,6 +19,9 @@ use Zend\Crypt\Hmac;
  */
 class V2 extends AbstractAuthentication
 {
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
+
     /**
      * Signature Version
      */
@@ -35,6 +38,8 @@ class V2 extends AbstractAuthentication
      */
     protected $_httpMethod = "POST";
 
+    // @codingStandardsIgnoreEnd
+
     /**
      * Generate the required attributes for the signature
      * @param string $url
@@ -47,8 +52,8 @@ class V2 extends AbstractAuthentication
         $parameters['SignatureVersion'] = $this->_signatureVersion;
         $parameters['Version']          = $this->_apiVersion;
         $parameters['SignatureMethod']  = $this->_signatureMethod;
-        if (!isset($parameters['Timestamp'])) {
-            $parameters['Timestamp']    = gmdate('Y-m-d\TH:i:s\Z', time()+10);
+        if (! isset($parameters['Timestamp'])) {
+            $parameters['Timestamp']    = gmdate('Y-m-d\TH:i:s\Z', time() + 10);
         }
 
         $data = $this->_signParameters($url, $parameters);
@@ -74,6 +79,9 @@ class V2 extends AbstractAuthentication
         return $this->_httpMethod;
     }
 
+    // TODO: Unsuppress standards checking when underscores removed from method name
+    // @codingStandardsIgnoreStart
+
     /**
      * Computes the RFC 2104-compliant HMAC signature for request parameters
      *
@@ -93,6 +101,7 @@ class V2 extends AbstractAuthentication
      * @param  array  $parameters the parameters for which to get the signature.
      *
      * @return string the signed data.
+     * @deprecated Underscore should be removed from method name
      */
     protected function _signParameters($url, array &$parameters)
     {
@@ -104,7 +113,7 @@ class V2 extends AbstractAuthentication
         uksort($parameters, 'strcmp');
         unset($parameters['Signature']);
 
-        $arrData = array();
+        $arrData = [];
         foreach ($parameters as $key => $value) {
             $arrData[] = $key . '=' . str_replace('%7E', '~', rawurlencode($value));
         }
@@ -117,4 +126,5 @@ class V2 extends AbstractAuthentication
 
         return $data;
     }
+    // @codingStandardsIgnoreEnd
 }

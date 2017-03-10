@@ -25,6 +25,9 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
     /* Notes */
     // TODO SSL is required
 
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
+
     /**
      * The HTTP query server
      */
@@ -50,6 +53,8 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      */
     protected $_signatureMethod = 'HmacSHA256';
 
+    // @codingStandardsIgnoreEnd
+
     /**
      * Create Amazon SimpleDB client.
      *
@@ -71,10 +76,10 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      */
     public function setEndpoint($endpoint)
     {
-        if (!($endpoint instanceof Uri\Uri)) {
+        if (! ($endpoint instanceof Uri\Uri)) {
             $endpoint = Uri\UriFactory::factory($endpoint);
         }
-        if (!$endpoint->isValid()) {
+        if (! $endpoint->isValid()) {
             throw new Exception\InvalidArgumentException("Invalid endpoint supplied");
         }
         $this->_endpoint = $endpoint;
@@ -100,9 +105,11 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      * @return array
      */
     public function getAttributes(
-        $domainName, $itemName, $attributeName = null
+        $domainName,
+        $itemName,
+        $attributeName = null
     ) {
-        $params               = array();
+        $params               = [];
         $params['Action']     = 'GetAttributes';
         $params['DomainName'] = $domainName;
         $params['ItemName']   = $itemName;
@@ -117,13 +124,13 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
         $attributeNodes = $document->GetAttributesResult->Attribute;
 
         // Return an array of arrays
-        $attributes = array();
+        $attributes = [];
         foreach ($attributeNodes as $attributeNode) {
             $name       = (string)$attributeNode->Name;
             $valueNodes = $attributeNode->Value;
             $data       = null;
-            if (is_array($valueNodes) && !empty($valueNodes)) {
-                $data = array();
+            if (is_array($valueNodes) && ! empty($valueNodes)) {
+                $data = [];
                 foreach ($valueNodes as $valueNode) {
                     $data[] = (string)$valueNode;
                 }
@@ -149,9 +156,12 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      * @return void
      */
     public function putAttributes(
-        $domainName, $itemName, $attributes, $replace = array()
+        $domainName,
+        $itemName,
+        $attributes,
+        $replace = []
     ) {
-        $params               = array();
+        $params               = [];
         $params['Action']     = 'PutAttributes';
         $params['DomainName'] = $domainName;
         $params['ItemName']   = $itemName;
@@ -183,9 +193,9 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      * @param  array $replace
      * @return void
      */
-    public function batchPutAttributes($items, $domainName, array $replace = array())
+    public function batchPutAttributes($items, $domainName, array $replace = [])
     {
-        $params               = array();
+        $params               = [];
         $params['Action']     = 'BatchPutAttributes';
         $params['DomainName'] = $domainName;
 
@@ -222,9 +232,9 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      * @param  array $attributes
      * @return bool
      */
-    public function deleteAttributes($domainName, $itemName, array $attributes = array())
+    public function deleteAttributes($domainName, $itemName, array $attributes = [])
     {
-        $params               = array();
+        $params               = [];
         $params['Action']     = 'DeleteAttributes';
         $params['DomainName'] = $domainName;
         $params['ItemName']   = $itemName;
@@ -252,7 +262,7 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      */
     public function listDomains($maxNumberOfDomains = 100, $nextToken = null)
     {
-        $params                       = array();
+        $params                       = [];
         $params['Action']             = 'ListDomains';
         $params['MaxNumberOfDomains'] = $maxNumberOfDomains;
 
@@ -263,7 +273,7 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
 
         $domainNodes = $response->getSimpleXMLDocument()->ListDomainsResult->DomainName;
 
-        $data = array();
+        $data = [];
         foreach ($domainNodes as $domain) {
             $data[] = (string)$domain;
         }
@@ -283,7 +293,7 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      */
     public function domainMetadata($domainName)
     {
-        $params               = array();
+        $params               = [];
         $params['Action']     = 'DomainMetadata';
         $params['DomainName'] = $domainName;
         $response             = $this->_sendRequest($params);
@@ -291,7 +301,7 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
         $document = $response->getSimpleXMLDocument();
 
         $metadataNodes = $document->DomainMetadataResult->children();
-        $metadata      = array();
+        $metadata      = [];
         foreach ($metadataNodes as $metadataNode) {
             $name            = $metadataNode->getName();
             $metadata[$name] = (string)$metadataNode;
@@ -303,12 +313,12 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
     /**
      * Create a new domain
      *
-     * @param $domainName	string	Valid domain name of the domain to create
-     * @return 				boolean True if successful, false if not
+     * @param $domainName   string  Valid domain name of the domain to create
+     * @return              boolean True if successful, false if not
      */
     public function createDomain($domainName)
     {
-        $params               = array();
+        $params               = [];
         $params['Action']     = 'CreateDomain';
         $params['DomainName'] = $domainName;
         $response             = $this->_sendRequest($params);
@@ -323,7 +333,7 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      */
     public function deleteDomain($domainName)
     {
-        $params               = array();
+        $params               = [];
         $params['Action']     = 'DeleteDomain';
         $params['DomainName'] = $domainName;
         $response             = $this->_sendRequest($params);
@@ -339,7 +349,7 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      */
     public function select($selectExpression, $nextToken = null)
     {
-        $params                     = array();
+        $params                     = [];
         $params['Action']           = 'Select';
         $params['SelectExpression'] = $selectExpression;
 
@@ -350,14 +360,14 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
         $response = $this->_sendRequest($params);
         $xml      = $response->getSimpleXMLDocument();
 
-        $attributes = array();
+        $attributes = [];
         foreach ($xml->SelectResult->Item as $item) {
             $itemName = (string)$item->Name;
 
             foreach ($item->Attribute as $attribute) {
                 $attributeName = (string)$attribute->Name;
 
-                $values = array();
+                $values = [];
                 foreach ($attribute->Value as $value) {
                     $values[] = (string)$value;
                 }
@@ -395,10 +405,15 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
     public function quoteName($name)
     {
         if (preg_match('/^[a-z_$][a-z0-9_$-]*$/i', $name) == false) {
-            throw new Exception\InvalidArgumentException("Invalid name: can contain only alphanumeric characters, \$ and _");
+            throw new Exception\InvalidArgumentException(
+                "Invalid name: can contain only alphanumeric characters, \$ and _"
+            );
         }
         return "`$name`";
     }
+
+    // TODO: Unsuppress standards checking when underscores removed from method names
+    // @codingStandardsIgnoreStart
 
     /**
      * Sends a HTTP request to the SimpleDB service using Zend\Http\Client
@@ -406,8 +421,9 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      * @param array $params List of parameters to send with the request
      * @return Response
      * @throws Exception\RuntimeException
+     * @deprecated Underscore should be removed from method name
      */
-    protected function _sendRequest(array $params = array())
+    protected function _sendRequest(array $params = [])
     {
         // UTF-8 encode all parameters and replace '+' characters
         foreach ($params as $name => $value) {
@@ -421,9 +437,9 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
             $request = self::getHttpClient();
             $request->resetParameters();
 
-            $request->setOptions(array(
+            $request->setOptions([
                 'timeout' => $this->_httpTimeout
-            ));
+            ]);
 
 
             $request->setUri($this->getEndpoint());
@@ -464,6 +480,7 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      *                          parameters.
      *
      * @return array
+     * @deprecated Underscore should be removed from method name
      */
     protected function _addRequiredParameters(array $parameters)
     {
@@ -495,6 +512,7 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      * @param array  $parameters the parameters for which to get the signature.
      *
      * @return string the signed data.
+     * @deprecated Underscore should be removed from method name
      */
     protected function _signParameters(array $parameters)
     {
@@ -505,7 +523,7 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
         uksort($parameters, 'strcmp');
         unset($parameters['Signature']);
 
-        $arrData = array();
+        $arrData = [];
         foreach ($parameters as $key => $value) {
             $value = urlencode($value);
             $value = str_replace("%7E", "~", $value);
@@ -530,6 +548,7 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
      *
      * @throws Exception\RuntimeException if one or more errors are
      *         returned from Amazon.
+     * @deprecated Underscore should be removed from method name
      */
     private function _checkForErrors(Response $response)
     {
@@ -542,4 +561,6 @@ class SimpleDb extends \ZendService\Amazon\AbstractAmazon
             throw new Exception\RuntimeException($message, (double)$code);
         }
     }
+
+    // @codingStandardsIgnoreEnd
 }

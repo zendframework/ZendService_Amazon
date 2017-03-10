@@ -21,6 +21,9 @@ use ZendService\Amazon;
  */
 class Stream
 {
+    // TODO: Unsuppress standards checking when underscores removed from property/method names
+    // @codingStandardsIgnoreStart
+
     /**
      * @var boolean Write the buffer on fflush()?
      */
@@ -49,7 +52,7 @@ class Stream
     /**
      * @var array Available buckets
      */
-    private $_bucketList = array();
+    private $_bucketList = [];
 
     /**
      * @var S3
@@ -63,18 +66,19 @@ class Stream
      * @return S3
      * @throws Exception\InvalidArgumentException
      * @throws Exception\RuntimeException
+     * @deprecated Underscore should be removed from method name
      */
     protected function _getS3Client($path)
     {
         if ($this->_s3 === null) {
             $url = explode(':', $path);
 
-            if (!$url) {
+            if (! $url) {
                 throw new Exception\InvalidArgumentException("Unable to parse URL $path");
             }
 
             $this->_s3 = S3::getWrapperClient($url[0]);
-            if (!$this->_s3) {
+            if (! $this->_s3) {
                 throw new Exception\RuntimeException("Unknown client for wrapper {$url[0]}");
             }
         }
@@ -87,16 +91,20 @@ class Stream
      *
      * @param string $path
      * @return string
+     * @deprecated Underscore should be removed from method name
      */
     protected function _getNamePart($path)
     {
         $url = parse_url($path);
         if ($url['host']) {
-            return !empty($url['path']) ? $url['host'].$url['path'] : $url['host'];
+            return ! empty($url['path']) ? $url['host'].$url['path'] : $url['host'];
         }
 
         return '';
     }
+
+    // @codingStandardsIgnoreEnd
+
     /**
      * Open the stream
      *
@@ -162,7 +170,7 @@ class Stream
      */
     public function stream_read($count)
     {
-        if (!$this->_objectName) {
+        if (! $this->_objectName) {
             return false;
         }
 
@@ -172,16 +180,18 @@ class Stream
         }
 
         $range_start = $this->_position;
-        $range_end = $this->_position+$count-1;
+        $range_end = $this->_position + $count - 1;
 
         // Only fetch more data from S3 if we haven't fetched any data yet (postion=0)
         // OR, the range end position is greater than the size of the current object
         // buffer AND if the range end position is less than or equal to the object's
         // size returned by S3
-        if (($this->_position == 0) || (($range_end > strlen($this->_objectBuffer)) && ($range_end <= $this->_objectSize))) {
-            $headers = array(
+        if (($this->_position == 0) ||
+            (($range_end > strlen($this->_objectBuffer)) && ($range_end <= $this->_objectSize))
+        ) {
+            $headers = [
                 'Range' => "bytes=$range_start-$range_end"
-            );
+            ];
 
             $response = $this->_s3->_makeRequest('GET', $this->_objectName, null, $headers);
 
@@ -203,7 +213,7 @@ class Stream
      */
     public function stream_write($data)
     {
-        if (!$this->_objectName) {
+        if (! $this->_objectName) {
             return 0;
         }
         $len = strlen($data);
@@ -220,7 +230,7 @@ class Stream
      */
     public function stream_eof()
     {
-        if (!$this->_objectName) {
+        if (! $this->_objectName) {
             return true;
         }
 
@@ -246,7 +256,7 @@ class Stream
      */
     public function stream_seek($offset, $whence)
     {
-        if (!$this->_objectName) {
+        if (! $this->_objectName) {
             return false;
         }
 
@@ -280,7 +290,7 @@ class Stream
     public function stream_flush()
     {
         // If the stream wasn't opened for writing, just return false
-        if (!$this->_writeBuffer) {
+        if (! $this->_writeBuffer) {
             return false;
         }
 
@@ -298,11 +308,11 @@ class Stream
      */
     public function stream_stat()
     {
-        if (!$this->_objectName) {
+        if (! $this->_objectName) {
             return false;
         }
 
-        $stat = array();
+        $stat = [];
         $stat['dev'] = 0;
         $stat['ino'] = 0;
         $stat['mode'] = 0777;
@@ -317,14 +327,14 @@ class Stream
         $stat['blksize'] = 0;
         $stat['blocks'] = 0;
 
-        if (($slash = strchr($this->_objectName, '/')) === false || $slash == strlen($this->_objectName)-1) {
+        if (($slash = strchr($this->_objectName, '/')) === false || $slash == strlen($this->_objectName) - 1) {
             /* bucket */
-        $stat['mode'] |= 040000;
+            $stat['mode'] |= 040000;
         } else {
             $stat['mode'] |= 0100000;
         }
         $info = $this->_s3->getInfo($this->_objectName);
-        if (!empty($info)) {
+        if (! empty($info)) {
             $stat['size']  = $info['size'];
             $stat['atime'] = time();
             $stat['mtime'] = $info['mtime'];
@@ -410,7 +420,7 @@ class Stream
      */
     public function url_stat($path, $flags)
     {
-        $stat = array();
+        $stat = [];
         $stat['dev'] = 0;
         $stat['ino'] = 0;
         $stat['mode'] = 0777;
@@ -426,15 +436,15 @@ class Stream
         $stat['blocks'] = 0;
 
         $name = $this->_getNamePart($path);
-        if (($slash = strchr($name, '/')) === false || $slash == strlen($name)-1) {
+        if (($slash = strchr($name, '/')) === false || $slash == strlen($name) - 1) {
             /* bucket */
-        $stat['mode'] |= 040000;
+            $stat['mode'] |= 040000;
         } else {
             $stat['mode'] |= 0100000;
         }
         $info = $this->_getS3Client($path)->getInfo($name);
 
-        if (!empty($info)) {
+        if (! empty($info)) {
             $stat['size']  = $info['size'];
             $stat['atime'] = time();
             $stat['mtime'] = $info['mtime'];
@@ -475,7 +485,7 @@ class Stream
      */
     public function dir_closedir()
     {
-        $this->_bucketList = array();
+        $this->_bucketList = [];
         return true;
     }
 }

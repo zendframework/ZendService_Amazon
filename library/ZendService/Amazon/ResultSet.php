@@ -20,6 +20,9 @@ use DOMXPath;
  */
 class ResultSet implements \SeekableIterator
 {
+    // TODO: Unsuppress standards checking when underscores removed from property/method names
+    // @codingStandardsIgnoreStart
+
     /**
      * A DOMNodeList of <Item> elements
      *
@@ -48,6 +51,8 @@ class ResultSet implements \SeekableIterator
      */
     protected $_currentIndex = 0;
 
+    // @codingStandardsIgnoreEnd
+
     /**
      * Create an instance of Zend_Service_Amazon_ResultSet and create the necessary data objects
      *
@@ -58,7 +63,10 @@ class ResultSet implements \SeekableIterator
     {
         $this->_dom = $dom;
         $this->_xpath = new DOMXPath($dom);
-        $this->_xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/' . Amazon::getVersion());
+        $this->_xpath->registerNamespace(
+            'az',
+            'http://webservices.amazon.com/AWSECommerceService/' . Amazon::getVersion()
+        );
         $this->_results = $this->_xpath->query('//az:Item');
     }
 

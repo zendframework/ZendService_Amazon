@@ -17,9 +17,25 @@ namespace ZendService\Amazon\SimpleDb;
  */
 class Attribute
 {
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
+
+    /**
+     * @var string
+     */
     protected $_itemName;
+
+    /**
+     * @var string
+     */
     protected $_name;
+
+    /**
+     * @var array
+     */
     protected $_values;
+
+    // @codingStandardsIgnoreEnd
 
     /**
      * Constructor
@@ -33,8 +49,8 @@ class Attribute
         $this->_itemName = $itemName;
         $this->_name     = $name;
 
-        if (!is_array($values)) {
-            $this->_values = array($values);
+        if (! is_array($values)) {
+            $this->_values = [$values];
         } else {
             $this->_values = $values;
         }
@@ -90,8 +106,8 @@ class Attribute
      */
     public function setValues($values)
     {
-        if (!is_array($values)) {
-            $values = array($values);
+        if (! is_array($values)) {
+            $values = [$values];
         }
         $this->_values = $values;
     }

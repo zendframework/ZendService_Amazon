@@ -17,6 +17,9 @@ namespace ZendService\Amazon\Authentication;
  */
 abstract class AbstractAuthentication
 {
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
+
     /**
      * @var string
      */
@@ -31,6 +34,8 @@ abstract class AbstractAuthentication
      * @var string
      */
     protected $_apiVersion;
+
+    // @codingStandardsIgnoreEnd
 
     /**
      * Constructor

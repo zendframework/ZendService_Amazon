@@ -11,6 +11,7 @@
 namespace ZendService\Amazon\Ec2;
 
 use ZendService\Amazon;
+
 /**
  * An Amazon EC2 interface to query which Availability Zones your account has access to.
  *
@@ -29,12 +30,12 @@ class AvailabilityZones extends AbstractEc2
      */
     public function describe($zoneName = null)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'DescribeAvailabilityZones';
 
-        if (is_array($zoneName) && !empty($zoneName)) {
-            foreach ($zoneName as $k=>$name) {
-                $params['ZoneName.' . ($k+1)] = $name;
+        if (is_array($zoneName) && ! empty($zoneName)) {
+            foreach ($zoneName as $k => $name) {
+                $params['ZoneName.' . ($k + 1)] = $name;
             }
         } elseif ($zoneName) {
             $params['ZoneName.1'] = $zoneName;
@@ -45,9 +46,9 @@ class AvailabilityZones extends AbstractEc2
         $xpath  = $response->getXPath();
         $nodes  = $xpath->query('//ec2:item');
 
-        $return = array();
+        $return = [];
         foreach ($nodes as $k => $node) {
-            $item = array();
+            $item = [];
             $item['zoneName']   = $xpath->evaluate('string(ec2:zoneName/text())', $node);
             $item['zoneState']  = $xpath->evaluate('string(ec2:zoneState/text())', $node);
 

@@ -39,7 +39,7 @@ class ListmaniaList
     {
         $xpath = new DOMXPath($dom->ownerDocument);
         $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/' . Amazon::getVersion());
-        foreach (array('ListId', 'ListName') as $el) {
+        foreach (['ListId', 'ListName'] as $el) {
             $this->$el = (string) $xpath->query("./az:$el/text()", $dom)->item(0)->data;
         }
     }

@@ -28,12 +28,15 @@ use Zend\Http\Client as HttpClient;
  */
 class S3 extends \ZendService\Amazon\AbstractAmazon
 {
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
+
     /**
      * Store for stream wrapper clients
      *
      * @var array
      */
-    protected static $_wrapperClients = array();
+    protected static $_wrapperClients = [];
 
     /**
      * Endpoint for the service
@@ -41,6 +44,8 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * @var Uri\Uri
      */
     protected $_endpoint;
+
+    // @codingStandardsIgnoreEnd
 
     private static $lastThrottle = null;
 
@@ -68,10 +73,10 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      */
     public function setEndpoint($endpoint)
     {
-        if (!($endpoint instanceof Uri\Uri)) {
+        if (! ($endpoint instanceof Uri\Uri)) {
             $endpoint = Uri\UriFactory::factory($endpoint);
         }
-        if (!$endpoint->isValid()) {
+        if (! $endpoint->isValid()) {
             throw new Exception\InvalidArgumentException('Invalid endpoint supplied');
         }
         $this->_endpoint = $endpoint;
@@ -103,6 +108,9 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
         $this->setEndpoint('http://'.self::S3_ENDPOINT);
     }
 
+    // TODO: Unsuppress standards checking when underscores removed from method name
+    // @codingStandardsIgnoreStart
+
     /**
      * Verify if the bucket name is valid
      * For reference: http://docs.amazonwebservices.com/AmazonS3/latest/dev/BucketRestrictions.html
@@ -110,6 +118,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * @param  string                             $bucket
      * @return boolean
      * @throws Exception\InvalidArgumentException
+     * @deprecated Underscore should be removed from method name
      */
     public function _validBucketName($bucket)
     {
@@ -124,7 +133,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
                 break;
             }
 
-            if ($label[0] == '-' || $label[strlen($label)-1] == '-') {
+            if ($label[0] == '-' || $label[strlen($label) - 1] == '-') {
                 $labelDash = true;
                 break;
             }
@@ -157,6 +166,8 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
         return true;
     }
 
+    // @codingStandardsIgnoreEnd
+
     /**
      * Add a new bucket
      *
@@ -169,11 +180,12 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
         $this->_validBucketName($bucket);
 
         if ($location) {
-            $data = '<CreateBucketConfiguration><LocationConstraint>'.$location.'</LocationConstraint></CreateBucketConfiguration>';
+            $data = '<CreateBucketConfiguration><LocationConstraint>'
+                . $location . '</LocationConstraint></CreateBucketConfiguration>';
         } else {
             $data = null;
         }
-        $response = $this->_makeRequest('PUT', $bucket, null, array(), $data);
+        $response = $this->_makeRequest('PUT', $bucket, null, [], $data);
 
         return ($response->getStatusCode() == 200);
     }
@@ -181,7 +193,8 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
     /**
      * Checks if a given bucket name is available
      *
-     * To determine whether a bucket name exists using REST, use HEAD, specify the name of the bucket, and set max-keys to 0.
+     * To determine whether a bucket name exists using REST, use HEAD, specify the name of the bucket, and set
+     * max-keys to 0.
      * http://docs.amazonwebservices.com/AmazonS3/2006-03-01/dev/UsingBucket.html
      *
      * Most common responses:
@@ -197,7 +210,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
     {
         $this->_validBucketName($bucket);
 
-        $response = $this->_makeRequest('HEAD', $bucket, array('max-keys'=>0));
+        $response = $this->_makeRequest('HEAD', $bucket, ['max-keys' => 0]);
 
         return ($response->getStatusCode() == 200);
     }
@@ -238,7 +251,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      */
     public function getInfo($object)
     {
-        $info = array();
+        $info = [];
 
         $object = $this->_fixupObjectName($object);
         $response = $this->_makeRequest('HEAD', $object);
@@ -284,7 +297,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
 
         $xml = new SimpleXMLElement($response->getBody());
 
-        $buckets = array();
+        $buckets = [];
         foreach ($xml->Buckets->Bucket as $bucket) {
             $buckets[] = (string) $bucket->Name;
         }
@@ -301,7 +314,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
     public function cleanBucket($bucket)
     {
         $objects = $this->getObjectsByBucket($bucket);
-        if (!$objects) {
+        if (! $objects) {
             return false;
         }
 
@@ -316,16 +329,22 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * List the objects in a bucket.
      *
      * Provides the list of object keys that are contained in the bucket.  Valid params include the following.
-     * prefix - Limits the response to keys which begin with the indicated prefix. You can use prefixes to separate a bucket into different sets of keys in a way similar to how a file system uses folders.
-     * marker - Indicates where in the bucket to begin listing. The list will only include keys that occur lexicographically after marker. This is convenient for pagination: To get the next page of results use the last key of the current page as the marker.
-     * max-keys - The maximum number of keys you'd like to see in the response body. The server might return fewer than this many keys, but will not return more.
-     * delimiter - Causes keys that contain the same string between the prefix and the first occurrence of the delimiter to be rolled up into a single result element in the CommonPrefixes collection. These rolled-up keys are not returned elsewhere in the response.
+     * prefix -    Limits the response to keys which begin with the indicated prefix. You can use prefixes to separate
+     *             a bucket into different sets of keys in a way similar to how a file system uses folders.
+     * marker -    Indicates where in the bucket to begin listing. The list will only include keys that occur
+     *             lexicographically after marker. This is convenient for pagination: To get the next page of results
+     *             use the last key of the current page as the marker.
+     * max-keys -  The maximum number of keys you'd like to see in the response body. The server might return fewer
+     *             than this many keys, but will not return more.
+     * delimiter - Causes keys that contain the same string between the prefix and the first occurrence of the
+     *             delimiter to be rolled up into a single result element in the CommonPrefixes collection. These
+     *             rolled-up keys are not returned elsewhere in the response.
      *
      * @param  string      $bucket
      * @param  array       $params S3 GET Bucket Parameter
      * @return array|false
      */
-    public function getObjectsByBucket($bucket, $params = array())
+    public function getObjectsByBucket($bucket, $params = [])
     {
         $response = $this->_makeRequest('GET', $bucket, $params);
 
@@ -335,7 +354,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
 
         $xml = new SimpleXMLElement($response->getBody());
 
-        $objects = array();
+        $objects = [];
         if (isset($xml->Contents)) {
             foreach ($xml->Contents as $contents) {
                 foreach ($contents->Key as $object) {
@@ -353,17 +372,24 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
     /**
      * List the objects and common prefixes in a bucket.
      *
-     * Provides the list of object keys and common prefixes that are contained in the bucket.  Valid params include the following.
-     * prefix - Limits the response to keys which begin with the indicated prefix. You can use prefixes to separate a bucket into different sets of keys in a way similar to how a file system uses folders.
-     * marker - Indicates where in the bucket to begin listing. The list will only include keys that occur lexicographically after marker. This is convenient for pagination: To get the next page of results use the last key of the current page as the marker.
-     * max-keys - The maximum number of keys you'd like to see in the response body. The server might return fewer than this many keys, but will not return more.
-     * delimiter - Causes keys that contain the same string between the prefix and the first occurrence of the delimiter to be rolled up into a single result element in the CommonPrefixes collection. These rolled-up keys are not returned elsewhere in the response.
+     * Provides the list of object keys and common prefixes that are contained in the bucket.  Valid params include the
+     * following.
+     * prefix -    Limits the response to keys which begin with the indicated prefix. You can use prefixes to separate
+     *             a bucket into different sets of keys in a way similar to how a file system uses folders.
+     * marker -    Indicates where in the bucket to begin listing. The list will only include keys that occur
+     *             lexicographically after marker. This is convenient for pagination: To get the next page of results
+     *             use the last key of the current page as the marker.
+     * max-keys -  The maximum number of keys you'd like to see in the response body. The server might return fewer
+     *             than this many keys, but will not return more.
+     * delimiter - Causes keys that contain the same string between the prefix and the first occurrence of the
+     *             delimiter to be rolled up into a single result element in the CommonPrefixes collection. These
+     *             rolled-up keys are not returned elsewhere in the response.
      *
      * @param  string      $bucket
      * @param  array       $params S3 GET Bucket Parameter
      * @return array|false
      */
-    public function getObjectsAndPrefixesByBucket($bucket, $params = array())
+    public function getObjectsAndPrefixesByBucket($bucket, $params = [])
     {
         $response = $this->_makeRequest('GET', $bucket, $params);
 
@@ -373,7 +399,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
 
         $xml = new SimpleXMLElement($response->getBody());
 
-        $objects = array();
+        $objects = [];
         if (isset($xml->Contents)) {
             foreach ($xml->Contents as $contents) {
                 foreach ($contents->Key as $object) {
@@ -381,7 +407,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
                 }
             }
         }
-        $prefixes = array();
+        $prefixes = [];
         if (isset($xml->CommonPrefixes)) {
             foreach ($xml->CommonPrefixes as $prefix) {
                 foreach ($prefix->Prefix as $object) {
@@ -390,17 +416,21 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
             }
         }
 
-        return array(
+        return [
             'objects'  => $objects,
             'prefixes' => $prefixes
-        );
+        ];
     }
+
+    // TODO: Unsuppress standards checking when underscores removed from method name
+    // @codingStandardsIgnoreStart
 
     /**
      * Make sure the object name is valid
      *
      * @param  string $object
      * @return string
+     * @deprecated Underscore should be removed from method name
      */
     protected function _fixupObjectName($object)
     {
@@ -416,6 +446,8 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
         return $firstpart.'/'.implode('/', array_map('rawurlencode', $nameparts));
     }
 
+    // @codingStandardsIgnoreEnd
+
     /**
      * Get an object
      *
@@ -423,11 +455,11 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * @param  bool         $paidobject This is "requestor pays" object
      * @return string|false
      */
-    public function getObject($object, $paidobject=false)
+    public function getObject($object, $paidobject = false)
     {
         $object = $this->_fixupObjectName($object);
         if ($paidobject) {
-            $response = $this->_makeRequest('GET', $object, null, array(self::S3_REQUESTPAY_HEADER => 'requester'));
+            $response = $this->_makeRequest('GET', $object, null, [self::S3_REQUESTPAY_HEADER => 'requester']);
         } else {
             $response = $this->_makeRequest('GET', $object);
         }
@@ -449,18 +481,18 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * @param  bool                 $paidobject This is "requestor pays" object
      * @return StreamResponse|false
      */
-    public function getObjectStream($object, $streamfile = null, $paidobject=false)
+    public function getObjectStream($object, $streamfile = null, $paidobject = false)
     {
         $object = $this->_fixupObjectName($object);
-        $this->getHttpClient()->setStream($streamfile?$streamfile:true);
+        $this->getHttpClient()->setStream($streamfile ? $streamfile : true);
         if ($paidobject) {
-            $response = $this->_makeRequest('GET', $object, null, array(self::S3_REQUESTPAY_HEADER => 'requester'));
+            $response = $this->_makeRequest('GET', $object, null, [self::S3_REQUESTPAY_HEADER => 'requester']);
         } else {
             $response = $this->_makeRequest('GET', $object);
         }
         $this->getHttpClient()->setStream(null);
 
-        if ($response->getStatusCode() != 200 || !($response instanceof StreamResponse)) {
+        if ($response->getStatusCode() != 200 || ! ($response instanceof StreamResponse)) {
             return false;
         }
 
@@ -475,17 +507,17 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * @param  array           $meta   Metadata
      * @return boolean
      */
-    public function putObject($object, $data, $meta=null)
+    public function putObject($object, $data, $meta = null)
     {
         $object = $this->_fixupObjectName($object);
-        $headers = (is_array($meta)) ? $meta : array();
+        $headers = (is_array($meta)) ? $meta : [];
 
-        if (!is_resource($data)) {
+        if (! is_resource($data)) {
             $headers['Content-MD5'] = base64_encode(md5($data, true));
         }
         $headers['Expect'] = '100-continue';
 
-        if (!isset($headers[self::S3_CONTENT_TYPE_HEADER])) {
+        if (! isset($headers[self::S3_CONTENT_TYPE_HEADER])) {
             $headers[self::S3_CONTENT_TYPE_HEADER] = self::getMimeType($object);
         }
 
@@ -519,18 +551,18 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * @return boolean
      * @throws Exception\RuntimeException
      */
-    public function putFile($path, $object, $meta=null)
+    public function putFile($path, $object, $meta = null)
     {
         $data = @file_get_contents($path);
         if ($data === false) {
             throw new Exception\RuntimeException("Cannot read file $path");
         }
 
-        if (!is_array($meta)) {
-            $meta = array();
+        if (! is_array($meta)) {
+            $meta = [];
         }
 
-        if (!isset($meta[self::S3_CONTENT_TYPE_HEADER])) {
+        if (! isset($meta[self::S3_CONTENT_TYPE_HEADER])) {
             $meta[self::S3_CONTENT_TYPE_HEADER] = self::getMimeType($path);
         }
 
@@ -546,22 +578,22 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * @return boolean
      * @throws Exception\RuntimeException
      */
-    public function putFileStream($path, $object, $meta=null)
+    public function putFileStream($path, $object, $meta = null)
     {
         $data = @fopen($path, "rb");
         if ($data === false) {
             throw new Exception\RuntimeException("Cannot open file $path");
         }
 
-        if (!is_array($meta)) {
-            $meta = array();
+        if (! is_array($meta)) {
+            $meta = [];
         }
 
-        if (!isset($meta[self::S3_CONTENT_TYPE_HEADER])) {
+        if (! isset($meta[self::S3_CONTENT_TYPE_HEADER])) {
             $meta[self::S3_CONTENT_TYPE_HEADER] = self::getMimeType($path);
         }
 
-        if (!isset($meta['Content-MD5'])) {
+        if (! isset($meta['Content-MD5'])) {
             $meta['Content-MD5'] = base64_encode(md5_file($path, true));
         }
 
@@ -597,13 +629,13 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
         $sourceObject = $this->_fixupObjectName($sourceObject);
         $destObject   = $this->_fixupObjectName($destObject);
 
-        $headers = (is_array($meta)) ? $meta : array();
+        $headers = (is_array($meta)) ? $meta : [];
         $headers['x-amz-copy-source'] = $sourceObject;
         $headers['x-amz-metadata-directive'] = $meta === null ? 'COPY' : 'REPLACE';
 
         $response = $this->_makeRequest('PUT', $destObject, null, $headers);
 
-        if ($response->getStatusCode() == 200 && !stristr($response->getBody(), '<Error>')) {
+        if ($response->getStatusCode() == 200 && ! stristr($response->getBody(), '<Error>')) {
             return true;
         }
 
@@ -635,6 +667,9 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
         }
     }
 
+    // TODO: Unsuppress standards checking when underscores removed from method name
+    // @codingStandardsIgnoreStart
+
     /**
      * Make a request to Amazon S3
      *
@@ -645,14 +680,15 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * @param  string|resource                    $data    Request data
      * @return \Zend\Http\Response
      * @throws Exception\InvalidArgumentException
+     * @deprecated Underscore should be removed from method name
      */
-    public function _makeRequest($method, $path='', $params=null, $headers=array(), $data=null)
+    public function _makeRequest($method, $path = '', $params = null, $headers = [], $data = null)
     {
         $retryCount         = 0;
         $this->lastResponse = null;
 
-        if (!is_array($headers)) {
-            $headers = array($headers);
+        if (! is_array($headers)) {
+            $headers = [$headers];
         }
 
         $headers['Date'] = $this->getRequestDate();  //Helps with testing the signature
@@ -668,7 +704,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
             // prepend bucket name to the hostname
             $endpoint->setHost($parts[0].'.'.$endpoint->getHost());
         }
-        if (!empty($parts[1])) {
+        if (! empty($parts[1])) {
             $endpoint->setPath('/'.$parts[1]);
         } else {
             $endpoint->setPath('/');
@@ -688,7 +724,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
         }
 
         if (($method == 'PUT') && ($data !== null)) {
-            if (!$hasContentType) {
+            if (! $hasContentType) {
                 $headers['Content-Type'] = self::getMimeType($path);
             }
             $hasContentType = true;
@@ -699,7 +735,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
         $client->setMethod($method);
 
         //Prevents from Http\Client adding up a content-type header, which would break signature
-        if (!$hasContentType) {
+        if (! $hasContentType) {
             $headers['Content-Type'] = 'application/xml';
         }
 
@@ -712,7 +748,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
 
         do {
             $retry                = false;
-            $this->lastResponse   = $this->throttle(array($client, 'send'));
+            $this->lastResponse   = $this->throttle([$client, 'send']);
             $responseCode         = $this->lastResponse->getStatusCode();
 
             // Some 5xx errors are expected, so retry automatically
@@ -731,6 +767,8 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
         return $this->lastResponse;
     }
 
+    // @codingStandardsIgnoreEnd
+
     /**
      * Make sure calls are throttled with a minimum time interval $throttleTime
      *
@@ -738,7 +776,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * @param array    $params       Parameters for the callback
      * @param int      $throttleTime Maximum seconds to throttle between calls
      */
-    public function throttle($callback, $params = array(), $throttleTime = 1.0)
+    public function throttle($callback, $params = [], $throttleTime = 1.0)
     {
         if (self::$lastThrottle) {
             $last = self::$lastThrottle;
@@ -770,14 +808,14 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      */
     protected function addSignature($method, $path, $headers)
     {
-        if (!is_array($headers)) {
-            $headers = array($headers);
+        if (! is_array($headers)) {
+            $headers = [$headers];
         }
 
         $type = $md5 = $date = '';
 
         // Search for the Content-type, Content-MD5 and Date headers
-        foreach ($headers as $key=>$val) {
+        foreach ($headers as $key => $val) {
             if (strcasecmp($key, 'content-type') == 0) {
                 $type = $val;
             } elseif (strcasecmp($key, 'content-md5') == 0) {
@@ -795,8 +833,8 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
         $sig_str = "$method\n$md5\n$type\n$date\n";
         // For x-amz- headers, combine like keys, lowercase them, sort them
         // alphabetically and remove excess spaces around values
-        $amz_headers = array();
-        foreach ($headers as $key=>$val) {
+        $amz_headers = [];
+        foreach ($headers as $key => $val) {
             $key = strtolower($key);
             if (substr($key, 0, 6) == 'x-amz-') {
                 if (is_array($val)) {
@@ -806,9 +844,9 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
                 }
             }
         }
-        if (!empty($amz_headers)) {
+        if (! empty($amz_headers)) {
             ksort($amz_headers);
-            foreach ($amz_headers as $key=>$val) {
+            foreach ($amz_headers as $key => $val) {
                 $sig_str .= $key.':'.implode(',', $val)."\n";
             }
         }
@@ -816,7 +854,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
         //US General bucket names must always be lowercased for the signature
         $urlPath = parse_url($path, PHP_URL_PATH);
         $urlPathParts = explode('/', $urlPath);
-        if (!empty($urlPathParts[0])) {
+        if (! empty($urlPathParts[0])) {
             $urlPathParts[0] = strtolower($urlPathParts[0]);
         }
 
@@ -829,7 +867,9 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
             $sig_str .= '?torrent';
         }
 
-        $signature = base64_encode(Hmac::compute($this->_getSecretKey(), 'sha1', utf8_encode($sig_str), Hmac::OUTPUT_BINARY));
+        $signature = base64_encode(
+            Hmac::compute($this->_getSecretKey(), 'sha1', utf8_encode($sig_str), Hmac::OUTPUT_BINARY)
+        );
         $headers['Authorization'] = 'AWS ' . $this->_getAccessKey() . ':' . $signature;
 
         return $headers;
@@ -845,7 +885,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
     {
         $ext = substr(strrchr($path, '.'), 1);
 
-        if (!$ext) {
+        if (! $ext) {
             // shortcut
             return 'binary/octet-stream';
         }
@@ -1040,7 +1080,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * @param  string $name
      * @return S3
      */
-    public function registerStreamWrapper($name='s3')
+    public function registerStreamWrapper($name = 's3')
     {
         stream_register_wrapper($name, 'ZendService\Amazon\S3\Stream');
         $this->registerAsClient($name);
@@ -1052,7 +1092,7 @@ class S3 extends \ZendService\Amazon\AbstractAmazon
      * @param  string $name
      * @return S3
      */
-    public function unregisterStreamWrapper($name='s3')
+    public function unregisterStreamWrapper($name = 's3')
     {
         stream_wrapper_unregister($name);
         $this->unregisterAsClient($name);
