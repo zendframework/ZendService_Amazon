@@ -19,7 +19,7 @@
     },
     "autoload-dev": {
         "psr-0": {
-            "ZendServiceTest\\Amazon\\": "tests/ZendServiceTest/Amazon/"
+            "ZendServiceTest\\Amazon\\": "tests/"
         }
     },
     "require": {

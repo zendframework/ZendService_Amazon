@@ -50,17 +50,3 @@ class AbstractTest extends TestCase
         $this->assertNotEquals($ret, $invalidSignature);
     }
 }
-
-class TestAmazonAbstract extends \ZendService\Amazon\Ec2\AbstractEc2
-{
-
-    public function returnRegion()
-    {
-        return $this->_region;
-    }
-
-    public function testSign($params)
-    {
-        return $this->signParameters($params);
-    }
-}
