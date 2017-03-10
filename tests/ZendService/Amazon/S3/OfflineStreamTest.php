@@ -71,7 +71,7 @@ class OfflineStreamTest extends TestCase
                 (int)$endPos,
                 'Range header end position must be greater than or equal to start position'
             );
-            $length =  $endPos - $startPos + 1;
+            $length = $endPos - $startPos + 1;
 
             // Simulate an appropriately-sized response to the current request
             $response = new Response();

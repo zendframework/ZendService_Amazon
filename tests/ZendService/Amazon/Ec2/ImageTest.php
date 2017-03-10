@@ -50,7 +50,7 @@ class ImageTest extends TestCase
     protected function setUp()
     {
         $this->httpClientTestAdapter = new HttpClientTestAdapter;
-        $this->httpClient = new HttpClient(null, array('adapter' => $this->httpClientTestAdapter));
+        $this->httpClient = new HttpClient(null, ['adapter' => $this->httpClientTestAdapter]);
         $this->ec2ImageInstance = new Ec2\Image('access_key', 'secret_access_key', null, $this->httpClient);
     }
 
@@ -101,7 +101,8 @@ class ImageTest extends TestCase
                     . "    </item>\r\n"
                     . "    <item>\r\n"
                     . "      <imageId>ami-be3adfd6</imageId>\r\n"
-                    . "      <imageLocation>ec2-public-images/ubuntu-8.10-i386-base-v1.04.manifest.xml</imageLocation>\r\n"
+                    . "      <imageLocation>ec2-public-images/ubuntu-8.10-i386-base-v1.04.manifest.xml"
+                    . "</imageLocation>\r\n"
                     . "      <imageState>available</imageState>\r\n"
                     . "      <imageOwnerId>206029621532</imageOwnerId>\r\n"
                     . "      <isPublic>true</isPublic>\r\n"
@@ -114,10 +115,10 @@ class ImageTest extends TestCase
                     . "</DescribeImagesResponse>";
         $this->httpClientTestAdapter->setResponse($rawHttpResponse);
 
-        $return = $this->ec2ImageInstance->describe(array('ami-be3adfd7', 'ami-be3adfd6'));
+        $return = $this->ec2ImageInstance->describe(['ami-be3adfd7', 'ami-be3adfd6']);
 
-        $arrImage = array(
-            array(
+        $arrImage = [
+            [
                 'imageId'   => 'ami-be3adfd7',
                 'imageLocation'   => 'ec2-public-images/fedora-8-i386-base-v1.04.manifest.xml',
                 'imageState'   => 'available',
@@ -128,8 +129,8 @@ class ImageTest extends TestCase
                 'kernelId'   => 'aki-4438dd2d',
                 'ramdiskId'   => 'ari-4538dd2c',
                 'platform'   => '',
-            ),
-            array(
+            ],
+            [
                 'imageId'   => 'ami-be3adfd6',
                 'imageLocation'   => 'ec2-public-images/ubuntu-8.10-i386-base-v1.04.manifest.xml',
                 'imageState'   => 'available',
@@ -140,8 +141,8 @@ class ImageTest extends TestCase
                 'kernelId'   => 'aki-4438dd2d',
                 'ramdiskId'   => 'ari-4538dd2c',
                 'platform'   => '',
-            )
-        );
+            ]
+        ];
 
         $this->assertSame($arrImage, $return);
     }
@@ -176,8 +177,8 @@ class ImageTest extends TestCase
 
         $return = $this->ec2ImageInstance->describe('ami-be3adfd7');
 
-        $arrImage = array(
-            array(
+        $arrImage = [
+            [
                 'imageId'   => 'ami-be3adfd7',
                 'imageLocation'   => 'ec2-public-images/fedora-8-i386-base-v1.04.manifest.xml',
                 'imageState'   => 'available',
@@ -188,8 +189,8 @@ class ImageTest extends TestCase
                 'kernelId'   => 'aki-4438dd2d',
                 'ramdiskId'   => 'ari-4538dd2c',
                 'platform'   => '',
-            )
-        );
+            ]
+        ];
 
         $this->assertSame($arrImage, $return);
     }
@@ -220,7 +221,8 @@ class ImageTest extends TestCase
                     . "    </item>\r\n"
                     . "    <item>\r\n"
                     . "      <imageId>ami-be3adfd6</imageId>\r\n"
-                    . "      <imageLocation>ec2-public-images/ubuntu-8.10-i386-base-v1.04.manifest.xml</imageLocation>\r\n"
+                    . "      <imageLocation>ec2-public-images/ubuntu-8.10-i386-base-v1.04.manifest.xml"
+                    . "</imageLocation>\r\n"
                     . "      <imageState>available</imageState>\r\n"
                     . "      <imageOwnerId>206029621532</imageOwnerId>\r\n"
                     . "      <isPublic>true</isPublic>\r\n"
@@ -233,10 +235,10 @@ class ImageTest extends TestCase
                     . "</DescribeImagesResponse>";
         $this->httpClientTestAdapter->setResponse($rawHttpResponse);
 
-        $return = $this->ec2ImageInstance->describe(null, array('2060296256884', '206029621532'));
+        $return = $this->ec2ImageInstance->describe(null, ['2060296256884', '206029621532']);
 
-        $arrImage = array(
-            array(
+        $arrImage = [
+            [
                 'imageId'   => 'ami-be3adfd7',
                 'imageLocation'   => 'ec2-public-images/fedora-8-i386-base-v1.04.manifest.xml',
                 'imageState'   => 'available',
@@ -247,8 +249,8 @@ class ImageTest extends TestCase
                 'kernelId'   => 'aki-4438dd2d',
                 'ramdiskId'   => 'ari-4538dd2c',
                 'platform'   => '',
-            ),
-            array(
+            ],
+            [
                 'imageId'   => 'ami-be3adfd6',
                 'imageLocation'   => 'ec2-public-images/ubuntu-8.10-i386-base-v1.04.manifest.xml',
                 'imageState'   => 'available',
@@ -259,8 +261,8 @@ class ImageTest extends TestCase
                 'kernelId'   => 'aki-4438dd2d',
                 'ramdiskId'   => 'ari-4538dd2c',
                 'platform'   => '',
-            )
-        );
+            ]
+        ];
 
         $this->assertSame($arrImage, $return);
     }
@@ -295,8 +297,8 @@ class ImageTest extends TestCase
 
         $return = $this->ec2ImageInstance->describe(null, '206029621532');
 
-        $arrImage = array(
-            array(
+        $arrImage = [
+            [
                 'imageId'   => 'ami-be3adfd7',
                 'imageLocation'   => 'ec2-public-images/fedora-8-i386-base-v1.04.manifest.xml',
                 'imageState'   => 'available',
@@ -307,8 +309,8 @@ class ImageTest extends TestCase
                 'kernelId'   => 'aki-4438dd2d',
                 'ramdiskId'   => 'ari-4538dd2c',
                 'platform'   => '',
-            )
-        );
+            ]
+        ];
 
         $this->assertSame($arrImage, $return);
     }
@@ -339,7 +341,8 @@ class ImageTest extends TestCase
                     . "    </item>\r\n"
                     . "    <item>\r\n"
                     . "      <imageId>ami-be3adfd6</imageId>\r\n"
-                    . "      <imageLocation>ec2-public-images/ubuntu-8.10-i386-base-v1.04.manifest.xml</imageLocation>\r\n"
+                    . "      <imageLocation>ec2-public-images/ubuntu-8.10-i386-base-v1.04.manifest.xml"
+                    . "</imageLocation>\r\n"
                     . "      <imageState>available</imageState>\r\n"
                     . "      <imageOwnerId>206029621532</imageOwnerId>\r\n"
                     . "      <isPublic>true</isPublic>\r\n"
@@ -352,10 +355,10 @@ class ImageTest extends TestCase
                     . "</DescribeImagesResponse>";
         $this->httpClientTestAdapter->setResponse($rawHttpResponse);
 
-        $return = $this->ec2ImageInstance->describe(null, null, array('46361432890', '432432265322'));
+        $return = $this->ec2ImageInstance->describe(null, null, ['46361432890', '432432265322']);
 
-        $arrImage = array(
-            array(
+        $arrImage = [
+            [
                 'imageId'   => 'ami-be3adfd7',
                 'imageLocation'   => 'ec2-public-images/fedora-8-i386-base-v1.04.manifest.xml',
                 'imageState'   => 'available',
@@ -366,8 +369,8 @@ class ImageTest extends TestCase
                 'kernelId'   => 'aki-4438dd2d',
                 'ramdiskId'   => 'ari-4538dd2c',
                 'platform'   => '',
-            ),
-            array(
+            ],
+            [
                 'imageId'   => 'ami-be3adfd6',
                 'imageLocation'   => 'ec2-public-images/ubuntu-8.10-i386-base-v1.04.manifest.xml',
                 'imageState'   => 'available',
@@ -378,8 +381,8 @@ class ImageTest extends TestCase
                 'kernelId'   => 'aki-4438dd2d',
                 'ramdiskId'   => 'ari-4538dd2c',
                 'platform'   => '',
-            )
-        );
+            ]
+        ];
 
         $this->assertSame($arrImage, $return);
     }
@@ -414,8 +417,8 @@ class ImageTest extends TestCase
 
         $return = $this->ec2ImageInstance->describe(null, null, '46361432890');
 
-        $arrImage = array(
-            array(
+        $arrImage = [
+            [
                 'imageId'   => 'ami-be3adfd7',
                 'imageLocation'   => 'ec2-public-images/fedora-8-i386-base-v1.04.manifest.xml',
                 'imageState'   => 'available',
@@ -426,8 +429,8 @@ class ImageTest extends TestCase
                 'kernelId'   => 'aki-4438dd2d',
                 'ramdiskId'   => 'ari-4538dd2c',
                 'platform'   => '',
-            )
-        );
+            ]
+        ];
 
         $this->assertSame($arrImage, $return);
     }
@@ -502,7 +505,8 @@ class ImageTest extends TestCase
                     . "</ModifyImageAttributeResponse>\r\n";
         $this->httpClientTestAdapter->setResponse($rawHttpResponse);
 
-        $return = $this->ec2ImageInstance->modifyAttribute('ami-61a54008', 'launchPermission', 'add', '495219933132', 'all');
+        $return = $this->ec2ImageInstance
+            ->modifyAttribute('ami-61a54008', 'launchPermission', 'add', '495219933132', 'all');
         $this->assertTrue($return);
     }
 
@@ -522,7 +526,13 @@ class ImageTest extends TestCase
                     . "</ModifyImageAttributeResponse>\r\n";
         $this->httpClientTestAdapter->setResponse($rawHttpResponse);
 
-        $return = $this->ec2ImageInstance->modifyAttribute('ami-61a54008', 'launchPermission', 'add', array('495219933132', '495219933133'), array('all', 'all'));
+        $return = $this->ec2ImageInstance->modifyAttribute(
+            'ami-61a54008',
+            'launchPermission',
+            'add',
+            ['495219933132', '495219933133'],
+            ['all', 'all']
+        );
         $this->assertTrue($return);
     }
 
@@ -530,7 +540,8 @@ class ImageTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid attribute passed in.');
-        $return = $this->ec2ImageInstance->modifyAttribute('ami-61a54008', 'invalidPermission', 'add', '495219933132', 'all');
+        $return = $this->ec2ImageInstance
+            ->modifyAttribute('ami-61a54008', 'invalidPermission', 'add', '495219933132', 'all');
     }
 
     public function testModifyAttributeProuctCodes()
@@ -549,7 +560,8 @@ class ImageTest extends TestCase
                     . "</ModifyImageAttributeResponse>\r\n";
         $this->httpClientTestAdapter->setResponse($rawHttpResponse);
 
-        $return = $this->ec2ImageInstance->modifyAttribute('ami-61a54008', 'productCodes', null, null, null, '774F4FF8');
+        $return = $this->ec2ImageInstance
+            ->modifyAttribute('ami-61a54008', 'productCodes', null, null, null, '774F4FF8');
 
         $this->assertTrue($return);
     }

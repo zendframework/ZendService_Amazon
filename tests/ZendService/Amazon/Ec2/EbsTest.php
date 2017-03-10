@@ -15,7 +15,6 @@ use ZendService\Amazon\Ec2;
 use Zend\Http\Client as HttpClient;
 use Zend\Http\Client\Adapter\Test as HttpClientTestAdapter;
 
-
 /**
  * ZendService\Amazon\Ec2\Ebs test case.
  *
@@ -50,7 +49,7 @@ class EbsTest extends TestCase
     protected function setUp()
     {
         $this->httpClientTestAdapter = new HttpClientTestAdapter;
-        $this->httpClient = new HttpClient(null, array('adapter' => $this->httpClientTestAdapter));
+        $this->httpClient = new HttpClient(null, ['adapter' => $this->httpClientTestAdapter]);
         $this->ebsInstance = new Ec2\Ebs('access_key', 'secret_access_key', null, $this->httpClient);
     }
 
@@ -76,13 +75,13 @@ class EbsTest extends TestCase
 
         $return = $this->ebsInstance->attachVolume('vol-4d826724', 'i-6058a509', '/dev/sdh');
 
-        $arrAttach = array(
+        $arrAttach = [
             'volumeId'  => 'vol-4d826724',
             'instanceId'  => 'i-6058a509',
             'device'  => '/dev/sdh',
             'status'  => 'attaching',
             'attachTime'  => '2008-05-07T11:51:50.000Z'
-        );
+        ];
 
         $this->assertSame($arrAttach, $return);
     }
@@ -109,13 +108,13 @@ class EbsTest extends TestCase
 
         $return = $this->ebsInstance->createSnapshot('vol-4d826724');
 
-        $arrCreateSnapShot = array(
+        $arrCreateSnapShot = [
             'snapshotId'  => 'snap-78a54011',
             'volumeId'  => 'vol-4d826724',
             'status'  => 'pending',
             'startTime'  => '2008-05-07T11:51:50.000Z',
             'progress'  => ''
-        );
+        ];
 
         $this->assertSame($arrCreateSnapShot, $return);
     }
@@ -143,13 +142,13 @@ class EbsTest extends TestCase
 
         $return = $this->ebsInstance->createNewVolume(400, 'us-east-1a');
 
-        $arrCreateNewVolume = array(
+        $arrCreateNewVolume = [
             'volumeId'  => 'vol-4d826724',
             'size'  => '400',
             'status'  => 'creating',
             'createTime'  => '2008-05-07T11:51:50.000Z',
             'availabilityZone'  => 'us-east-1a'
-        );
+        ];
 
         $this->assertSame($arrCreateNewVolume, $return);
     }
@@ -177,14 +176,14 @@ class EbsTest extends TestCase
 
         $return = $this->ebsInstance->createVolumeFromSnapshot('snap-78a54011', 'us-east-1a');
 
-        $arrCreateNewVolume = array(
+        $arrCreateNewVolume = [
             'volumeId'  => 'vol-4d826724',
             'size'  => '400',
             'status'  => 'creating',
             'createTime'  => '2008-05-07T11:51:50.000Z',
             'availabilityZone'  => 'us-east-1a',
             'snapshotId'        => 'snap-78a54011'
-        );
+        ];
 
         $this->assertSame($arrCreateNewVolume, $return);
     }
@@ -260,13 +259,13 @@ class EbsTest extends TestCase
 
         $return = $this->ebsInstance->describeSnapshot('snap-78a54011');
 
-        $arrSnapshot = array(array(
+        $arrSnapshot = [[
             'snapshotId'        => 'snap-78a54011',
             'volumeId'  => 'vol-4d826724',
             'status'  => 'pending',
             'startTime'  => '2008-05-07T12:51:50.000Z',
             'progress'  => '80%'
-        ));
+        ]];
 
         $this->assertSame($arrSnapshot, $return);
     }
@@ -302,24 +301,24 @@ class EbsTest extends TestCase
                     . "</DescribeSnapshotsResponse>";
         $this->httpClientTestAdapter->setResponse($rawHttpResponse);
 
-        $return = $this->ebsInstance->describeSnapshot(array('snap-78a54011', 'snap-78a54012'));
+        $return = $this->ebsInstance->describeSnapshot(['snap-78a54011', 'snap-78a54012']);
 
-        $arrSnapshots = array(
-            array(
+        $arrSnapshots = [
+            [
                 'snapshotId'    => 'snap-78a54011',
                 'volumeId'      => 'vol-4d826724',
                 'status'        => 'pending',
                 'startTime'     => '2008-05-07T12:51:50.000Z',
                 'progress'      => '80%',
-            ),
-            array(
+            ],
+            [
                 'snapshotId'    => 'snap-78a54012',
                 'volumeId'      => 'vol-4d826725',
                 'status'        => 'pending',
                 'startTime'     => '2008-08-07T12:51:50.000Z',
                 'progress'      => '65%',
-            )
-        );
+            ]
+        ];
 
         $this->assertSame($arrSnapshots, $return);
     }
@@ -363,21 +362,21 @@ class EbsTest extends TestCase
 
         $return = $this->ebsInstance->describeVolume('vol-4282672b');
 
-        $arrVolumes = array(
-            array(
+        $arrVolumes = [
+            [
                 'volumeId'          => 'vol-4282672b',
                 'size'              => '800',
                 'status'            => 'in-use',
                 'createTime'        => '2008-05-07T11:51:50.000Z',
-                'attachmentSet'     => array(
+                'attachmentSet'     => [
                     'volumeId'              => 'vol-4282672b',
                     'instanceId'            => 'i-6058a509',
                     'device'                => '/dev/sdh',
                     'status'                => 'attached',
                     'attachTime'            => '2008-05-07T12:51:50.000Z',
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         $this->assertSame($arrVolumes, $return);
     }
@@ -422,29 +421,29 @@ class EbsTest extends TestCase
                     . "</DescribeVolumesResponse>";
         $this->httpClientTestAdapter->setResponse($rawHttpResponse);
 
-        $return = $this->ebsInstance->describeVolume(array('vol-4282672b', 'vol-42826775'));
+        $return = $this->ebsInstance->describeVolume(['vol-4282672b', 'vol-42826775']);
 
-        $arrVolumes = array(
-            array(
+        $arrVolumes = [
+            [
                 'volumeId'          => 'vol-4282672b',
                 'size'              => '800',
                 'status'            => 'in-use',
                 'createTime'        => '2008-05-07T11:51:50.000Z',
-                'attachmentSet'     => array(
+                'attachmentSet'     => [
                     'volumeId'              => 'vol-4282672b',
                     'instanceId'            => 'i-6058a509',
                     'device'                => '/dev/sdh',
                     'status'                => 'attached',
                     'attachTime'            => '2008-05-07T12:51:50.000Z',
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'volumeId'          => 'vol-42826775',
                 'size'              => '40',
                 'status'            => 'available',
                 'createTime'        => '2008-08-07T11:51:50.000Z'
-            )
-        );
+            ]
+        ];
 
         $this->assertSame($arrVolumes, $return);
     }
@@ -491,21 +490,21 @@ class EbsTest extends TestCase
 
         $return = $this->ebsInstance->describeAttachedVolumes('i-6058a509');
 
-        $arrVolumes = array(
-            array(
+        $arrVolumes = [
+            [
                 'volumeId'          => 'vol-4282672b',
                 'size'              => '800',
                 'status'            => 'in-use',
                 'createTime'        => '2008-05-07T11:51:50.000Z',
-                'attachmentSet'     => array(
+                'attachmentSet'     => [
                     'volumeId'              => 'vol-4282672b',
                     'instanceId'            => 'i-6058a509',
                     'device'                => '/dev/sdh',
                     'status'                => 'attached',
                     'attachTime'            => '2008-05-07T12:51:50.000Z',
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         $this->assertSame($arrVolumes, $return);
     }
@@ -535,13 +534,13 @@ class EbsTest extends TestCase
 
         $return = $this->ebsInstance->detachVolume('vol-4d826724');
 
-        $arrVolume = array(
+        $arrVolume = [
             'volumeId'      => 'vol-4d826724',
             'instanceId'    => 'i-6058a509',
             'device'        => '/dev/sdh',
             'status'        => 'detaching',
             'attachTime'    => '2008-05-08T11:51:50.000Z'
-        );
+        ];
 
         $this->assertSame($arrVolume, $return);
     }

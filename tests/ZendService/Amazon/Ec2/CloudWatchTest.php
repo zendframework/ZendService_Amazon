@@ -49,7 +49,7 @@ class CloudWatchTest extends TestCase
     protected function setUp()
     {
         $this->httpClientTestAdapter = new HttpClientTestAdapter;
-        $this->httpClient = new HttpClient(null, array('adapter' => $this->httpClientTestAdapter));
+        $this->httpClient = new HttpClient(null, ['adapter' => $this->httpClientTestAdapter]);
         $this->cloudWatchInstance = new Ec2\CloudWatch('access_key', 'secret_access_key', null, $this->httpClient);
     }
 
@@ -88,25 +88,27 @@ class CloudWatchTest extends TestCase
                     ."</GetMetricStatisticsResponse>\r\n";
         $this->httpClientTestAdapter->setResponse($rawHttpResponse);
 
-        $return = $this->cloudWatchInstance->getMetricStatistics(array('MeasureName' => 'NetworkIn', 'Statistics' => array('Average')));
+        $return = $this->cloudWatchInstance->getMetricStatistics(
+            ['MeasureName' => 'NetworkIn', 'Statistics' => ['Average']]
+        );
 
-        $arrReturn = array(
+        $arrReturn = [
             'label'         => 'NetworkIn',
-            'datapoints'    => array(
-                array(
+            'datapoints'    => [
+                [
                     'Timestamp'     => '2009-06-16T23:57:00Z',
                     'Unit'          => 'Bytes',
                     'Samples'       => '1.0',
                     'Average'       => '14838.0',
-                ),
-                array(
+                ],
+                [
                     'Timestamp'     => '2009-06-17T00:16:00Z',
                     'Unit'          => 'Bytes',
                     'Samples'       => '1.0',
                     'Average'       => '18251.0',
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         $this->assertSame($arrReturn, $return);
     }
@@ -160,29 +162,29 @@ class CloudWatchTest extends TestCase
 
         $return = $this->cloudWatchInstance->listMetrics();
 
-        $arrReturn = array(
-            array(
+        $arrReturn = [
+            [
                 'MeasureName'   => 'NetworkIn',
                 'Namespace'     => 'AWS/EC2',
-                'Deminsions'    => array(
+                'Deminsions'    => [
                     'name'      => 'InstanceId',
                     'value'     => 'i-bec576d7'
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'MeasureName'   => 'CPUUtilization',
                 'Namespace'     => 'AWS/EC2',
-                'Deminsions'    => array(
+                'Deminsions'    => [
                     'name'      => 'InstanceId',
                     'value'     => 'i-bec576d7'
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'MeasureName'   => 'NetworkIn',
                 'Namespace'     => 'AWS/EC2',
-                'Deminsions'    => array()
-            )
-        );
+                'Deminsions'    => []
+            ]
+        ];
 
         $this->assertSame($arrReturn, $return);
     }
@@ -241,56 +243,56 @@ class CloudWatchTest extends TestCase
         $this->httpClientTestAdapter->setResponse($rawHttpResponse);
 
         $return = $this->cloudWatchInstance->getMetricStatistics(
-            array(
+            [
                 'MeasureName' => 'CPUUtilization',
-                'Statistics' =>  array('Average'),
-                'Dimensions'=>   array('InstanceId'=>'i-93ba31fa'),
-                'StartTime'=>    '2009-11-19T21:51:57+00:00',
-                'EndTime'=>      '2009-11-19T21:56:57+00:00'
-           )
+                'Statistics' => ['Average'],
+                'Dimensions' => ['InstanceId' => 'i-93ba31fa'],
+                'StartTime' => '2009-11-19T21:51:57+00:00',
+                'EndTime' => '2009-11-19T21:56:57+00:00'
+            ]
         );
 
-        $arrReturn = array(
+        $arrReturn = [
           'label' => 'CPUUtilization',
           'datapoints' =>
-          array(
+          [
             0 =>
-            array(
+            [
               'Timestamp' => '2009-11-19T21:52:00Z',
               'Unit' => 'Percent',
               'Samples' => '1.0',
               'Average' => '0.09',
-            ),
+            ],
             1 =>
-            array(
+            [
               'Timestamp' => '2009-11-19T21:55:00Z',
               'Unit' => 'Percent',
               'Samples' => '1.0',
               'Average' => '0.18',
-            ),
+            ],
             2 =>
-            array(
+            [
               'Timestamp' => '2009-11-19T21:54:00Z',
               'Unit' => 'Percent',
               'Samples' => '1.0',
               'Average' => '0.09',
-            ),
+            ],
             3 =>
-            array(
+            [
               'Timestamp' => '2009-11-19T21:51:00Z',
               'Unit' => 'Percent',
               'Samples' => '1.0',
               'Average' => '0.18',
-            ),
+            ],
             4 =>
-            array(
+            [
               'Timestamp' => '2009-11-19T21:53:00Z',
               'Unit' => 'Percent',
               'Samples' => '1.0',
               'Average' => '0.09',
-            ),
-          ),
-        );
+            ],
+          ],
+        ];
 
         $this->assertSame($arrReturn, $return);
     }

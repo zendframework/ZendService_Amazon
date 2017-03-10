@@ -42,7 +42,7 @@ class AbstractTest extends TestCase
     public function testSignParamsWithSpaceEncodesWithPercentInsteadOfPlus()
     {
         $class = new TestAmazonAbstract('TestAccessKey', 'TestSecretKey');
-        $ret = $class->testSign(array('Action' => 'Space Test'));
+        $ret = $class->testSign(['Action' => 'Space Test']);
 
         // this is the encode signuature with urlencode - It's Invalid!
         $invalidSignature = 'EeHAfo7cMcLyvH4SW4fEpjo51xJJ4ES1gdjRPxZTlto=';

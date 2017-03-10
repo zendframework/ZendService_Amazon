@@ -49,8 +49,13 @@ class AvailabilityZonesTest extends TestCase
     protected function setUp()
     {
         $this->httpClientTestAdapter = new HttpClientTestAdapter;
-        $this->httpClient = new HttpClient(null, array('adapter' => $this->httpClientTestAdapter));
-        $this->availabilityZones = new Ec2\AvailabilityZones('access_key', 'secret_access_key', null, $this->httpClient);
+        $this->httpClient = new HttpClient(null, ['adapter' => $this->httpClientTestAdapter]);
+        $this->availabilityZones = new Ec2\AvailabilityZones(
+            'access_key',
+            'secret_access_key',
+            null,
+            $this->httpClient
+        );
     }
 
     public function testDescribeSingleAvailabilityZone()
@@ -113,7 +118,7 @@ class AvailabilityZonesTest extends TestCase
 
         $this->assertInternalType('array', $response);
 
-        $arrExpected = array('us-east-1a', 'us-east-1b', 'us-east-1c');
+        $arrExpected = ['us-east-1a', 'us-east-1b', 'us-east-1c'];
         foreach ($response as $k => $node) {
             $this->assertEquals($arrExpected[$k], $node['zoneName']);
         }

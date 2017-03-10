@@ -16,7 +16,6 @@ use ZendService\Amazon\Ec2\Exception\InvalidArgumentException;
 use Zend\Http\Client as HttpClient;
 use Zend\Http\Client\Adapter\Test as HttpClientTestAdapter;
 
-
 /**
  * Zend_Service_Amazon_Ec2_Instance test case.
  *
@@ -51,7 +50,7 @@ class InstanceTest extends TestCase
     protected function setUp()
     {
         $this->httpClientTestAdapter = new HttpClientTestAdapter;
-        $this->httpClient = new HttpClient(null, array('adapter' => $this->httpClientTestAdapter));
+        $this->httpClient = new HttpClient(null, ['adapter' => $this->httpClientTestAdapter]);
         $this->instance = new Instance('access_key', 'secret_access_key', null, $this->httpClient);
     }
 
@@ -287,7 +286,7 @@ class InstanceTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('No Image Id Provided');
-        $arrStart = array(
+        $arrStart = [
             'maxStart' => 3,
             'keyName'   => 'example-key-name',
             'securityGroup'    => 'default',
@@ -297,7 +296,7 @@ class InstanceTest extends TestCase
             'ramdiskId'         => 'ari-4538dd2c',
             'blockDeviceVirtualName'    => 'vertdevice',
             'blockDeviceName'       => '/dev/sdv'
-        );
+        ];
 
         $return = $this->instance->run($arrStart);
     }
@@ -378,7 +377,7 @@ class InstanceTest extends TestCase
         $this->httpClientTestAdapter->setResponse($rawHttpResponse);
 
 
-        $arrStart = array(
+        $arrStart = [
             'imageId' => 'ami-60a54009',
             'maxStart' => 3,
             'keyName'   => 'example-key-name',
@@ -389,14 +388,14 @@ class InstanceTest extends TestCase
             'ramdiskId'         => 'ari-4538dd2c',
             'blockDeviceVirtualName'    => 'vertdevice',
             'blockDeviceName'       => '/dev/sdv'
-        );
+        ];
 
         $return = $this->instance->run($arrStart);
 
         $this->assertEquals(3, count($return['instances']));
         $this->assertEquals('495219933132', $return['ownerId']);
 
-        $arrInstanceIds = array('i-2ba64342', 'i-2bc64242', 'i-2be64332');
+        $arrInstanceIds = ['i-2ba64342', 'i-2bc64242', 'i-2be64332'];
 
         foreach ($return['instances'] as $k => $r) {
             $this->assertEquals($arrInstanceIds[$k], $r['instanceId']);
@@ -448,21 +447,21 @@ class InstanceTest extends TestCase
                     . "</RunInstancesResponse>\r\n";
         $this->httpClientTestAdapter->setResponse($rawHttpResponse);
 
-        $arrStart = array(
+        $arrStart = [
             'imageId' => 'ami-60a54009',
             'keyName'   => 'example-key-name',
-            'securityGroup'    => array('default','web'),
+            'securityGroup'    => ['default','web'],
             'userData'          => 'instance_id=www3',
             'placement'         => 'us-east-1b',
             'kernelId'          => 'aki-4438dd2d',
             'ramdiskId'         => 'ari-4538dd2c',
             'blockDeviceVirtualName'    => 'vertdevice',
             'blockDeviceName'       => '/dev/sdv'
-        );
+        ];
 
         $return = $this->instance->run($arrStart);
 
-        $arrGroups = array('default', 'web');
+        $arrGroups = ['default', 'web'];
 
         $this->assertSame($arrGroups, $return['groupSet']);
     }
@@ -543,13 +542,13 @@ class InstanceTest extends TestCase
                     . "</TerminateInstancesResponse>\r\n";
         $this->httpClientTestAdapter->setResponse($rawHttpResponse);
 
-        $arrInstanceIds = array('i-28a64341', 'i-21a64348');
+        $arrInstanceIds = ['i-28a64341', 'i-21a64348'];
 
         $return = $this->instance->terminate($arrInstanceIds);
 
         $this->assertEquals(2, count($return));
 
-        foreach ($return as $k=>$r) {
+        foreach ($return as $k => $r) {
             $this->assertEquals($arrInstanceIds[$k], $r['instanceId']);
         }
     }
@@ -570,7 +569,7 @@ class InstanceTest extends TestCase
                     . "</RebootInstancesResponse>\r\n";
         $this->httpClientTestAdapter->setResponse($rawHttpResponse);
 
-        $arrInstanceIds = array('i-28a64341', 'i-21a64348');
+        $arrInstanceIds = ['i-28a64341', 'i-21a64348'];
         $return = $this->instance->reboot($arrInstanceIds);
 
         $this->assertTrue($return);
@@ -612,31 +611,33 @@ class InstanceTest extends TestCase
                     . "  <instanceId>i-28a64341</instanceId>\r\n"
                     . "  <timestamp>2007-01-03 15:00:00</timestamp>\r\n"
                     . "  <output>TGludXggdmVyc2lvbiAyLjYuMTYteGVuVSAoYnVpbGRlckBwYXRjaGJhdC5hbWF6b25zYSkgKGdj\r\n"
-. "YyB2ZXJzaW9uIDQuMC4xIDIwMDUwNzI3IChSZWQgSGF0IDQuMC4xLTUpKSAjMSBTTVAgVGh1IE9j\r\n"
-. "dCAyNiAwODo0MToyNiBTQVNUIDIwMDYKQklPUy1wcm92aWRlZCBwaHlzaWNhbCBSQU0gbWFwOgpY\r\n"
-. "ZW46IDAwMDAwMDAwMDAwMDAwMDAgLSAwMDAwMDAwMDZhNDAwMDAwICh1c2FibGUpCjk4ME1CIEhJ\r\n"
-. "R0hNRU0gYXZhaWxhYmxlLgo3MjdNQiBMT1dNRU0gYXZhaWxhYmxlLgpOWCAoRXhlY3V0ZSBEaXNh\r\n"
-. "YmxlKSBwcm90ZWN0aW9uOiBhY3RpdmUKSVJRIGxvY2t1cCBkZXRlY3Rpb24gZGlzYWJsZWQKQnVp\r\n"
-. "bHQgMSB6b25lbGlzdHMKS2VybmVsIGNvbW1hbmQgbGluZTogcm9vdD0vZGV2L3NkYTEgcm8gNApF\r\n"
-. "bmFibGluZyBmYXN0IEZQVSBzYXZlIGFuZCByZXN0b3JlLi4uIGRvbmUuCg==</output>\r\n"
+        . "YyB2ZXJzaW9uIDQuMC4xIDIwMDUwNzI3IChSZWQgSGF0IDQuMC4xLTUpKSAjMSBTTVAgVGh1IE9j\r\n"
+        . "dCAyNiAwODo0MToyNiBTQVNUIDIwMDYKQklPUy1wcm92aWRlZCBwaHlzaWNhbCBSQU0gbWFwOgpY\r\n"
+        . "ZW46IDAwMDAwMDAwMDAwMDAwMDAgLSAwMDAwMDAwMDZhNDAwMDAwICh1c2FibGUpCjk4ME1CIEhJ\r\n"
+        . "R0hNRU0gYXZhaWxhYmxlLgo3MjdNQiBMT1dNRU0gYXZhaWxhYmxlLgpOWCAoRXhlY3V0ZSBEaXNh\r\n"
+        . "YmxlKSBwcm90ZWN0aW9uOiBhY3RpdmUKSVJRIGxvY2t1cCBkZXRlY3Rpb24gZGlzYWJsZWQKQnVp\r\n"
+        . "bHQgMSB6b25lbGlzdHMKS2VybmVsIGNvbW1hbmQgbGluZTogcm9vdD0vZGV2L3NkYTEgcm8gNApF\r\n"
+        . "bmFibGluZyBmYXN0IEZQVSBzYXZlIGFuZCByZXN0b3JlLi4uIGRvbmUuCg==</output>\r\n"
                     . "</GetConsoleOutputResponse>\r\n";
         $this->httpClientTestAdapter->setResponse($rawHttpResponse);
 
         $return = $this->instance->consoleOutput('i-28a64341');
 
-        $arrOutput = array(
+        $arrOutput = [
             'instanceId'    => 'i-28a64341',
             'timestamp'     => '2007-01-03 15:00:00',
-            'output'        => "Linux version 2.6.16-xenU (builder@patchbat.amazonsa) (gcc version 4.0.1 20050727 (Red Hat 4.0.1-5)) #1 SMP Thu Oct 26 08:41:26 SAST 2006\n"
-. "BIOS-provided physical RAM map:\n"
-. "Xen: 0000000000000000 - 000000006a400000 (usable)\n"
-. "980MB HIGHMEM available.\n"
-. "727MB LOWMEM available.\n"
-. "NX (Execute Disable) protection: active\n"
-. "IRQ lockup detection disabled\n"
-. "Built 1 zonelists\n"
-. "Kernel command line: root=/dev/sda1 ro 4\n"
-. "Enabling fast FPU save and restore... done.\n");
+            'output'        => "Linux version 2.6.16-xenU (builder@patchbat.amazonsa)"
+                . " (gcc version 4.0.1 20050727 (Red Hat 4.0.1-5)) #1 SMP"
+                . " Thu Oct 26 08:41:26 SAST 2006\n"
+                . "BIOS-provided physical RAM map:\n"
+                . "Xen: 0000000000000000 - 000000006a400000 (usable)\n"
+                . "980MB HIGHMEM available.\n"
+                . "727MB LOWMEM available.\n"
+                . "NX (Execute Disable) protection: active\n"
+                . "IRQ lockup detection disabled\n"
+                . "Built 1 zonelists\n"
+                . "Kernel command line: root=/dev/sda1 ro 4\n"
+                . "Enabling fast FPU save and restore... done.\n"];
 
         $this->assertSame($arrOutput, $return);
     }
@@ -666,7 +667,7 @@ class InstanceTest extends TestCase
 
         $return = $this->instance->monitor('i-43a4412a');
 
-        $arrReturn = array(array('instanceid' => 'i-43a4412a', 'monitorstate' => 'monitoring'));
+        $arrReturn = [['instanceid' => 'i-43a4412a', 'monitorstate' => 'monitoring']];
         $this->assertSame($arrReturn, $return);
     }
 
@@ -695,7 +696,7 @@ class InstanceTest extends TestCase
 
         $return = $this->instance->unmonitor('i-43a4412a');
 
-        $arrReturn = array(array('instanceid' => 'i-43a4412a', 'monitorstate' => 'pending'));
+        $arrReturn = [['instanceid' => 'i-43a4412a', 'monitorstate' => 'pending']];
         $this->assertSame($arrReturn, $return);
     }
 }

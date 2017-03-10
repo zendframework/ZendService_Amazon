@@ -90,7 +90,7 @@ class S3RestTest extends TestCase
      */
     public function testGetBuckets()
     {
-        $expected  = array('quotes', 'samples');
+        $expected  = ['quotes', 'samples'];
 
         // Http Response results
         $this->httpResponse->expects($this->any())
@@ -172,11 +172,11 @@ BODY;
 
         $this->httpClient->expects($this->once())
             ->method('setHeaders')
-            ->with(array(
+            ->with([
                     "Date"          => "Tue, 15 May 2012 15:18:31 GMT",
                     "Content-Type"  => "application/xml",
                     "Authorization" => "AWS ".$accessKey.":u1NQAGg+l7A7h8/HodDd4vxVzyE=",
-                    ));
+                    ]);
 
         /**
          * Fake response inside _makeRequest

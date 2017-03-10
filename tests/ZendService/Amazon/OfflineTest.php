@@ -74,7 +74,7 @@ class OfflineTest extends TestCase
         $dom = new \DOMDocument();
         $dom->loadXML($xml);
 
-        $mozartTracks = array(
+        $mozartTracks = [
             'B00005A8JZ' => '29',
             'B0000058HV' => '25',
             'B000BLI3K2' => '500',
@@ -85,7 +85,7 @@ class OfflineTest extends TestCase
             'B00002DEH1' => '58',
             'B0000041EV' => '12',
             'B00004SA87' => '42',
-        );
+        ];
 
         $result = new Amazon\ResultSet($dom);
 
@@ -118,96 +118,96 @@ class OfflineTest extends TestCase
         $dom = new \DOMDocument();
         $dom->loadXML($xml);
 
-        $dataExpected = array(
-            '0439774098' => array(
-                'offers' => array(
-                    'A79CLRHOQ3NF4' => array(
+        $dataExpected = [
+            '0439774098' => [
+                'offers' => [
+                    'A79CLRHOQ3NF4' => [
                         'name'  => 'PLEXSUPPLY',
                         'price' => '5153'
-                    ),
-                    'A2K9NS8DSVOE2W' => array(
+                    ],
+                    'A2K9NS8DSVOE2W' => [
                         'name'  => 'nangsuer',
                         'price' => '5153'
-                    ),
-                    'A31EVTLIC13ORD' => array(
+                    ],
+                    'A31EVTLIC13ORD' => [
                         'name'  => 'Wizard of Math',
                         'price' => '7599'
-                    ),
-                    'A3SKJE188CW5XG' => array(
+                    ],
+                    'A3SKJE188CW5XG' => [
                         'name'  => 'ReStockIt',
                         'price' => '5299'
-                    ),
-                    'A1729W3053T57N' => array(
+                    ],
+                    'A1729W3053T57N' => [
                         'name'  => 'The Price Pros',
                         'price' => '5487'
-                    ),
-                    'A29PHU0KPCGV8S' => array(
+                    ],
+                    'A29PHU0KPCGV8S' => [
                         'name'  => 'TheFactoryDepot',
                         'price' => '5821'
-                    ),
-                    'AIHRRFGW11GJ8' => array(
+                    ],
+                    'AIHRRFGW11GJ8' => [
                         'name'  => 'Design Tec Office Products',
                         'price' => '5987'
-                    ),
-                    'A27OK403WRHSGI' => array(
+                    ],
+                    'A27OK403WRHSGI' => [
                         'name'  => 'Kaplan Early Learning Company',
                         'price' => '7595'
-                    ),
-                    'A25DVOZOPBFMAN' => array(
+                    ],
+                    'A25DVOZOPBFMAN' => [
                         'name'  => 'Deerso',
                         'price' => '7599'
-                    ),
-                    'A6IFKC796Y64H' => array(
+                    ],
+                    'A6IFKC796Y64H' => [
                         'name'  => 'The Education Station Inc',
                         'price' => '7599'
-                    ),
-                ),
-            ),
-            'B00000194U' => array(
-                'offers' => array(
-                    'A3UOG6723G7MG0' => array(
+                    ],
+                ],
+            ],
+            'B00000194U' => [
+                'offers' => [
+                    'A3UOG6723G7MG0' => [
                         'name'  => 'Efunctional',
                         'price' => '480'
-                    ),
-                    'A3SNNXCKUIW1O2' => array(
+                    ],
+                    'A3SNNXCKUIW1O2' => [
                         'name'  => 'Universal Mania',
                         'price' => '531'
-                    ),
-                    'A18ACDNYOEMMOL' => array(
+                    ],
+                    'A18ACDNYOEMMOL' => [
                         'name'  => 'ApexSuppliers',
                         'price' => '589'
-                    ),
-                    'A2NYACAJP9I1IY' => array(
+                    ],
+                    'A2NYACAJP9I1IY' => [
                         'name'  => 'GizmosForLife',
                         'price' => '608'
-                    ),
-                    'A1729W3053T57N' => array(
+                    ],
+                    'A1729W3053T57N' => [
                         'name'  => 'The Price Pros',
                         'price' => '628'
-                    ),
-                    'A29PHU0KPCGV8S' => array(
+                    ],
+                    'A29PHU0KPCGV8S' => [
                         'name'  => 'TheFactoryDepot',
                         'price' => '638'
-                    ),
-                    'A3Q3IAIX1CLBMZ' => array(
+                    ],
+                    'A3Q3IAIX1CLBMZ' => [
                         'name'  => 'ElectroGalaxy',
                         'price' => '697'
-                    ),
-                    'A1PC5XI7QQLW5G' => array(
+                    ],
+                    'A1PC5XI7QQLW5G' => [
                         'name'  => 'Long Trading Company',
                         'price' => '860'
-                    ),
-                    'A2R0FX412W1BDT' => array(
+                    ],
+                    'A2R0FX412W1BDT' => [
                         'name'  => 'Beach Audio',
                         'price' => '896'
-                    ),
-                    'AKJJGJ0JKT8F1' => array(
+                    ],
+                    'AKJJGJ0JKT8F1' => [
                         'name'  => 'Buy.com',
                         'price' => '899'
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
 
         $result = new Amazon\ResultSet($dom);
 
@@ -222,10 +222,10 @@ class OfflineTest extends TestCase
 
     public function dataSignatureEncryption()
     {
-        return array(
-            array(
+        return [
+            [
                 'http://webservices.amazon.com',
-                array(
+                [
                     'Service' => 'AWSECommerceService',
                     'AWSAccessKeyId' => '00000000000000000000',
                     'Operation' => 'ItemLookup',
@@ -233,7 +233,7 @@ class OfflineTest extends TestCase
                     'ResponseGroup' => 'ItemAttributes,Offers,Images,Reviews',
                     'Version' => '2009-01-06',
                     'Timestamp' => '2009-01-01T12:00:00Z',
-                ),
+                ],
                 "GET\n".
                 "webservices.amazon.com\n".
                 "/onca/xml\n".
@@ -242,10 +242,10 @@ class OfflineTest extends TestCase
                 "s&Service=AWSECommerceService&Timestamp=2009-01-01T12%3A00%3A00Z&".
                 "Version=2009-01-06",
                 'Nace%2BU3Az4OhN7tISqgs1vdLBHBEijWcBeCqL5xN9xg%3D'
-            ),
-            array(
+            ],
+            [
                 'http://ecs.amazonaws.co.uk',
-                array(
+                [
                     'Service' => 'AWSECommerceService',
                     'AWSAccessKeyId' => '00000000000000000000',
                     'Operation' => 'ItemSearch',
@@ -256,7 +256,7 @@ class OfflineTest extends TestCase
                     'Sort' => 'salesrank',
                     'AssociateTag' => 'mytag-20',
                     'Timestamp' => '2009-01-01T12:00:00Z',
-                ),
+                ],
                 "GET\n".
                 "ecs.amazonaws.co.uk\n".
                 "/onca/xml\n".
@@ -266,8 +266,8 @@ class OfflineTest extends TestCase
                 "SECommerceService&Sort=salesrank&Timestamp=2009-01-01T12%3A00%3A0".
                 "0Z&Version=2009-01-01",
                 'TuM6E5L9u%2FuNqOX09ET03BXVmHLVFfJIna5cxXuHxiU%3D',
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -286,7 +286,9 @@ class OfflineTest extends TestCase
         $this->assertEquals(
             $expectedSignature,
             rawurlencode(Amazon\Amazon::computeSignature(
-                $baseUri, '1234567890', $params
+                $baseUri,
+                '1234567890',
+                $params
             ))
         );
     }

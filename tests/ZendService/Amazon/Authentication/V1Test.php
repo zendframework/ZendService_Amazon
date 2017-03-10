@@ -26,14 +26,18 @@ class V1Test extends TestCase
     /**
      * @var Authentication\V1
      */
-    private $_amazon;
+    private $amazon;
 
     /**
      * Prepares the environment before running a test.
      */
     protected function setUp()
     {
-        $this->_amazon = new Authentication\V1('0PN5J17HBGZHT7JJ3X82', 'uV3F3YluFJax1cknvbcGwgjvx4QpvB+leU8dUj2o', '2007-12-01');
+        $this->amazon = new Authentication\V1(
+            '0PN5J17HBGZHT7JJ3X82',
+            'uV3F3YluFJax1cknvbcGwgjvx4QpvB+leU8dUj2o',
+            '2007-12-01'
+        );
     }
 
     /**
@@ -41,7 +45,7 @@ class V1Test extends TestCase
      */
     protected function tearDown()
     {
-        $this->_amazon = null;
+        $this->amazon = null;
     }
 
     /**
@@ -50,13 +54,17 @@ class V1Test extends TestCase
     public function testGenerateDevPaySignature()
     {
         $url = "https://ls.amazonaws.com/";
-        $params = array();
+        $params = [];
         $params['Action'] = "ActivateHostedProduct";
         $params['Timestamp'] = "2009-11-11T13:52:38Z";
 
-        $ret = $this->_amazon->generateSignature($url, $params);
+        $ret = $this->amazon->generateSignature($url, $params);
 
         $this->assertEquals('31Q2YlgABM5X3GkYQpGErcL10Xc=', $params['Signature']);
-        $this->assertEquals("ActionActivateHostedProductAWSAccessKeyId0PN5J17HBGZHT7JJ3X82SignatureVersion1Timestamp2009-11-11T13:52:38ZVersion2007-12-01", $ret);
+        $this->assertEquals(
+            "ActionActivateHostedProductAWSAccessKeyId0PN5J17HBGZHT7JJ3X82Signature"
+            . "Version1Timestamp2009-11-11T13:52:38ZVersion2007-12-01",
+            $ret
+        );
     }
 }

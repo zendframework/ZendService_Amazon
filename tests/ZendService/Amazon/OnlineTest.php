@@ -29,21 +29,21 @@ class OnlineTest extends TestCase
      *
      * @var Amazon\Amazon
      */
-    protected $_amazon;
+    protected $amazon;
 
     /**
      * Reference to Amazon query API object
      *
      * @var Amazon\Query
      */
-    protected $_query;
+    protected $query;
 
     /**
      * Socket based HTTP client adapter
      *
      * @var \Zend\Http\Client\Adapter\Socket
      */
-    protected $_httpClientAdapterSocket;
+    protected $httpClientAdapterSocket;
 
     /**
      * Sets up this test case
@@ -52,30 +52,32 @@ class OnlineTest extends TestCase
      */
     public function setUp()
     {
-        if (!constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ENABLED')) {
+        if (! constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ENABLED')) {
             $this->markTestSkipped('Zend_Service_Amazon_S3 online tests are not enabled');
         }
-        if (!defined('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ACCESSKEYID') || !defined('TESTS_ZEND_SERVICE_AMAZON_ONLINE_SECRETKEY')) {
+        if (! defined('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ACCESSKEYID')
+            || ! defined('TESTS_ZEND_SERVICE_AMAZON_ONLINE_SECRETKEY')
+        ) {
             $this->markTestSkipped('Constants AccessKeyId and SecretKey have to be set.');
         }
 
-        $this->_amazon = new Amazon\Amazon(
+        $this->amazon = new Amazon\Amazon(
             TESTS_ZEND_SERVICE_AMAZON_ONLINE_ACCESSKEYID,
             'US',
             TESTS_ZEND_SERVICE_AMAZON_ONLINE_SECRETKEY
         );
 
-        $this->_query = new Amazon\Query(
+        $this->query = new Amazon\Query(
             TESTS_ZEND_SERVICE_AMAZON_ONLINE_ACCESSKEYID,
             'US',
             TESTS_ZEND_SERVICE_AMAZON_ONLINE_SECRETKEY
         );
 
-        $this->_httpClientAdapterSocket = new \Zend\Http\Client\Adapter\Socket();
+        $this->httpClientAdapterSocket = new \Zend\Http\Client\Adapter\Socket();
 
-        $this->_amazon->getRestClient()
+        $this->amazon->getRestClient()
                       ->getHttpClient()
-                      ->setAdapter($this->_httpClientAdapterSocket);
+                      ->setAdapter($this->httpClientAdapterSocket);
 
         // terms of use compliance: no more than one query per second
         sleep(1);
@@ -88,7 +90,8 @@ class OnlineTest extends TestCase
         $aws = new Amazon\Amazon(
             TESTS_ZEND_SERVICE_AMAZON_ONLINE_ACCESSKEYID,
             'wrong-country-code',
-            TESTS_ZEND_SERVICE_AMAZON_ONLINE_SECRETKEY);
+            TESTS_ZEND_SERVICE_AMAZON_ONLINE_SECRETKEY
+        );
     }
 
     /**
@@ -98,12 +101,12 @@ class OnlineTest extends TestCase
      */
     public function testItemSearchBooksPhp()
     {
-        $resultSet = $this->_amazon->itemSearch(array(
+        $resultSet = $this->amazon->itemSearch([
             'SearchIndex'   => 'Books',
             'Keywords'      => 'php',
             'ResponseGroup' => 'Small,ItemAttributes,Images,SalesRank,Reviews,EditorialReview,Similarities,'
                              . 'ListmaniaLists'
-            ));
+            ]);
 
         $this->assertTrue(10 < $resultSet->totalResults());
         $this->assertTrue(1 < $resultSet->totalPages());
@@ -139,11 +142,11 @@ class OnlineTest extends TestCase
      */
     public function testItemSearchMusicMozart()
     {
-        $resultSet = $this->_amazon->itemSearch(array(
+        $resultSet = $this->amazon->itemSearch([
             'SearchIndex'   => 'Music',
             'Keywords'      => 'Mozart',
             'ResponseGroup' => 'Small,Tracks,Offers'
-            ));
+            ]);
 
         foreach ($resultSet as $item) {
             $this->assertTrue($item instanceof Amazon\Item);
@@ -157,11 +160,11 @@ class OnlineTest extends TestCase
      */
     public function testItemSearchElectronicsDigitalCamera()
     {
-        $resultSet = $this->_amazon->itemSearch(array(
+        $resultSet = $this->amazon->itemSearch([
             'SearchIndex'   => 'Electronics',
             'Keywords'      => 'digital camera',
             'ResponseGroup' => 'Accessories'
-            ));
+            ]);
 
         foreach ($resultSet as $item) {
             $this->assertTrue($item instanceof Amazon\Item);
@@ -175,11 +178,11 @@ class OnlineTest extends TestCase
      */
     public function testItemSearchBooksPHPSort()
     {
-        $resultSet = $this->_amazon->itemSearch(array(
+        $resultSet = $this->amazon->itemSearch([
             'SearchIndex' => 'Books',
             'Keywords'    => 'php',
             'Sort'        => '-titlerank'
-            ));
+            ]);
 
         foreach ($resultSet as $item) {
             $this->assertTrue($item instanceof Amazon\Item);
@@ -195,11 +198,11 @@ class OnlineTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('The value you specified for SearchIndex is invalid.');
-        $this->_amazon->itemSearch(array(
+        $this->amazon->itemSearch([
             'SearchIndex' => 'Restaurants',
             'Keywords'    => 'seafood',
             'City'        => 'Des Moines'
-            ));
+            ]);
     }
 
     /**
@@ -209,7 +212,7 @@ class OnlineTest extends TestCase
      */
     public function testItemLookup()
     {
-        $item = $this->_amazon->itemLookup('B0015T963C');
+        $item = $this->amazon->itemLookup('B0015T963C');
         $this->assertTrue($item instanceof Amazon\Item);
     }
 
@@ -221,8 +224,11 @@ class OnlineTest extends TestCase
     public function testItemLookupExceptionAsinInvalid()
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('OOPS is not a valid value for ItemId. Please change this value and retry your request. (AWS.InvalidParameterValue)');
-        $this->_amazon->itemLookup('oops');
+        $this->expectExceptionMessage(
+            'OOPS is not a valid value for ItemId. '
+            . 'Please change this value and retry your request. (AWS.InvalidParameterValue)'
+        );
+        $this->amazon->itemLookup('oops');
     }
 
     /**
@@ -232,7 +238,7 @@ class OnlineTest extends TestCase
      */
     public function testItemLookupMultiple()
     {
-        $resultSet = $this->_amazon->itemLookup('0596006810,1590593804');
+        $resultSet = $this->amazon->itemLookup('0596006810,1590593804');
 
         $count = 0;
         foreach ($resultSet as $item) {
@@ -251,8 +257,11 @@ class OnlineTest extends TestCase
     public function testItemLookupExceptionSearchIndex()
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Your request contained a restricted parameter combination.  When IdType equals ASIN, SearchIndex cannot be present.');
-        $this->_amazon->itemLookup('oops', array('SearchIndex' => 'Books'));
+        $this->expectExceptionMessage(
+            'Your request contained a restricted parameter combination.  '
+            . 'When IdType equals ASIN, SearchIndex cannot be present.'
+        );
+        $this->amazon->itemLookup('oops', ['SearchIndex' => 'Books']);
     }
 
     /**
@@ -262,7 +271,7 @@ class OnlineTest extends TestCase
      */
     public function testQueryBooksPhp()
     {
-        $resultSet = $this->_query->category('Books')->Keywords('php')->search();
+        $resultSet = $this->query->category('Books')->Keywords('php')->search();
 
         foreach ($resultSet as $item) {
             $this->assertTrue($item instanceof Amazon\Item);
@@ -278,7 +287,7 @@ class OnlineTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('You must set a category before setting the search parameters');
-        $this->_query->Keywords('php');
+        $this->query->Keywords('php');
     }
 
     /**
@@ -290,7 +299,7 @@ class OnlineTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('The value you specified for SearchIndex is invalid.');
-        $this->_query->category('oops')->search();
+        $this->query->category('oops')->search();
     }
 
     /**
@@ -300,28 +309,7 @@ class OnlineTest extends TestCase
      */
     public function testQueryAsin()
     {
-        $item = $this->_query->asin('B0015T963C')->search();
+        $item = $this->query->asin('B0015T963C')->search();
         $this->assertTrue($item instanceof Amazon\Item);
-    }
-}
-
-
-/**
- * @category   Zend
- * @package    Zend_Service_Amazon
- * @subpackage UnitTests
- * @group      Zend_Service
- * @group      Zend_Service_Amazon
- */
-class Skip extends TestCase
-{
-    public function setUp()
-    {
-        $this->markTestSkipped('Zend_Service_Amazon online tests not enabled with an access key ID in '
-                             . 'TestConfiguration.php');
-    }
-
-    public function testNothing()
-    {
     }
 }

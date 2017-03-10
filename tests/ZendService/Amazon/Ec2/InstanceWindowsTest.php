@@ -51,7 +51,7 @@ class InstanceWindowsTest extends TestCase
     protected function setUp()
     {
         $this->httpClientTestAdapter = new HttpClientTestAdapter;
-        $this->httpClient = new HttpClient(null, array('adapter' => $this->httpClientTestAdapter));
+        $this->httpClient = new HttpClient(null, ['adapter' => $this->httpClientTestAdapter]);
         $this->instance = new WindowsInstance('access_key', 'secret_access_key', null, $this->httpClient);
     }
 
@@ -92,20 +92,20 @@ class InstanceWindowsTest extends TestCase
 
         //print_r($return);
 
-        $arrReturn = array(
+        $arrReturn = [
                 "instanceId" => "i-12345678",
                 "bundleId" => "bun-cla322b9",
                 "state" => "bundling",
                 "startTime" => "2008-10-07T11:41:50.000Z",
                 "updateTime" => "2008-10-07T11:51:50.000Z",
                 "progress" => "20%",
-                "storage" => array(
-                        "s3" => array(
+                "storage" => [
+                        "s3" => [
                                 "bucket" => "my-bucket",
                                 "prefix" => "my-new-image"
-                            )
-                    )
-                );
+                            ]
+                    ]
+                ];
 
         $this->assertSame($arrReturn, $return);
     }
@@ -144,19 +144,19 @@ class InstanceWindowsTest extends TestCase
 
         $return = $this->instance->cancelBundle('bun-cla322b9');
 
-        $arrReturn = array(    "instanceId" => "i-12345678",
+        $arrReturn = [    "instanceId" => "i-12345678",
                 "bundleId" => "bun-cla322b9",
                 "state" => "canceling",
                 "startTime" => "2008-10-07T11:41:50.000Z",
                 "updateTime" => "2008-10-07T11:51:50.000Z",
                 "progress" => "20%",
-                "storage" => array(
-                        "s3" => array(
+                "storage" => [
+                        "s3" => [
                                 "bucket" => "my-bucket",
                                 "prefix" => "my-new-image"
-                            )
-                    )
-                );
+                            ]
+                    ]
+                ];
 
         $this->assertSame($arrReturn, $return);
     }
@@ -197,22 +197,22 @@ class InstanceWindowsTest extends TestCase
 
         $return = $this->instance->describeBundle('bun-cla322b9');
 
-        $arrReturn = array(
-            array(
+        $arrReturn = [
+            [
                 "instanceId" => "i-12345678",
                 "bundleId" => "bun-cla322b9",
                 "state" => "bundling",
                 "startTime" => "2008-10-07T11:41:50.000Z",
                 "updateTime" => "2008-10-07T11:51:50.000Z",
                 "progress" => "20%",
-                "storage" => array(
-                        "s3" => array(
+                "storage" => [
+                        "s3" => [
                                 "bucket" => "my-bucket",
                                 "prefix" => "my-new-image"
-                            )
-                    )
-                )
-            );
+                            ]
+                    ]
+                ]
+            ];
 
         $this->assertSame($arrReturn, $return);
     }

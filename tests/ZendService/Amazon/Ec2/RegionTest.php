@@ -15,7 +15,6 @@ use ZendService\Amazon\Ec2;
 use Zend\Http\Client as HttpClient;
 use Zend\Http\Client\Adapter\Test as HttpClientTestAdapter;
 
-
 /**
  * ZendService\Amazon\Ec\Region test case.
  *
@@ -50,7 +49,7 @@ class RegionTest extends TestCase
     protected function setUp()
     {
         $this->httpClientTestAdapter = new HttpClientTestAdapter;
-        $this->httpClient = new HttpClient(null, array('adapter' => $this->httpClientTestAdapter));
+        $this->httpClient = new HttpClient(null, ['adapter' => $this->httpClientTestAdapter]);
         $this->regionInstance = new Ec2\Region('access_key', 'secret_access_key', null, $this->httpClient);
     }
 
@@ -77,12 +76,12 @@ class RegionTest extends TestCase
 
         $response = $this->regionInstance->describe('us-east-1');
 
-        $arrRegion = array(
-            array(
+        $arrRegion = [
+            [
                 'regionName'    => 'us-east-1',
                 'regionUrl'     => 'us-east-1.ec2.amazonaws.com'
-            )
-        );
+            ]
+        ];
 
         $this->assertSame($arrRegion, $response);
     }
@@ -112,18 +111,18 @@ class RegionTest extends TestCase
                     . "</DescribeRegionsResponse>";
         $this->httpClientTestAdapter->setResponse($rawHttpResponse);
 
-        $response = $this->regionInstance->describe(array('us-east-1', 'us-west-1'));
+        $response = $this->regionInstance->describe(['us-east-1', 'us-west-1']);
 
-        $arrRegion = array(
-            array(
+        $arrRegion = [
+            [
                 'regionName'    => 'us-east-1',
                 'regionUrl'     => 'us-east-1.ec2.amazonaws.com'
-            ),
-            array(
+            ],
+            [
                 'regionName'    => 'us-west-1',
                 'regionUrl'     => 'us-west-1.ec2.amazonaws.com'
-            )
-        );
+            ]
+        ];
 
         $this->assertSame($arrRegion, $response);
     }

@@ -17,7 +17,7 @@ error_reporting(E_ALL | E_STRICT);
 /**
  * Setup autoloading
  */
-if (!file_exists(__DIR__ . '/../vendor/autoload.php')) {
+if (! file_exists(__DIR__ . '/../vendor/autoload.php')) {
     throw new RuntimeException('This component has dependencies that are unmet.
 
 Please install composer (http://getcomposer.org), and run the following

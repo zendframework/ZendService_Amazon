@@ -30,19 +30,21 @@ class OfflineTest extends TestCase
         $limit = 5;
 
         $throttler = function () use ($s3, $throttleTime) {
-            return $s3->throttle('microtime', array(true), $throttleTime);
+            return $s3->throttle('microtime', [true], $throttleTime);
         };
 
         $times = array_map($throttler, range(0, $limit));
 
         $diffs = array_map(
-            function ($a, $b) { return $a - $b; },
+            function ($a, $b) {
+                return $a - $b;
+            },
             array_slice($times, 1, count($times)),
             array_slice($times, 0, count($times) - 1)
         );
 
         array_map(
-            array($this, 'assertGreaterThanOrEqual'),
+            [$this, 'assertGreaterThanOrEqual'],
             array_fill(0, $limit, $throttleTime),
             $diffs
         );

@@ -29,12 +29,13 @@ class StreamTest extends TestCase
      */
     public function setUp()
     {
-        if (!constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ENABLED')) {
+        if (! constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ENABLED')) {
             $this->markTestSkipped('Zend_Service_Amazon_S3 online tests are not enabled');
         }
-        $this->_amazon = new \ZendService\Amazon\S3\S3(constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ACCESSKEYID'),
-                                                    constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_SECRETKEY')
-                                                    );
+        $this->amazon = new \ZendService\Amazon\S3\S3(
+            constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ACCESSKEYID'),
+            constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_SECRETKEY')
+        );
         $this->_nosuchbucket = "nonexistingbucketnamewhichnobodyshoulduse";
         $this->_httpClientAdapterSocket = new \Zend\Http\Client\Adapter\Socket();
 
@@ -42,11 +43,11 @@ class StreamTest extends TestCase
         $this->_bucketName = "s3://".$this->_bucket;
         $this->_fileName = $this->_bucketName."/sample_file.txt";
 
-        $this->_amazon->getHttpClient()
+        $this->amazon->getHttpClient()
                       ->setAdapter($this->_httpClientAdapterSocket);
-        $this->_amazon->registerStreamWrapper();
-        $this->_amazon->cleanBucket($this->_bucket);
-        $this->_amazon->removeBucket($this->_bucket);
+        $this->amazon->registerStreamWrapper();
+        $this->amazon->cleanBucket($this->_bucket);
+        $this->amazon->removeBucket($this->_bucket);
         // terms of use compliance: no more than one query per second
         sleep(1);
     }
@@ -58,17 +59,17 @@ class StreamTest extends TestCase
      */
     public function tearDown()
     {
-        if (!constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ENABLED')) {
+        if (! constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ENABLED')) {
             return;
         }
-        $this->_amazon->unregisterStreamWrapper();
-        $buckets = $this->_amazon->getBuckets();
+        $this->amazon->unregisterStreamWrapper();
+        $buckets = $this->amazon->getBuckets();
         foreach ($buckets as $bucket) {
             if (substr($bucket, 0, strlen($this->_bucket)) != $this->_bucket) {
                 continue;
             }
-            $this->_amazon->cleanBucket($bucket);
-            $this->_amazon->removeBucket($bucket);
+            $this->amazon->cleanBucket($bucket);
+            $this->amazon->removeBucket($bucket);
         }
     }
 
@@ -152,8 +153,8 @@ class StreamTest extends TestCase
 
         $f = fopen($this->_fileName, 'r');
         fseek($f, 1000);
-        while (!feof($f)) {
-            $chunk =  fread($f, 1000);
+        while (! feof($f)) {
+            $chunk = fread($f, 1000);
             $new_data .= $chunk;
             $this->assertEquals(strlen($chunk), 1000);
         }
@@ -176,7 +177,7 @@ class StreamTest extends TestCase
      */
     public function testGetBucketList()
     {
-        $buckets = array($this->_bucket.'zf-test1', $this->_bucket.'zf-test2', $this->_bucket.'zf-test3');
+        $buckets = [$this->_bucket.'zf-test1', $this->_bucket.'zf-test2', $this->_bucket.'zf-test3'];
 
         // Create the buckets
         foreach ($buckets as $bucket) {
@@ -184,7 +185,7 @@ class StreamTest extends TestCase
             $this->assertTrue($result);
         }
 
-        $online_buckets = array();
+        $online_buckets = [];
 
         // Retrieve list of buckets on S3
         $e = opendir('s3://');

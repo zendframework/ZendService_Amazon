@@ -49,7 +49,7 @@ class ElasticIpTest extends TestCase
     protected function setUp()
     {
         $this->httpClientTestAdapter = new HttpClientTestAdapter;
-        $this->httpClient = new HttpClient(null, array('adapter' => $this->httpClientTestAdapter));
+        $this->httpClient = new HttpClient(null, ['adapter' => $this->httpClientTestAdapter]);
         $this->elasticip = new Ec2\ElasticIp('access_key', 'secret_access_key', null, $this->httpClient);
     }
 
@@ -120,10 +120,10 @@ class ElasticIpTest extends TestCase
 
         $response = $this->elasticip->describe('67.202.55.255');
 
-        $arrIp = array(
+        $arrIp = [
             'publicIp'      => '67.202.55.255',
             'instanceId'    => 'i-ag8ga0a'
-        );
+        ];
 
         $this->assertSame($arrIp, $response[0]);
     }
@@ -153,18 +153,18 @@ class ElasticIpTest extends TestCase
                     . "</DescribeAddressesResponse>";
         $this->httpClientTestAdapter->setResponse($rawHttpResponse);
 
-        $response = $this->elasticip->describe(array('67.202.55.255', '67.202.55.200'));
+        $response = $this->elasticip->describe(['67.202.55.255', '67.202.55.200']);
 
-        $arrIps = array(
-            array(
+        $arrIps = [
+            [
                 'publicIp'      => '67.202.55.255',
                 'instanceId'    => 'i-ag8ga0a'
-            ),
-            array(
+            ],
+            [
                 'publicIp'      => '67.202.55.200',
                 'instanceId'    => 'i-aauoi9g'
-            )
-        );
+            ]
+        ];
 
         foreach ($response as $k => $r) {
             $this->assertSame($arrIps[$k], $r);
