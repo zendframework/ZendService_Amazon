@@ -31,6 +31,7 @@
         "zendframework/zendxml": "^1.0"
     },
     "require-dev": {
+        "malukenho/docheader": "^0.1.5",
         "phpunit/phpunit": "^6.0.8 || ^5.7.15",
         "zendframework/zend-coding-standard": "~1.0.0",
         "zendframework/zend-i18n": "~2.0"
@@ -55,6 +56,6 @@
         "cs-fix": "phpcbf",
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --coverage-clover clover.xml",
-        "license-check": "true"
-}
+        "license-check": "vendor/bin/docheader check library/ tests/"
+    }
 }
