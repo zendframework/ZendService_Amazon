@@ -1,11 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Service
+ * @see       https://github.com/zendframework/ZendService_Amazon for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/ZendService_Amazon/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendService\Amazon\Ec2;
@@ -27,12 +24,12 @@ class ReservedInstance extends AbstractEc2
      */
     public function describeInstances($instanceId)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'DescribeReservedInstances';
 
-        if (is_array($instanceId) && !empty($instanceId)) {
-            foreach ($instanceId as $k=>$name) {
-                $params['ReservedInstancesId.' . ($k+1)] = $name;
+        if (is_array($instanceId) && ! empty($instanceId)) {
+            foreach ($instanceId as $k => $name) {
+                $params['ReservedInstancesId.' . ($k + 1)] = $name;
             }
         } elseif ($instanceId) {
             $params['ReservedInstancesId.1'] = $instanceId;
@@ -43,9 +40,9 @@ class ReservedInstance extends AbstractEc2
         $xpath = $response->getXPath();
         $items = $xpath->query('//ec2:reservedInstancesSet/ec2:item');
 
-        $return = array();
+        $return = [];
         foreach ($items as $item) {
-            $i = array();
+            $i = [];
             $i['reservedInstancesId'] = $xpath->evaluate('string(ec2:reservedInstancesId/text())', $item);
             $i['instanceType'] = $xpath->evaluate('string(ec2:instanceType/text())', $item);
             $i['availabilityZone'] = $xpath->evaluate('string(ec2:availabilityZone/text())', $item);
@@ -73,7 +70,7 @@ class ReservedInstance extends AbstractEc2
      */
     public function describeOfferings()
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'DescribeReservedInstancesOfferings';
 
         $response = $this->sendRequest($params);
@@ -81,10 +78,11 @@ class ReservedInstance extends AbstractEc2
         $xpath = $response->getXPath();
         $items = $xpath->query('//ec2:reservedInstancesOfferingsSet/ec2:item');
 
-        $return = array();
+        $return = [];
         foreach ($items as $item) {
-            $i = array();
-            $i['reservedInstancesOfferingId'] = $xpath->evaluate('string(ec2:reservedInstancesOfferingId/text())', $item);
+            $i = [];
+            $i['reservedInstancesOfferingId'] = $xpath
+                ->evaluate('string(ec2:reservedInstancesOfferingId/text())', $item);
             $i['instanceType'] = $xpath->evaluate('string(ec2:instanceType/text())', $item);
             $i['availabilityZone'] = $xpath->evaluate('string(ec2:availabilityZone/text())', $item);
             $i['duration'] = $xpath->evaluate('string(ec2:duration/text())', $item);
@@ -111,7 +109,7 @@ class ReservedInstance extends AbstractEc2
      */
     public function purchaseOffering($offeringId, $instanceCount = 1)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'PurchaseReservedInstancesOffering';
         $params['OfferingId.1'] = $offeringId;
         $params['instanceCount.1'] = intval($instanceCount);

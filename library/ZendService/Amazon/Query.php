@@ -1,11 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Service
+ * @see       https://github.com/zendframework/ZendService_Amazon for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/ZendService_Amazon/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendService\Amazon;
@@ -17,12 +14,15 @@ namespace ZendService\Amazon;
  */
 class Query extends Amazon
 {
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
+
     /**
      * Search parameters
      *
      * @var array
      */
-    protected $_search = array();
+    protected $_search = [];
 
     /**
      * Search index
@@ -30,6 +30,8 @@ class Query extends Amazon
      * @var string
      */
     protected $_searchIndex = null;
+
+    // @codingStandardsIgnoreEnd
 
     /**
      * Prepares query parameters
@@ -50,7 +52,9 @@ class Query extends Amazon
         if (strtolower($method) === 'category') {
             $this->_searchIndex = $args[0];
             $this->_search['SearchIndex'] = $args[0];
-        } elseif (isset($this->_search['SearchIndex']) || $this->_searchIndex !== null || $this->_searchIndex === 'asin') {
+        } elseif (isset($this->_search['SearchIndex']) || $this->_searchIndex !== null
+            || $this->_searchIndex === 'asin'
+        ) {
             $this->_search[$method] = $args[0];
         } else {
             throw new Exception\RuntimeException('You must set a category before setting the search parameters');

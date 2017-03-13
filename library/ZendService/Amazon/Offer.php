@@ -1,11 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Service
+ * @see       https://github.com/zendframework/ZendService_Amazon for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/ZendService_Amazon/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendService\Amazon;
@@ -76,7 +73,7 @@ class Offer
         $xpath = new DOMXPath($dom->ownerDocument);
         $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/' . Amazon::getVersion());
 
-        $map = array(
+        $map = [
             'MerchantId'     => './az:Merchant/az:MerchantId/text()',
             'MerchantName'   => './az:Merchant/az:Name/text()',
             'GlancePage'     => './az:Merchant/az:GlancePage/text()',
@@ -86,7 +83,7 @@ class Offer
             'CurrencyCode'   => './az:OfferListing/az:Price/az:CurrencyCode/text()',
             'Availability'   => './az:OfferListing/az:Availability/text()',
             'IsEligibleForSuperSaverShipping' => './az:OfferListing/az:IsEligibleForSuperSaverShipping/text()',
-        );
+        ];
 
         foreach ($map as $param_name => $xquery) {
             $query_result = $xpath->query($xquery, $dom);
@@ -94,7 +91,7 @@ class Offer
                 continue;
             }
             $text = $query_result->item(0);
-            if (!$text instanceof DOMText) {
+            if (! $text instanceof DOMText) {
                 continue;
             }
             $this->$param_name = (string) $text->data;

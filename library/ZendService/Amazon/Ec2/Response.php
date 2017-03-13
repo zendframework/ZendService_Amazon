@@ -1,11 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Service
+ * @see       https://github.com/zendframework/ZendService_Amazon for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/ZendService_Amazon/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendService\Amazon\Ec2;
@@ -21,6 +18,9 @@ use Zend\Http\Response as HttpResponse;
  */
 class Response
 {
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
+
     /**
      * XML namespace used for EC2 responses.
      */
@@ -49,6 +49,8 @@ class Response
      */
     private $_xpath = null;
 
+    // @codingStandardsIgnoreEnd
+
     /**
      * Creates a new high-level EC2 response object
      *
@@ -72,8 +74,10 @@ class Response
                 $this->_xpath = false;
             } else {
                 $this->_xpath = new DOMXPath($document);
-                $this->_xpath->registerNamespace('ec2',
-                    $this->getNamespace());
+                $this->_xpath->registerNamespace(
+                    'ec2',
+                    $this->getNamespace()
+                );
             }
         }
 
@@ -99,7 +103,7 @@ class Response
                 $errors = libxml_use_internal_errors();
 
                 $this->_document = new DOMDocument();
-                if (!$this->_document->loadXML($body)) {
+                if (! $this->_document->loadXML($body)) {
                     $this->_document = false;
                 }
 

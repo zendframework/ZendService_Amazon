@@ -1,11 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Service
+ * @see       https://github.com/zendframework/ZendService_Amazon for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/ZendService_Amazon/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendService\Amazon\Authentication;
@@ -19,6 +16,9 @@ use Zend\Crypt\Hmac;
  */
 class V1 extends AbstractAuthentication
 {
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
+
     /**
      * Signature Version
      */
@@ -28,6 +28,8 @@ class V1 extends AbstractAuthentication
      * Signature Encoding Method
      */
     protected $_signatureMethod = 'HmacSHA256';
+
+    // @codingStandardsIgnoreEnd
 
     /**
      * Generate the required attributes for the signature
@@ -40,14 +42,17 @@ class V1 extends AbstractAuthentication
         $parameters['AWSAccessKeyId']   = $this->_accessKey;
         $parameters['SignatureVersion'] = $this->_signatureVersion;
         $parameters['Version']          = $this->_apiVersion;
-        if (!isset($parameters['Timestamp'])) {
-            $parameters['Timestamp']    = gmdate('Y-m-d\TH:i:s\Z', time()+10);
+        if (! isset($parameters['Timestamp'])) {
+            $parameters['Timestamp']    = gmdate('Y-m-d\TH:i:s\Z', time() + 10);
         }
 
         $data = $this->_signParameters($url, $parameters);
 
         return $data;
     }
+
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
 
     /**
      * Computes the RFC 2104-compliant HMAC signature for request parameters
@@ -68,6 +73,7 @@ class V1 extends AbstractAuthentication
      * @param array $parameters the parameters for which to get the signature.
      *
      * @return string the signed data.
+     * @deprecated Underscore should be removed from method name
      */
     protected function _signParameters($url, array &$parameters)
     {
@@ -86,4 +92,5 @@ class V1 extends AbstractAuthentication
 
         return $data;
     }
+    // @codingStandardsIgnoreEnd
 }

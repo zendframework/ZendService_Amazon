@@ -1,11 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Service
+ * @see       https://github.com/zendframework/ZendService_Amazon for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/ZendService_Amazon/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendService\Amazon\Ec2;
@@ -36,7 +33,7 @@ class SecurityGroups extends AbstractEc2
      */
     public function create($name, $description)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'CreateSecurityGroup';
         $params['GroupName'] = $name;
         $params['GroupDescription'] = $description;
@@ -60,11 +57,11 @@ class SecurityGroups extends AbstractEc2
      */
     public function describe($name = null)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'DescribeSecurityGroups';
-        if (is_array($name) && !empty($name)) {
-            foreach ($name as $k=>$name) {
-                $params['GroupName.' . ($k+1)] = $name;
+        if (is_array($name) && ! empty($name)) {
+            foreach ($name as $k => $name) {
+                $params['GroupName.' . ($k + 1)] = $name;
             }
         } elseif ($name) {
             $params['GroupName.1'] = $name;
@@ -73,12 +70,12 @@ class SecurityGroups extends AbstractEc2
         $response = $this->sendRequest($params);
         $xpath = $response->getXPath();
 
-        $return = array();
+        $return = [];
 
         $nodes = $xpath->query('//ec2:securityGroupInfo/ec2:item');
 
         foreach ($nodes as $node) {
-            $item = array();
+            $item = [];
 
             $item['ownerId'] = $xpath->evaluate('string(ec2:ownerId/text())', $node);
             $item['groupName'] = $xpath->evaluate('string(ec2:groupName/text())', $node);
@@ -87,7 +84,7 @@ class SecurityGroups extends AbstractEc2
             $ip_nodes = $xpath->query('ec2:ipPermissions/ec2:item', $node);
 
             foreach ($ip_nodes as $ip_node) {
-                $sItem = array();
+                $sItem = [];
 
                 $sItem['ipProtocol'] = $xpath->evaluate('string(ec2:ipProtocol/text())', $ip_node);
                 $sItem['fromPort'] = $xpath->evaluate('string(ec2:fromPort/text())', $ip_node);
@@ -95,7 +92,7 @@ class SecurityGroups extends AbstractEc2
 
                 $ips = $xpath->query('ec2:ipRanges/ec2:item', $ip_node);
 
-                $sItem['ipRanges'] = array();
+                $sItem['ipRanges'] = [];
                 foreach ($ips as $ip) {
                     $sItem['ipRanges'][] = $xpath->evaluate('string(ec2:cidrIp/text())', $ip);
                 }
@@ -130,7 +127,7 @@ class SecurityGroups extends AbstractEc2
      */
     public function delete($name)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'DeleteSecurityGroup';
         $params['GroupName'] = $name;
 
@@ -164,7 +161,7 @@ class SecurityGroups extends AbstractEc2
      */
     public function authorizeIp($name, $ipProtocol, $fromPort, $toPort, $cidrIp)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'AuthorizeSecurityGroupIngress';
         $params['GroupName'] = $name;
         $params['IpProtocol'] = $ipProtocol;
@@ -195,7 +192,7 @@ class SecurityGroups extends AbstractEc2
      */
     public function authorizeGroup($name, $groupName, $ownerId)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'AuthorizeSecurityGroupIngress';
         $params['GroupName'] = $name;
         $params['SourceSecurityGroupName'] = $groupName;
@@ -234,7 +231,7 @@ class SecurityGroups extends AbstractEc2
      */
     public function revokeIp($name, $ipProtocol, $fromPort, $toPort, $cidrIp)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'RevokeSecurityGroupIngress';
         $params['GroupName'] = $name;
         $params['IpProtocol'] = $ipProtocol;
@@ -266,7 +263,7 @@ class SecurityGroups extends AbstractEc2
      */
     public function revokeGroup($name, $groupName, $ownerId)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'RevokeSecurityGroupIngress';
         $params['GroupName'] = $name;
         $params['SourceSecurityGroupName'] = $groupName;

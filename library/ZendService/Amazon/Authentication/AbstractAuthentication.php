@@ -1,11 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Service
+ * @see       https://github.com/zendframework/ZendService_Amazon for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/ZendService_Amazon/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendService\Amazon\Authentication;
@@ -17,6 +14,9 @@ namespace ZendService\Amazon\Authentication;
  */
 abstract class AbstractAuthentication
 {
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
+
     /**
      * @var string
      */
@@ -31,6 +31,8 @@ abstract class AbstractAuthentication
      * @var string
      */
     protected $_apiVersion;
+
+    // @codingStandardsIgnoreEnd
 
     /**
      * Constructor

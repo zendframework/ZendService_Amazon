@@ -1,11 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Service
+ * @see       https://github.com/zendframework/ZendService_Amazon for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/ZendService_Amazon/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendService\Amazon\Ec2;
@@ -34,7 +31,7 @@ class WindowsInstance extends AbstractEc2
      */
     public function bundle($instanceId, $s3Bucket, $s3Prefix, $uploadExpiration = 1440)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'BundleInstance';
         $params['InstanceId'] = $instanceId;
         $params['Storage.S3.AWSAccessKeyId'] = $this->_getAccessKey();
@@ -48,15 +45,17 @@ class WindowsInstance extends AbstractEc2
 
         $xpath = $response->getXPath();
 
-        $return = array();
+        $return = [];
         $return['instanceId'] = $xpath->evaluate('string(//ec2:bundleInstanceTask/ec2:instanceId/text())');
         $return['bundleId'] = $xpath->evaluate('string(//ec2:bundleInstanceTask/ec2:bundleId/text())');
         $return['state'] = $xpath->evaluate('string(//ec2:bundleInstanceTask/ec2:state/text())');
         $return['startTime'] = $xpath->evaluate('string(//ec2:bundleInstanceTask/ec2:startTime/text())');
         $return['updateTime'] = $xpath->evaluate('string(//ec2:bundleInstanceTask/ec2:updateTime/text())');
         $return['progress'] = $xpath->evaluate('string(//ec2:bundleInstanceTask/ec2:progress/text())');
-        $return['storage']['s3']['bucket'] = $xpath->evaluate('string(//ec2:bundleInstanceTask/ec2:storage/ec2:S3/ec2:bucket/text())');
-        $return['storage']['s3']['prefix'] = $xpath->evaluate('string(//ec2:bundleInstanceTask/ec2:storage/ec2:S3/ec2:prefix/text())');
+        $return['storage']['s3']['bucket'] = $xpath
+            ->evaluate('string(//ec2:bundleInstanceTask/ec2:storage/ec2:S3/ec2:bucket/text())');
+        $return['storage']['s3']['prefix'] = $xpath
+            ->evaluate('string(//ec2:bundleInstanceTask/ec2:storage/ec2:S3/ec2:prefix/text())');
 
         return $return;
     }
@@ -69,7 +68,7 @@ class WindowsInstance extends AbstractEc2
      */
     public function cancelBundle($bundleId)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'CancelBundleTask';
         $params['BundleId'] = $bundleId;
 
@@ -77,15 +76,17 @@ class WindowsInstance extends AbstractEc2
 
         $xpath = $response->getXPath();
 
-        $return = array();
+        $return = [];
         $return['instanceId'] = $xpath->evaluate('string(//ec2:bundleInstanceTask/ec2:instanceId/text())');
         $return['bundleId'] = $xpath->evaluate('string(//ec2:bundleInstanceTask/ec2:bundleId/text())');
         $return['state'] = $xpath->evaluate('string(//ec2:bundleInstanceTask/ec2:state/text())');
         $return['startTime'] = $xpath->evaluate('string(//ec2:bundleInstanceTask/ec2:startTime/text())');
         $return['updateTime'] = $xpath->evaluate('string(//ec2:bundleInstanceTask/ec2:updateTime/text())');
         $return['progress'] = $xpath->evaluate('string(//ec2:bundleInstanceTask/ec2:progress/text())');
-        $return['storage']['s3']['bucket'] = $xpath->evaluate('string(//ec2:bundleInstanceTask/ec2:storage/ec2:S3/ec2:bucket/text())');
-        $return['storage']['s3']['prefix'] = $xpath->evaluate('string(//ec2:bundleInstanceTask/ec2:storage/ec2:S3/ec2:prefix/text())');
+        $return['storage']['s3']['bucket'] = $xpath
+            ->evaluate('string(//ec2:bundleInstanceTask/ec2:storage/ec2:S3/ec2:bucket/text())');
+        $return['storage']['s3']['prefix'] = $xpath
+            ->evaluate('string(//ec2:bundleInstanceTask/ec2:storage/ec2:S3/ec2:prefix/text())');
 
         return $return;
     }
@@ -99,14 +100,14 @@ class WindowsInstance extends AbstractEc2
      */
     public function describeBundle($bundleId = '')
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'DescribeBundleTasks';
 
-        if (is_array($bundleId) && !empty($bundleId)) {
-            foreach ($bundleId as $k=>$name) {
-                $params['bundleId.' . ($k+1)] = $name;
+        if (is_array($bundleId) && ! empty($bundleId)) {
+            foreach ($bundleId as $k => $name) {
+                $params['bundleId.' . ($k + 1)] = $name;
             }
-        } elseif (!empty($bundleId)) {
+        } elseif (! empty($bundleId)) {
             $params['bundleId.1'] = $bundleId;
         }
 
@@ -115,10 +116,10 @@ class WindowsInstance extends AbstractEc2
         $xpath = $response->getXPath();
 
         $items = $xpath->evaluate('//ec2:bundleInstanceTasksSet/ec2:item');
-        $return = array();
+        $return = [];
 
         foreach ($items as $item) {
-            $i = array();
+            $i = [];
             $i['instanceId'] = $xpath->evaluate('string(ec2:instanceId/text())', $item);
             $i['bundleId'] = $xpath->evaluate('string(ec2:bundleId/text())', $item);
             $i['state'] = $xpath->evaluate('string(ec2:state/text())', $item);
@@ -136,6 +137,9 @@ class WindowsInstance extends AbstractEc2
         return $return;
     }
 
+    // TODO: Unsuppress standards checking when underscores removed from method names
+    // @codingStandardsIgnoreStart
+    
     /**
      * Generates the S3 Upload Policy Information
      *
@@ -144,14 +148,15 @@ class WindowsInstance extends AbstractEc2
      * @param integer $expireInMinutes  The expiration of the upload policy.  Amazon recommends 12 hours or longer.
      *                                  This is based in nubmer of minutes. Default is 1440 minutes (24 hours)
      * @return string                   Base64 encoded string that is the upload policy
+     * @deprecated Underscore should be removed from method name
      */
     protected function _getS3UploadPolicy($bucketName, $prefix, $expireInMinutes = 1440)
     {
-        $arrParams = array();
+        $arrParams = [];
         $arrParams['expiration'] = gmdate("Y-m-d\TH:i:s.\\0\\0\\0\\Z", (time() + ($expireInMinutes * 60)));
-        $arrParams['conditions'][] = array('bucket' => $bucketName);
-        $arrParams['conditions'][] = array('acl' => 'ec2-bundle-read');
-        $arrParams['conditions'][] = array('starts-with', '$key', $prefix);
+        $arrParams['conditions'][] = ['bucket' => $bucketName];
+        $arrParams['conditions'][] = ['acl' => 'ec2-bundle-read'];
+        $arrParams['conditions'][] = ['starts-with', '$key', $prefix];
 
         return base64_encode(\Zend\Json\Json::encode($arrParams));
     }
@@ -161,9 +166,11 @@ class WindowsInstance extends AbstractEc2
      *
      * @param string $policy Base64 Encoded string that is the upload policy
      * @return string        SHA1 encoded S3 Upload Policy
+     * @deprecated Underscore should be removed from method name
      */
     protected function _signS3UploadPolicy($policy)
     {
         return Hmac::compute($this->_getSecretKey(), 'SHA1', $policy, Hmac::OUTPUT_BINARY);
     }
+    // @codingStandardsIgnoreEnd
 }

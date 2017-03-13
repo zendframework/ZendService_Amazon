@@ -1,11 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Service
+ * @see       https://github.com/zendframework/ZendService_Amazon for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/ZendService_Amazon/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendService\Amazon;
@@ -58,7 +55,7 @@ abstract class AbstractAmazon
     /**
      * @var string Format to use for Date header
      */
-    const AMAZON_DATE_FORMAT='D, d M Y H:i:s \G\M\T';
+    const AMAZON_DATE_FORMAT = 'D, d M Y H:i:s \G\M\T';
 
     /**
      * Constructor
@@ -112,18 +109,22 @@ abstract class AbstractAmazon
      */
     public function setRequestDate(DateTime $date = null, $preserve = null)
     {
-        if ($date instanceof DateTime && !is_null($preserve)) {
+        if ($date instanceof DateTime && ! is_null($preserve)) {
             $date->{self::DATE_PRESERVE_KEY} = (boolean) $preserve;
         }
 
         $this->requestDate = $date;
     }
 
+    // TODO: Unsuppress standards checking when underscores removed from method names
+    // @codingStandardsIgnoreStart
+
     /**
      * Method to fetch the Access Key
      *
      * @return string
      * @throws Exception\InvalidArgumentException
+     * @deprecated Underscore should be removed from method name
      */
     protected function _getAccessKey()
     {
@@ -139,6 +140,7 @@ abstract class AbstractAmazon
      *
      * @return string
      * @throws Exception\InvalidArgumentException
+     * @deprecated Underscore should be removed from method name
      */
     protected function _getSecretKey()
     {
@@ -148,6 +150,8 @@ abstract class AbstractAmazon
 
         return $this->secretKey;
     }
+
+    // @codingStandardsIgnoreEnd
 
     /**
      * Method to get the Response object of the last call to the service,
@@ -171,7 +175,7 @@ abstract class AbstractAmazon
      */
     public function getRequestDate()
     {
-        if (!is_object($this->requestDate)) {
+        if (! is_object($this->requestDate)) {
             $date = new DateTime();
         } else {
             $date = $this->requestDate;
@@ -195,7 +199,7 @@ abstract class AbstractAmazon
      */
     public function getRequestIsoDate()
     {
-        if (!is_object($this->requestDate)) {
+        if (! is_object($this->requestDate)) {
             $date = new DateTime();
         } else {
             $date = $this->requestDate;
