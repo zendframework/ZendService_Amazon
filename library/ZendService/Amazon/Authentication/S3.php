@@ -1,11 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Service
+ * @see       https://github.com/zendframework/ZendService_Amazon for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/ZendService_Amazon/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendService\Amazon\Authentication;
@@ -30,7 +27,7 @@ class S3 extends AbstractAuthentication
     public function generateSignature($method, $path, &$headers)
     {
         if (! is_array($headers)) {
-            $headers = array($headers);
+            $headers = [$headers];
         }
 
         $type = $md5 = $date = '';
@@ -55,7 +52,7 @@ class S3 extends AbstractAuthentication
 
         // For x-amz- headers, combine like keys, lowercase them, sort them
         // alphabetically and remove excess spaces around values
-        $amz_headers = array();
+        $amz_headers = [];
         foreach ($headers as $key => $val) {
             $key = strtolower($key);
             if (substr($key, 0, 6) == 'x-amz-') {
@@ -66,7 +63,7 @@ class S3 extends AbstractAuthentication
                 }
             }
         }
-        if (!empty($amz_headers)) {
+        if (! empty($amz_headers)) {
             ksort($amz_headers);
             foreach ($amz_headers as $key => $val) {
                 $sig_str .= $key . ':' . implode(',', $val) . "\n";

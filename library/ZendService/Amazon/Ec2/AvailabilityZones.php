@@ -1,16 +1,14 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Service
+ * @see       https://github.com/zendframework/ZendService_Amazon for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/ZendService_Amazon/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendService\Amazon\Ec2;
 
 use ZendService\Amazon;
+
 /**
  * An Amazon EC2 interface to query which Availability Zones your account has access to.
  *
@@ -29,12 +27,12 @@ class AvailabilityZones extends AbstractEc2
      */
     public function describe($zoneName = null)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'DescribeAvailabilityZones';
 
-        if (is_array($zoneName) && !empty($zoneName)) {
-            foreach ($zoneName as $k=>$name) {
-                $params['ZoneName.' . ($k+1)] = $name;
+        if (is_array($zoneName) && ! empty($zoneName)) {
+            foreach ($zoneName as $k => $name) {
+                $params['ZoneName.' . ($k + 1)] = $name;
             }
         } elseif ($zoneName) {
             $params['ZoneName.1'] = $zoneName;
@@ -45,9 +43,9 @@ class AvailabilityZones extends AbstractEc2
         $xpath  = $response->getXPath();
         $nodes  = $xpath->query('//ec2:item');
 
-        $return = array();
+        $return = [];
         foreach ($nodes as $k => $node) {
-            $item = array();
+            $item = [];
             $item['zoneName']   = $xpath->evaluate('string(ec2:zoneName/text())', $node);
             $item['zoneState']  = $xpath->evaluate('string(ec2:zoneState/text())', $node);
 

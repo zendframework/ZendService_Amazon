@@ -34,6 +34,40 @@ to upgrade and/or update in order to protect their applications.
 
 For sensitive email communications, please use [our PGP key](http://framework.zend.com/zf-security-pgp-key.asc).
 
+## Running Coding Standards Checks
+
+This component uses [phpcs](https://github.com/squizlabs/PHP_CodeSniffer) for coding
+standards checks, and provides configuration for our selected checks.
+`phpcs` is installed by default via Composer.
+
+To run checks only:
+
+```console
+$ composer cs-check
+```
+
+`phpcs` also includes a tool for fixing most CS violations, `phpcbf`:
+
+
+```console
+$ composer cs-fix
+```
+
+If you allow `phpcbf` to fix CS issues, please re-run the tests to ensure
+they pass, and make sure you add and commit the changes after verification.
+
+## Running License Checks
+
+File-level docblocks should follow the format demonstrated in `.docheader`. To
+check for conformity, use:
+
+```console
+$ composer license-check
+```
+
+This will flag files that are incorrect, which you can then update. Re-run the
+tool to verify your changes.
+
 ## Recommended Workflow for Contributions
 
 Your first step is to establish a public repository from which we can

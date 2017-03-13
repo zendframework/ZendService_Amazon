@@ -1,11 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Service
+ * @see       https://github.com/zendframework/ZendService_Amazon for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/ZendService_Amazon/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendService\Amazon\SimpleDb;
@@ -19,11 +16,16 @@ namespace ZendService\Amazon\SimpleDb;
  */
 class Page
 {
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
+
     /** @var string Page data */
     protected $_data;
 
     /** @var string|null Token identifying page */
     protected $_token;
+
+    // @codingStandardsIgnoreEnd
 
     /**
      * Constructor

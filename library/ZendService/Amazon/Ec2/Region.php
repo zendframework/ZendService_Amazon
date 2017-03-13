@@ -1,11 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Service
+ * @see       https://github.com/zendframework/ZendService_Amazon for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/ZendService_Amazon/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendService\Amazon\Ec2;
@@ -29,12 +26,12 @@ class Region extends AbstractEc2
      */
     public function describe($region = null)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'DescribeRegions';
 
-        if (is_array($region) && !empty($region)) {
-            foreach ($region as $k=>$name) {
-                $params['Region.' . ($k+1)] = $name;
+        if (is_array($region) && ! empty($region)) {
+            foreach ($region as $k => $name) {
+                $params['Region.' . ($k + 1)] = $name;
             }
         } elseif ($region) {
             $params['Region.1'] = $region;
@@ -45,9 +42,9 @@ class Region extends AbstractEc2
         $xpath  = $response->getXPath();
         $nodes  = $xpath->query('//ec2:item');
 
-        $return = array();
+        $return = [];
         foreach ($nodes as $k => $node) {
-            $item = array();
+            $item = [];
             $item['regionName']   = $xpath->evaluate('string(ec2:regionName/text())', $node);
             $item['regionUrl']  = $xpath->evaluate('string(ec2:regionUrl/text())', $node);
 

@@ -1,11 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend
+ * @see       https://github.com/zendframework/ZendService_Amazon for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/ZendService_Amazon/blob/master/LICENSE.md New BSD License
  */
 
 /*
@@ -17,7 +14,7 @@ error_reporting(E_ALL | E_STRICT);
 /**
  * Setup autoloading
  */
-if (!file_exists(__DIR__ . '/../vendor/autoload.php')) {
+if (! file_exists(__DIR__ . '/../vendor/autoload.php')) {
     throw new RuntimeException('This component has dependencies that are unmet.
 
 Please install composer (http://getcomposer.org), and run the following

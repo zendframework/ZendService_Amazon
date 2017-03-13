@@ -1,16 +1,14 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Service
+ * @see       https://github.com/zendframework/ZendService_Amazon for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/ZendService_Amazon/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendService\Amazon\Ec2;
 
 use ZendService\Amazon;
+
 /**
  * An Amazon EC2 interface to allocate, associate, describe and release Elastic IP address
  * from your account.
@@ -28,7 +26,7 @@ class ElasticIp extends AbstractEc2
      */
     public function allocate()
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'AllocateAddress';
 
         $response = $this->sendRequest($params);
@@ -47,12 +45,12 @@ class ElasticIp extends AbstractEc2
      */
     public function describe($publicIp = null)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'DescribeAddresses';
 
-        if (is_array($publicIp) && !empty($publicIp)) {
-            foreach ($publicIp as $k=>$name) {
-                $params['PublicIp.' . ($k+1)] = $name;
+        if (is_array($publicIp) && ! empty($publicIp)) {
+            foreach ($publicIp as $k => $name) {
+                $params['PublicIp.' . ($k + 1)] = $name;
             }
         } elseif ($publicIp) {
             $params['PublicIp.1'] = $publicIp;
@@ -63,9 +61,9 @@ class ElasticIp extends AbstractEc2
         $xpath  = $response->getXPath();
         $nodes  = $xpath->query('//ec2:item');
 
-        $return = array();
+        $return = [];
         foreach ($nodes as $k => $node) {
-            $item = array();
+            $item = [];
             $item['publicIp']  = $xpath->evaluate('string(ec2:publicIp/text())', $node);
             $item['instanceId']   = $xpath->evaluate('string(ec2:instanceId/text())', $node);
 
@@ -84,7 +82,7 @@ class ElasticIp extends AbstractEc2
      */
     public function release($publicIp)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'ReleaseAddress';
         $params['PublicIp'] = $publicIp;
 
@@ -105,7 +103,7 @@ class ElasticIp extends AbstractEc2
      */
     public function associate($instanceId, $publicIp)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'AssociateAddress';
         $params['PublicIp'] = $publicIp;
         $params['InstanceId'] = $instanceId;
@@ -127,7 +125,7 @@ class ElasticIp extends AbstractEc2
      */
     public function disassocate($publicIp)
     {
-        $params = array();
+        $params = [];
         $params['Action'] = 'DisssociateAddress';
         $params['PublicIp'] = $publicIp;
 

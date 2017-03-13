@@ -1,11 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Service
+ * @see       https://github.com/zendframework/ZendService_Amazon for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/ZendService_Amazon/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendService\Amazon\SimpleDb;
@@ -17,9 +14,25 @@ namespace ZendService\Amazon\SimpleDb;
  */
 class Attribute
 {
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
+
+    /**
+     * @var string
+     */
     protected $_itemName;
+
+    /**
+     * @var string
+     */
     protected $_name;
+
+    /**
+     * @var array
+     */
     protected $_values;
+
+    // @codingStandardsIgnoreEnd
 
     /**
      * Constructor
@@ -33,8 +46,8 @@ class Attribute
         $this->_itemName = $itemName;
         $this->_name     = $name;
 
-        if (!is_array($values)) {
-            $this->_values = array($values);
+        if (! is_array($values)) {
+            $this->_values = [$values];
         } else {
             $this->_values = $values;
         }
@@ -90,8 +103,8 @@ class Attribute
      */
     public function setValues($values)
     {
-        if (!is_array($values)) {
-            $values = array($values);
+        if (! is_array($values)) {
+            $values = [$values];
         }
         $this->_values = $values;
     }

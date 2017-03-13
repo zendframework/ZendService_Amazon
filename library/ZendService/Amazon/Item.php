@@ -1,11 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Service
+ * @see       https://github.com/zendframework/ZendService_Amazon for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/ZendService_Amazon/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendService\Amazon;
@@ -73,30 +70,34 @@ class Item
     /**
      * @var array CustomerReview
      */
-    public $CustomerReviews = array();
+    public $CustomerReviews = [];
 
     /**
      * @var array Of SimilarProduct
      */
-    public $SimilarProducts = array();
+    public $SimilarProducts = [];
 
     /**
      * @var array Of Accessories
      */
-    public $Accessories = array();
+    public $Accessories = [];
 
     /**
      * @var array
      */
-    public $Tracks = array();
+    public $Tracks = [];
 
     /**
      * @var array Of ListmaniaList
      */
-    public $ListmaniaLists = array();
+    public $ListmaniaLists = [];
+
+    // TODO: Unsuppress standards checking when underscores removed from property names
+    // @codingStandardsIgnoreStart
 
     protected $_dom;
 
+    // @codingStandardsIgnoreEnd
 
     /**
      * Parse the given <Item> element
@@ -117,9 +118,12 @@ class Item
         }
 
         if ($xpath->query('./az:ItemAttributes/az:ListPrice', $dom)->length >= 1) {
-            $this->CurrencyCode = (string) $xpath->query('./az:ItemAttributes/az:ListPrice/az:CurrencyCode/text()', $dom)->item(0)->data;
-            $this->Amount = (int) $xpath->query('./az:ItemAttributes/az:ListPrice/az:Amount/text()', $dom)->item(0)->data;
-            $this->FormattedPrice = (string) $xpath->query('./az:ItemAttributes/az:ListPrice/az:FormattedPrice/text()', $dom)->item(0)->data;
+            $this->CurrencyCode = (string) $xpath
+                ->query('./az:ItemAttributes/az:ListPrice/az:CurrencyCode/text()', $dom)->item(0)->data;
+            $this->Amount = (int) $xpath
+                ->query('./az:ItemAttributes/az:ListPrice/az:Amount/text()', $dom)->item(0)->data;
+            $this->FormattedPrice = (string) $xpath
+                ->query('./az:ItemAttributes/az:ListPrice/az:FormattedPrice/text()', $dom)->item(0)->data;
         }
 
         $result = $xpath->query('./az:ItemAttributes/az:*/text()', $dom);
@@ -129,7 +133,7 @@ class Item
                     if (is_array($this->{$v->parentNode->tagName})) {
                         array_push($this->{$v->parentNode->tagName}, (string) $v->data);
                     } else {
-                        $this->{$v->parentNode->tagName} = array($this->{$v->parentNode->tagName}, (string) $v->data);
+                        $this->{$v->parentNode->tagName} = [$this->{$v->parentNode->tagName}, (string) $v->data];
                     }
                 } else {
                     $this->{$v->parentNode->tagName} = (string) $v->data;
@@ -137,7 +141,7 @@ class Item
             }
         }
 
-        foreach (array('SmallImage', 'MediumImage', 'LargeImage') as $im) {
+        foreach (['SmallImage', 'MediumImage', 'LargeImage'] as $im) {
             $result = $xpath->query("./az:ImageSets/az:ImageSet[@Category='primary']/az:$im", $dom);
             if ($result->length == 1) {
                 $this->$im = new Image($result->item(0));
@@ -154,8 +158,10 @@ class Item
             foreach ($result as $review) {
                 $this->CustomerReviews[] = new CustomerReview($review);
             }
-            $this->AverageRating = (float) $xpath->query('./az:CustomerReviews/az:AverageRating/text()', $dom)->item(0)->data;
-            $this->TotalReviews = (int) $xpath->query('./az:CustomerReviews/az:TotalReviews/text()', $dom)->item(0)->data;
+            $this->AverageRating = (float) $xpath
+                ->query('./az:CustomerReviews/az:AverageRating/text()', $dom)->item(0)->data;
+            $this->TotalReviews = (int) $xpath
+                ->query('./az:CustomerReviews/az:TotalReviews/text()', $dom)->item(0)->data;
         }
 
         $result = $xpath->query('./az:EditorialReviews/az:*', $dom);

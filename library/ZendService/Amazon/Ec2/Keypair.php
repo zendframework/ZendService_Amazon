@@ -1,11 +1,8 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_Service
+ * @see       https://github.com/zendframework/ZendService_Amazon for the canonical source repository
+ * @copyright Copyright (c) 2005-2017 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   https://github.com/zendframework/ZendService_Amazon/blob/master/LICENSE.md New BSD License
  */
 
 namespace ZendService\Amazon\Ec2;
@@ -31,11 +28,11 @@ class Keypair extends AbstractEc2
      */
     public function create($keyName)
     {
-        $params = array();
+        $params = [];
 
         $params['Action'] = 'CreateKeyPair';
 
-        if (!$keyName) {
+        if (! $keyName) {
             throw new Exception\InvalidArgumentException('Invalid Key Name');
         }
 
@@ -44,7 +41,7 @@ class Keypair extends AbstractEc2
         $response = $this->sendRequest($params);
         $xpath = $response->getXPath();
 
-        $return = array();
+        $return = [];
         $return['keyName']          = $xpath->evaluate('string(//ec2:keyName/text())');
         $return['keyFingerprint']   = $xpath->evaluate('string(//ec2:keyFingerprint/text())');
         $return['keyMaterial']      = $xpath->evaluate('string(//ec2:keyMaterial/text())');
@@ -62,12 +59,12 @@ class Keypair extends AbstractEc2
      */
     public function describe($keyName = null)
     {
-        $params = array();
+        $params = [];
 
         $params['Action'] = 'DescribeKeyPairs';
-        if (is_array($keyName) && !empty($keyName)) {
-            foreach ($keyName as $k=>$name) {
-                $params['KeyName.' . ($k+1)] = $name;
+        if (is_array($keyName) && ! empty($keyName)) {
+            foreach ($keyName as $k => $name) {
+                $params['KeyName.' . ($k + 1)] = $name;
             }
         } elseif ($keyName) {
             $params['KeyName.1'] = $keyName;
@@ -78,9 +75,9 @@ class Keypair extends AbstractEc2
 
         $nodes  = $xpath->query('//ec2:keySet/ec2:item');
 
-        $return = array();
+        $return = [];
         foreach ($nodes as $k => $node) {
-            $item = array();
+            $item = [];
             $item['keyName']          = $xpath->evaluate('string(ec2:keyName/text())', $node);
             $item['keyFingerprint']   = $xpath->evaluate('string(ec2:keyFingerprint/text())', $node);
 
@@ -100,11 +97,11 @@ class Keypair extends AbstractEc2
      */
     public function delete($keyName)
     {
-        $params = array();
+        $params = [];
 
         $params['Action'] = 'DeleteKeyPair';
 
-        if (!$keyName) {
+        if (! $keyName) {
             throw new Exception\InvalidArgumentException('Invalid Key Name');
         }
 
