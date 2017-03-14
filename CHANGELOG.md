@@ -8,6 +8,12 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - Nothing.
 
+### Changed
+
+- [#69](https://github.com/zendframework/ZendService_Amazon/pull/69) changed
+  folder structure to PSR-4. No action is needed if you use composer to install
+  package.
+
 ### Deprecated
 
 - Nothing.
