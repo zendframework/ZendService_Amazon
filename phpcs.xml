@@ -3,12 +3,12 @@
     <rule ref="./vendor/zendframework/zend-coding-standard/ruleset.xml"/>
 
     <!-- Paths to check -->
-    <file>library</file>
-    <file>tests</file>
+    <file>src</file>
+    <file>test</file>
     <exclude-pattern>*/_files/*</exclude-pattern>
 
     <!-- Ignore warnings related to implementing a PHP interface -->
     <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
-        <exclude-pattern>*/Amazon/S3/Stream.php</exclude-pattern>
+        <exclude-pattern>*/S3/Stream.php</exclude-pattern>
     </rule>
 </ruleset>
