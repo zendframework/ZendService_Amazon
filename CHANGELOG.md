@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.2.0 - TBD
+## 2.2.0 - 2017-03-15
 
 ### Added
 
@@ -13,24 +13,6 @@ All notable changes to this project will be documented in this file, in reverse 
 - [#69](https://github.com/zendframework/ZendService_Amazon/pull/69) changed
   folder structure to PSR-4. No action is needed if you use composer to install
   package.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## 2.1.1 - TBD
-
-### Added
-
-- Nothing.
 
 ### Deprecated
 
