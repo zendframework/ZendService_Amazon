@@ -1,7 +1,7 @@
-<phpunit bootstrap="./tests/Bootstrap.php" colors="true">
+<phpunit bootstrap="./test/Bootstrap.php" colors="true">
     <testsuites>
         <testsuite name="ZendService Amazon Test Suite">
-            <directory>./tests/ZendServiceTest</directory>
+            <directory>./test</directory>
         </testsuite>
     </testsuites>
 
@@ -13,7 +13,7 @@
 
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./library</directory>
+            <directory suffix=".php">./src</directory>
         </whitelist>
     </filter>
 </phpunit>

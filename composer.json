@@ -13,13 +13,13 @@
     "homepage": "http://packages.zendframework.com/",
     "license": "BSD-3-Clause",
     "autoload": {
-        "psr-0": {
-            "ZendService\\Amazon\\": "library/"
+        "psr-4": {
+            "ZendService\\Amazon\\": "src/"
         }
     },
     "autoload-dev": {
-        "psr-0": {
-            "ZendServiceTest\\Amazon\\": "tests/"
+        "psr-4": {
+            "ZendServiceTest\\Amazon\\": "test/"
         }
     },
     "require": {
@@ -41,8 +41,8 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.1.x-dev",
-            "dev-develop": "2.2.x-dev"
+            "dev-master": "2.2.x-dev",
+            "dev-develop": "2.3.x-dev"
         }
     },
     "scripts": {
@@ -56,6 +56,6 @@
         "cs-fix": "phpcbf",
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --coverage-clover clover.xml",
-        "license-check": "vendor/bin/docheader check library/ tests/"
+        "license-check": "vendor/bin/docheader check src/ test/"
     }
 }
