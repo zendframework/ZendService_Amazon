@@ -51,12 +51,20 @@ class Amazon
      *
      * @var array
      */
-    protected $_baseUriList = ['US' => 'http://webservices.amazon.com',
-                                    'UK' => 'http://webservices.amazon.co.uk',
-                                    'DE' => 'http://webservices.amazon.de',
-                                    'JP' => 'http://webservices.amazon.co.jp',
-                                    'FR' => 'http://webservices.amazon.fr',
-                                    'CA' => 'http://webservices.amazon.ca'];
+    protected $_baseUriList = [
+        'BR' => 'http://webservices.amazon.com.br',
+        'CA' => 'http://webservices.amazon.ca',
+        'CN' => 'http://webservices.amazon.cn',
+        'DE' => 'http://webservices.amazon.de',
+        'ES' => 'http://webservices.amazon.es',
+        'FR' => 'http://webservices.amazon.fr',
+        'IN' => 'http://webservices.amazon.in',
+        'IT' => 'http://webservices.amazon.it',
+        'JP' => 'http://webservices.amazon.co.jp',
+        'MX' => 'http://webservices.amazon.com.mx',
+        'UK' => 'http://webservices.amazon.co.uk',
+        'US' => 'http://webservices.amazon.com',
+    ];
 
     /**
      * Reference to REST client object
@@ -74,11 +82,13 @@ class Amazon
      * @param  string $countryCode Country code for Amazon service; may be US, UK, DE, JP, FR, CA
      * @param  string $secretKey   API Secret Key
      * @param  string $version     API Version to use
+     * @param  bool   $useSsl      Use HTTPS instead of HTTP?
      * @throws Exception\InvalidArgumentException
      * @return Amazon
      */
-    public function __construct($appId, $countryCode = 'US', $secretKey = null, $version = null)
-    {
+    public function __construct($appId, $countryCode = 'US', $secretKey = null, $version = null,
+        $useSsl = false
+    ) {
         $this->appId = (string) $appId;
         $this->_secretKey = $secretKey;
 
@@ -91,7 +101,9 @@ class Amazon
             throw new Exception\InvalidArgumentException("Unknown country code: $countryCode");
         }
 
-        $this->_baseUri = $this->_baseUriList[$countryCode];
+        $this->_baseUri = $useSsl
+            ? str_replace('http:', 'https:', $this->_baseUriList[$countryCode])
+            : $this->_baseUriList[$countryCode];
     }
 
 
