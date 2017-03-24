@@ -91,7 +91,7 @@ class Amazon
         $countryCode = 'US',
         $secretKey = null,
         $version = null,
-        $useSsl = false
+        $useHttps = false
     ) {
         $this->appId = (string) $appId;
         $this->_secretKey = $secretKey;
