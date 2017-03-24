@@ -6,7 +6,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#70](https://github.com/zendframework/ZendService_Amazon/pull/70) added
+  support for IT, ES, CN, BR amazon endpoints and added new $useHttps constructor
+  parameter to `ZendService\Amazon\Amazon`
 
 ### Deprecated
 
