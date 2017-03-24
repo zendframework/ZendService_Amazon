@@ -86,7 +86,11 @@ class Amazon
      * @throws Exception\InvalidArgumentException
      * @return Amazon
      */
-    public function __construct($appId, $countryCode = 'US', $secretKey = null, $version = null,
+    public function __construct(
+        $appId,
+        $countryCode = 'US',
+        $secretKey = null,
+        $version = null,
         $useSsl = false
     ) {
         $this->appId = (string) $appId;

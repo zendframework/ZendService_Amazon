@@ -362,7 +362,7 @@ class OfflineTest extends TestCase
      *
      * @param string $expectedUrl URL to check for.
      *
-     * @return 
+     * @return
      */
     protected function getMockRestClient($expectedUrl)
     {
@@ -411,7 +411,11 @@ class OfflineTest extends TestCase
         ];
         foreach ($urls as $country => $expected) {
             $amazon = new Amazon\Amazon(
-                constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ACCESSKEYID'), $country, null, null, true
+                constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ACCESSKEYID'),
+                $country,
+                null,
+                null,
+                true
             );
             $amazon->setRestClient($this->getMockRestClient($expected))->itemLookup('foo');
         }
