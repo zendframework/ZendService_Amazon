@@ -82,7 +82,7 @@ class Amazon
      * @param  string $countryCode Country code for Amazon service; may be US, UK, DE, JP, FR, CA
      * @param  string $secretKey   API Secret Key
      * @param  string $version     API Version to use
-     * @param  bool   $useSsl      Use HTTPS instead of HTTP?
+     * @param  bool   $useHttps    Use HTTPS instead of HTTP?
      * @throws Exception\InvalidArgumentException
      * @return Amazon
      */
@@ -105,7 +105,7 @@ class Amazon
             throw new Exception\InvalidArgumentException("Unknown country code: $countryCode");
         }
 
-        $this->_baseUri = $useSsl
+        $this->_baseUri = $useHttps
             ? str_replace('http:', 'https:', $this->_baseUriList[$countryCode])
             : $this->_baseUriList[$countryCode];
     }
