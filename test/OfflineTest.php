@@ -356,4 +356,68 @@ class OfflineTest extends TestCase
 
         $this->assertEquals(0, $result->totalPages());
     }
+
+    /**
+     * Get a mock REST client for testing an expected URL.
+     *
+     * @param string $expectedUrl URL to check for.
+     *
+     * @return
+     */
+    protected function getMockRestClient($expectedUrl)
+    {
+        // We have to do a lot of mocking to avoid causing errors, but the only
+        // part of this that is significant to the tests below is the expectation
+        // set up on the $restClient's setUri method.
+        $httpClient = $this->getMockBuilder('Zend\Http\Client')->getMock();
+        $response = $this->getMockBuilder('Zend\Http\Response')->setMethods(['getBody'])->getMock();
+        $response->expects($this->any())->method('getBody')->will($this->returnValue('<foo />'));
+        $restClient = $this->getMockBuilder('ZendRest\Client\RestClient')
+            ->disableOriginalConstructor()->setMethods(['setUri', 'getHttpClient', 'restGet'])->getMock();
+        $restClient->expects($this->once())->method('setUri')
+            ->with($this->equalTo($expectedUrl));
+        $restClient->expects($this->any())->method('getHttpClient')->will($this->returnValue($httpClient));
+        $restClient->expects($this->any())->method('restGet')->will($this->returnValue($response));
+        return $restClient;
+    }
+
+    /**
+     * Test that default URL is selected appropriately.
+     */
+    public function testDefaultUrl()
+    {
+        $amazon = new Amazon\Amazon(constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ACCESSKEYID'));
+        $amazon->setRestClient($this->getMockRestClient('http://webservices.amazon.com'))->itemLookup('foo');
+    }
+
+    /**
+     * Test that secure URLs are selected appropriately.
+     */
+    public function testSecureUrls()
+    {
+        $urls = [
+            'BR' => 'https://webservices.amazon.com.br',
+            'CA' => 'https://webservices.amazon.ca',
+            'CN' => 'https://webservices.amazon.cn',
+            'DE' => 'https://webservices.amazon.de',
+            'ES' => 'https://webservices.amazon.es',
+            'FR' => 'https://webservices.amazon.fr',
+            'IN' => 'https://webservices.amazon.in',
+            'IT' => 'https://webservices.amazon.it',
+            'JP' => 'https://webservices.amazon.co.jp',
+            'MX' => 'https://webservices.amazon.com.mx',
+            'UK' => 'https://webservices.amazon.co.uk',
+            'US' => 'https://webservices.amazon.com',
+        ];
+        foreach ($urls as $country => $expected) {
+            $amazon = new Amazon\Amazon(
+                constant('TESTS_ZEND_SERVICE_AMAZON_ONLINE_ACCESSKEYID'),
+                $country,
+                null,
+                null,
+                true
+            );
+            $amazon->setRestClient($this->getMockRestClient($expected))->itemLookup('foo');
+        }
+    }
 }
