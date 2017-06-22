@@ -2,13 +2,11 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.3.0 - TBD
+## 2.4.0 - TBD
 
 ### Added
 
-- [#70](https://github.com/zendframework/ZendService_Amazon/pull/70) added
-  support for IT, ES, CN, BR amazon endpoints and added new $useHttps constructor
-  parameter to `ZendService\Amazon\Amazon`
+- Nothing.
 
 ### Deprecated
 
@@ -22,11 +20,13 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - Nothing.
 
-## 2.2.1 - TBD
+## 2.3.0 - 2017-06-22
 
 ### Added
 
-- Nothing.
+- [#70](https://github.com/zendframework/ZendService_Amazon/pull/70) added
+  support for IT, ES, CN, BR amazon endpoints and added new $useHttps constructor
+  parameter to `ZendService\Amazon\Amazon`
 
 ### Deprecated
 
