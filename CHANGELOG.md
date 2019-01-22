@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.4.0 - TBD
+## 2.3.1 - TBD
 
 ### Added
 
-- Nothing.
+- [#77](https://github.com/zendframework/ZendService_Amazon/pull/77) adds support for PHP 7.3.
 
 ### Deprecated
 
